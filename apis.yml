@@ -1,0 +1,7 @@
+aid: bbandt-corp
+url: https://raw.githubusercontent.com/api-evangelist/bbandt-corp/refs/heads/main/apis.yml
+modified: '2026-03-23'
+apis: []
+common:
+  - type: Website
+    url: https://www.bbandt-corp.com
