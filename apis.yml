@@ -1,7 +1,12 @@
 aid: bbandt-corp
-url: https://raw.githubusercontent.com/api-evangelist/bbandt-corp/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/bbandt-corp/refs/heads/main/apis.yml
 modified: '2026-03-23'
 apis: []
 common:
   - type: Website
     url: https://www.bbandt-corp.com
+description: >-
+  BB&T Corporation was a financial services holding company offering commercial and
+  retail banking, asset management, mortgage, and insurance services before merging
+  with SunTrust to form Truist Financial.
