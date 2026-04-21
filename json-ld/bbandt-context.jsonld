@@ -1,0 +1,52 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "schema": "https://schema.org/",
+    "fibo": "https://spec.edmcouncil.org/fibo/ontology/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "BankAccount": {
+      "@id": "fibo:FBC/FinancialInstruments/FinancialInstruments/BankAccount",
+      "@type": "@id"
+    },
+    "Transaction": {
+      "@id": "schema:MoneyTransfer",
+      "@type": "@id"
+    },
+    "accountId": {
+      "@id": "fibo:accountId",
+      "@type": "xsd:string"
+    },
+    "accountType": {
+      "@id": "schema:additionalType",
+      "@type": "xsd:string"
+    },
+    "balance": {
+      "@id": "schema:amount",
+      "@type": "xsd:decimal"
+    },
+    "currency": {
+      "@id": "schema:currency",
+      "@type": "xsd:string"
+    },
+    "transactionId": {
+      "@id": "schema:identifier",
+      "@type": "xsd:string"
+    },
+    "amount": {
+      "@id": "schema:price",
+      "@type": "xsd:decimal"
+    },
+    "transactionDate": {
+      "@id": "schema:startDate",
+      "@type": "xsd:dateTime"
+    },
+    "description": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "category": {
+      "@id": "schema:category",
+      "@type": "xsd:string"
+    }
+  }
+}

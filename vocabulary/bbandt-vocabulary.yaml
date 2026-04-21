@@ -1,0 +1,46 @@
+vocabulary:
+  name: BB&T Corp / Truist Vocabulary
+  description: >-
+    Key terms and concepts used in Truist (formerly BB&T) banking APIs,
+    open banking services, and financial technology integrations.
+  terms:
+    - term: Truist
+      definition: >-
+        The financial holding company formed by the December 2019 merger of BB&T Corp
+        and SunTrust Banks. Operates as Truist Bank with headquarters in Charlotte, NC.
+    - term: BB&T
+      definition: >-
+        Branch Banking and Trust Company — a major US regional bank headquartered in
+        Winston-Salem, NC that merged with SunTrust to form Truist Financial.
+    - term: Open Banking
+      definition: >-
+        A financial services model where banks expose customer data and services through
+        APIs to authorized third-party developers, enabling fintech innovation.
+    - term: AIS
+      definition: >-
+        Account Information Service — a service allowing authorized third parties to
+        retrieve customer account balances and transaction history with consent.
+    - term: OAuth 2.0
+      definition: >-
+        The authorization framework used by Truist APIs to grant secure delegated
+        access to customer account data by third-party applications.
+    - term: Personal Banking
+      definition: >-
+        Retail banking services for individual customers including checking, savings,
+        mortgage, and credit card accounts.
+    - term: Small Business Banking
+      definition: >-
+        Banking services tailored for small and medium-sized businesses including
+        business checking, credit, and cash management services.
+    - term: Commercial Banking
+      definition: >-
+        Banking services for larger corporate customers including treasury management,
+        commercial lending, and institutional investment services.
+    - term: Association Services
+      definition: >-
+        Specialized banking and payment services for homeowners associations (HOAs),
+        condominium associations, and membership organizations.
+    - term: Treasury Management
+      definition: >-
+        Services helping corporate customers manage cash positions, liquidity, payments,
+        collections, and financing across their banking relationships.

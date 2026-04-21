@@ -1,0 +1,32 @@
+{
+  "@context": "../json-ld/bbandt-context.jsonld",
+  "accounts": [
+    {
+      "@type": "BankAccount",
+      "accountId": "CHK-000123456789",
+      "accountType": "CHECKING",
+      "accountName": "Truist One Checking",
+      "balance": 4250.75,
+      "availableBalance": 4100.00,
+      "currency": "USD",
+      "routingNumber": "053101121",
+      "status": "ACTIVE"
+    },
+    {
+      "@type": "BankAccount",
+      "accountId": "SAV-000987654321",
+      "accountType": "SAVINGS",
+      "accountName": "Truist One Savings",
+      "balance": 12500.00,
+      "availableBalance": 12500.00,
+      "currency": "USD",
+      "routingNumber": "053101121",
+      "status": "ACTIVE"
+    }
+  ],
+  "totalCount": 2,
+  "links": {
+    "self": "/v1/accounts",
+    "next": null
+  }
+}

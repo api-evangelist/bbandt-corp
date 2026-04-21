@@ -10,6 +10,7 @@ description: >-
   and commercial customers. The APIs support open banking integrations and financial technology
   applications.
 type: Index
+x-type: company
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
   - Banking
@@ -19,7 +20,7 @@ tags:
   - BB&T
 access: 3rd-Party
 created: '2026-03-23'
-modified: '2026-04-19'
+modified: '2026-04-21'
 position: Consumer
 specificationVersion: '0.19'
 apis:
@@ -113,6 +114,14 @@ common:
     url: https://www.truist.com/terms-and-conditions
   - type: PrivacyPolicy
     url: https://www.truist.com/privacy-security
+  - type: SpectralRules
+    url: rules/bbandt-spectral-rules.yml
+  - type: Vocabulary
+    url: vocabulary/bbandt-vocabulary.yaml
+  - type: NaftikoCapability
+    url: capabilities/open-banking.yaml
+  - type: JSON-LD
+    url: json-ld/bbandt-context.jsonld
   - type: Features
     data:
       - name: Open Banking APIs

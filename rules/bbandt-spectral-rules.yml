@@ -1,0 +1,51 @@
+rules:
+  truist-bearer-auth-required:
+    description: All Truist API operations must use OAuth 2.0 Bearer authentication.
+    message: Operation must include OAuth2 or BearerAuth security requirement.
+    severity: error
+    given: $.paths.*.*.security
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          minItems: 1
+
+  truist-operation-id-required:
+    description: All Truist API operations must have an operationId.
+    message: Operation is missing operationId.
+    severity: error
+    given: $.paths.*.*
+    then:
+      field: operationId
+      function: truthy
+
+  truist-response-200-required:
+    description: All GET operations should define a 200 success response.
+    message: GET operation is missing a 200 response.
+    severity: warn
+    given: $.paths.*.get.responses
+    then:
+      field: '200'
+      function: truthy
+
+  truist-error-responses-defined:
+    description: Operations should define standard error responses.
+    message: Consider defining 400, 401, and 403 error responses.
+    severity: info
+    given: $.paths.*.*.responses
+    then:
+      field: '401'
+      function: truthy
+
+  truist-pagination-parameters:
+    description: List operations should support pagination parameters.
+    message: Consider adding page/limit or cursor pagination to list operations.
+    severity: info
+    given: $.paths[?(@property.match('accounts|transactions'))].get.parameters
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          minItems: 1

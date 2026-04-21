@@ -1,18 +1,17 @@
-# BB&T Corp (Truist) (bbandt-corp)
+# BB&T Corp (Truist)
+
 BB&T Corporation was a major financial services holding company that merged with SunTrust Banks in December 2019 to form Truist Financial Corporation. The combined entity operates as Truist Bank and maintains a developer portal at developer.truist.com offering REST APIs for account information, transaction data, and banking services for personal, small business, and commercial customers. The APIs support open banking integrations and financial technology applications.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/bbandt-corp/refs/heads/main/apis.yml)
+**Developer Portal:** https://developer.truist.com/
 
-**Run:** [Capabilities Using Naftiko](https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=company-api-evangelist&utm_content=repo)
+## Tags
 
-## Tags:
-
- - Banking, Financial Services, Open Banking, Truist, BB&T
+Banking, Financial Services, Open Banking, Truist, BB&T
 
 ## Timestamps
 
 - **Created:** 2026-03-23
-- **Modified:** 2026-04-19
+- **Modified:** 2026-04-21
 
 ## APIs
 
