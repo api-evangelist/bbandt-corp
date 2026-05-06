@@ -4,106 +4,38 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: BB&T Corp (Truist)
 providerId: bbandt-corp
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Banking
-  - Financial Services
   - Open Banking
   - Truist
-  - BB&T
   - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the BB&T Corp (Truist) API surface. Captures
-  per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values
-  to be replaced with published provider limits.
-headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+description: Truist does not publish public per-second or per-minute rate limits for its developer-portal
+  APIs. Capacity is set during partner onboarding and disclosed in the developer portal under authentication.
+  No numeric values are asserted here.
+notes: Reconcile against the application capacity disclosed in the Truist developer portal after onboarding.
+  Do not infer numbers from generic open-banking patterns.
+sources:
+  - https://developer.truist.com/
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Truist Personal and Small Business Accounts API
-      - Truist Personal and Small Business Transactions API
-      - Truist Commercial Accounts API
-      - Truist Commercial Account Transactions API
-      - Truist Association Services API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Truist Personal and Small Business Accounts API
-      - Truist Personal and Small Business Transactions API
-      - Truist Commercial Accounts API
-      - Truist Commercial Account Transactions API
-      - Truist Association Services API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Truist Personal and Small Business Accounts API
-      - Truist Personal and Small Business Transactions API
-      - Truist Commercial Accounts API
-      - Truist Commercial Account Transactions API
-      - Truist Association Services API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Truist Personal and Small Business Accounts API
-      - Truist Personal and Small Business Transactions API
-      - Truist Commercial Accounts API
-      - Truist Commercial Account Transactions API
-      - Truist Association Services API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Truist Personal and Small Business Accounts API
-      - Truist Personal and Small Business Transactions API
-      - Truist Commercial Accounts API
-      - Truist Commercial Account Transactions API
-      - Truist Association Services API
+  - name: Per-application throttle
+    scope: application
+    metric: varies
+    limit: 'see Truist developer portal post-onboarding'
+    notes: Capacity is registered to the partner application; raise via the Truist developer-relations
+      contact.
 policies:
   - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+    description: Use exponential backoff with jitter on 429; honor Retry-After when returned.
+  - name: OAuth Scope Constraints
+    description: Endpoints are scoped to consented account access; per-customer consent windows can effectively
+      limit throughput beyond raw API capacity.
+  - name: Open Banking Compliance
+    description: Open-banking endpoints follow FDX-style consent and authorization patterns; non-compliant
+      polling can trigger throttling regardless of capacity.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

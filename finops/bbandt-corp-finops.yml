@@ -8,159 +8,104 @@ alignedWith:
   dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
 provider: BB&T Corp (Truist)
 providerId: bbandt-corp
-publisherName: BB&T Corp (Truist)
-serviceCategory: API
+publisherName: Truist Financial Corporation
+serviceCategory: Banking / Open Banking APIs
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-05-05'
+reconciled: false
 tags:
   - Banking
-  - Financial Services
   - Open Banking
   - Truist
-  - BB&T
   - FinOps
-  - Cost Management
   - FOCUS
-description: FinOps framework definition for the BB&T Corp (Truist) API surface. Provides a FOCUS-aligned
-  mapping for cost allocation, usage measurement, and unit-economics reporting across the provider's APIs.
+description: 'FOCUS-aligned FinOps shape for the Truist (formerly BB&T) developer-portal APIs: partner
+  / open-banking program access with banking fees flowing through the underlying customer account relationship,
+  not metered per API call.'
+notes: No public rate card. Replace meter values with the partner-program agreement once available.
+sources:
+  - https://developer.truist.com/
 principles:
   - name: Visibility
-    description: Make API consumption costs visible to engineering, product, and finance teams in near
-      real-time.
+    description: Use the accounts and transactions APIs to surface deposits, payments, and fees back to
+      the consuming application or fintech for end-customer attribution.
   - name: Allocation
-    description: Tag every chargeable API call with the consuming team, environment, application, and
-      feature so cost can be allocated.
+    description: Allocate banking fees to the originating account holder; allocate API consumption back
+      to the partner application via OAuth client identity.
   - name: Optimization
-    description: Continuously evaluate request patterns, caching, batching, and tier selection to reduce
-      cost per useful unit of work.
+    description: Cache reference data (account metadata, last-known-good balance) to minimize redundant
+      polling; prefer event/webhook integration where Truist offers it.
   - name: Accountability
-    description: Establish budget owners and chargeback or showback flows for each consuming team.
-domains:
-  - name: Understand Usage and Cost
-    capabilities:
-      - Data Ingestion
-      - Allocation
-      - Reporting and Analytics
-      - Anomaly Management
-  - name: Quantify Business Value
-    capabilities:
-      - Planning and Estimating
-      - Forecasting
-      - Budgeting
-      - Benchmarking
-      - Unit Economics
-  - name: Optimize Usage and Cost
-    capabilities:
-      - Architecting for Cloud
-      - Rate Optimization
-      - Workload Optimization
-      - Cloud Sustainability
-      - Licensing and SaaS
-  - name: Manage the FinOps Practice
-    capabilities:
-      - FinOps Practice Operations
-      - FinOps Education and Enablement
-      - Invoicing and Chargeback
-      - Onboarding Workloads
-      - Intersecting Disciplines
+    description: Designate a partner-program owner who manages the Truist developer agreement, monitors
+      consent expirations, and reviews fee pass-through monthly.
 billingModel:
-  pricingCategory: Usage-Based
+  pricingCategory: Bundled Banking Fees
   billingFrequency: Monthly
   billingCurrency: USD
   chargeCategories:
     - Usage
-    - Purchase
     - Tax
-    - Credit
     - Adjustment
+    - Refund
+    - Credit
   chargeFrequency: Recurring
 focusColumns:
-  ServiceName: BB&T Corp (Truist)
-  ServiceCategory: Developer Tools / API
-  ProviderName: BB&T Corp (Truist)
-  PublisherName: BB&T Corp (Truist)
-  InvoiceIssuerName: BB&T Corp (Truist)
-  PricingCategory: Usage-Based
-  PricingUnit: request
+  ServiceName: Truist Developer APIs
+  ServiceCategory: Banking / Open Banking APIs
+  ProviderName: Truist
+  PublisherName: Truist Financial Corporation
+  InvoiceIssuerName: Truist Bank
+  PricingCategory: Bundled Banking Fees
+  PricingUnit: account
   BillingCurrency: USD
   ChargeCategory: Usage
 meters:
-  - name: api_requests
-    description: Count of billable API requests
+  - name: linked_accounts
+    description: Accounts linked under partner-application OAuth consent
+    unit: account
+    aggregation: max
+    dimensions:
+      - account_type
+      - partner
+  - name: api_calls
+    description: API request volume — operational meter, not necessarily per-call billed
     unit: request
     aggregation: sum
     dimensions:
       - api
-      - endpoint
-      - tier
-      - region
-      - consumer
-  - name: data_egress
-    description: Bytes returned over the network in API responses
-    unit: GB
+      - partner
+  - name: transaction_volume
+    description: Settled transaction value visible through the API
+    unit: USD
     aggregation: sum
     dimensions:
-      - api
-      - region
-      - consumer
-  - name: compute_seconds
-    description: Server-side compute consumed by the request, where applicable
-    unit: second
-    aggregation: sum
-    dimensions:
-      - api
-      - endpoint
-      - tier
+      - account_type
+      - transaction_type
 apis:
   - name: Truist Personal and Small Business Accounts API
     baseURL: ''
-    tags:
-      - Banking
-      - Accounts
-      - Personal Banking
-      - Small Business
     serviceName: Truist Personal and Small Business Accounts API
     serviceCategory: API
   - name: Truist Personal and Small Business Transactions API
     baseURL: ''
-    tags:
-      - Banking
-      - Transactions
-      - Personal Banking
-      - Small Business
     serviceName: Truist Personal and Small Business Transactions API
     serviceCategory: API
   - name: Truist Commercial Accounts API
     baseURL: ''
-    tags:
-      - Banking
-      - Accounts
-      - Commercial Banking
     serviceName: Truist Commercial Accounts API
     serviceCategory: API
   - name: Truist Commercial Account Transactions API
     baseURL: ''
-    tags:
-      - Banking
-      - Transactions
-      - Commercial Banking
     serviceName: Truist Commercial Account Transactions API
     serviceCategory: API
   - name: Truist Association Services API
     baseURL: ''
-    tags:
-      - Banking
-      - Association Services
-      - Payments
     serviceName: Truist Association Services API
     serviceCategory: API
 unitEconomics:
-  - name: Cost per 1K Requests
-    metric: billed_cost / (api_requests / 1000)
-    target: TBD
-  - name: Cost per Active Consumer
-    metric: billed_cost / active_consumers
-    target: TBD
+  - name: Cost per Linked Account
+    metric: total_partner_fees / linked_accounts
+    target: align to per-account customer LTV
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
