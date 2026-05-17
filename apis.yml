@@ -10,7 +10,7 @@ description: >-
   and commercial customers. The APIs support open banking integrations and financial technology
   applications.
 type: Index
-x-type: company
+kind: company
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
   - Banking
@@ -120,7 +120,7 @@ common:
     url: vocabulary/bbandt-vocabulary.yaml
   - type: NaftikoCapability
     url: capabilities/open-banking.yaml
-  - type: JSON-LD
+  - type: JSONLD
     url: json-ld/bbandt-context.jsonld
   - type: Features
     data:
