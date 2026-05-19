@@ -102,6 +102,8 @@ apis:
         url: https://developer.truist.com/categories/association-services
 
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/truistfinancialcorporation
   - type: Portal
     url: https://developer.truist.com/
   - type: Website
