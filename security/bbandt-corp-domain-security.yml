@@ -1,0 +1,27 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: developer.truist.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Dec  7 23:59:59 2026 GMT
+  hsts: null
+- host: www.truist.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 13 23:59:59 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+domains:
+- domain: truist.com
+  dnssec: false
+  caa:
+  - 0 issue "sectigo.com"
+  - 0 issue "digicert.com"
+  - 0 issue "entrust.net"
+  - 0 issue "amazon.com"
+  - 0 contactemail "ccs_certificate_services@truist.com"
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

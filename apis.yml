@@ -103,6 +103,8 @@ apis:
         url: https://developer.truist.com/categories/association-services
 
 common:
+  - type: DomainSecurity
+    url: security/bbandt-corp-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/truistfinancialcorporation
   - type: Portal
@@ -155,6 +157,8 @@ common:
         description: Open banking platform providing access to Truist banking data via aggregation.
       - name: QuickBooks
         description: Accounting software integration for Truist commercial banking customers.
+  - type: Blog
+    url: https://media.truist.com/news-releases?pagetemplate=rss
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
