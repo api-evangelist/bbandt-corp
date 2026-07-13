@@ -1,0 +1,13 @@
+{
+  "repo": "bbandt-corp",
+  "feeds": [
+    {
+      "source": "https://media.truist.com/news-releases?pagetemplate=rss",
+      "feed_url": "https://media.truist.com/news-releases?pagetemplate=rss",
+      "title": "Truist Newsroom | News Releases",
+      "saved": 0
+    }
+  ],
+  "fetched": "2026-07-11T11:43:46Z",
+  "post_count": 10
+}
