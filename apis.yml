@@ -135,8 +135,6 @@ common:
     url: rules/bbandt-spectral-rules.yml
   - type: Vocabulary
     url: vocabulary/bbandt-vocabulary.yaml
-  - type: X-NaftikoCapability
-    url: capabilities/open-banking.yaml
   - type: JSONLD
     url: json-ld/bbandt-context.jsonld
   - type: Features
