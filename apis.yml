@@ -26,6 +26,13 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/bbandt-corp.png
 tags:
   - Banking
+  - Financial-Services
+  - Open Banking
+  - Truist
+  - BB&T
+  - Fortune 500
+tags_raw:
+  - Banking
   - Financial Services
   - Open Banking
   - Truist
@@ -46,6 +53,11 @@ apis:
     humanURL: https://developer.truist.com/api/personal-and-small-business-accounts/overview
     tags:
       - Banking
+      - Account
+      - Personal Banking
+      - Small Business
+    tags_raw:
+      - Banking
       - Accounts
       - Personal Banking
       - Small Business
@@ -61,6 +73,11 @@ apis:
       customer transaction data with proper authorization.
     humanURL: https://developer.truist.com/api/personal-and-small-business-transactions/overview
     tags:
+      - Banking
+      - Transaction
+      - Personal Banking
+      - Small Business
+    tags_raw:
       - Banking
       - Transactions
       - Personal Banking
@@ -78,6 +95,10 @@ apis:
     humanURL: https://developer.truist.com/api/commercial-accounts/overview
     tags:
       - Banking
+      - Account
+      - Commercial Banking
+    tags_raw:
+      - Banking
       - Accounts
       - Commercial Banking
     properties:
@@ -92,6 +113,10 @@ apis:
       and treasury management workflows.
     humanURL: https://developer.truist.com/api/commercial-account-transactions/overview
     tags:
+      - Banking
+      - Transaction
+      - Commercial Banking
+    tags_raw:
       - Banking
       - Transactions
       - Commercial Banking
