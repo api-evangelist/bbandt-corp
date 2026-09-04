@@ -52,7 +52,7 @@ tags_raw:
 access: 3rd-Party
 created: '2026-03-23'
 modified: '2026-04-21'
-position: Consumer
+position: Consuming
 specificationVersion: '0.23'
 apis:
   - aid: bbandt-corp:personal-small-business-accounts
