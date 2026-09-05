@@ -1,0 +1,595 @@
+openapi: 3.1.0
+info:
+  version: '1.2.0'
+  # build: '0'
+  title: Event Subscriptions API
+  description: Truist Financial, following FDX V6.4.1 Event Subscription API
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+servers:
+  - url: 'https://api-sandbox.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Sandbox environment
+  - url: 'https://apicert-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Certification environment
+  - url: 'https://api-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Production environment
+tags:
+  - name: Event Notification Subscriptions
+    description: Manage Event Notification Subscriptions
+security:
+  - BasicAuth: []
+paths:
+  ############################################################
+  #
+  # Event Notification Subscriptions paths
+  #
+  ############################################################
+
+  /v1/notification-subscriptions:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+    post:
+      summary: Create a notification subscription
+      operationId: createNotificationSubscription
+      description: Creates notification subscription entry on the server
+      tags:
+        - Event Notification Subscriptions
+      requestBody:
+        description: Notification subscription
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationSubscription'
+            examples:
+              Create Consent Revoked Notification:
+                value:
+                  type: CONSENT_REVOKED
+                  category: CONSENT
+                  callbackUrl: 'https://abc.com/notification'
+                  subscriber:
+                    name: ABC Inc
+                    type: DATA_ACCESS_PLATFORM
+                    registry: PRIVATE
+                    registeredEntityId: rCGs7Q7ehtLAataGuc7AYGpobsv5F
+                  effectiveDate: '2021-11-24'
+                  subscriptionId: GUID-SubscriptionId1
+              Create Consent Updated Subscription:
+                value:
+                  type: CONSENT_UPDATED
+                  category: CONSENT
+                  callbackUrl: 'https://abc.com/notification'
+                  subscriber:
+                    name: ABC Inc
+                    type: DATA_ACCESS_PLATFORM
+                    registry: PRIVATE
+                    registeredEntityId: rCGs7Q7ehtLAataGuc7AYGpobsv5F
+                  effectiveDate: '2021-11-24'
+                  subscriptionId: GUID-0a318518-ca16-4e66-1234
+      responses:
+        '201':
+          description: Created
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationSubscription'
+              examples:
+                Consent Revoked Notification created:
+                  value:
+                    type: CONSENT_REVOKED
+                    category: CONSENT
+                    callbackUrl: 'https://abc.com/notification'
+                    subscriber:
+                      name: ABC Inc
+                      type: DATA_ACCESS_PLATFORM
+                      registry: PRIVATE
+                      registeredEntityId: rCGs7Q7ehtLAataGuc7AYGpobsv5
+                    effectiveDate: '2021-11-24'
+                    subscriptionId: GUID-SubscriptionId1
+        '400':
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MISSING_REQUIRED_PARAMETER:
+                  value:
+                    code: '401'
+                    message: Following required parameters are missing - {type, category, callbackUrl, subscriber, subscriber name, subscriber type, subscriptionId}
+                INVALID_CLIENT_METADATA:
+                  value:
+                    code: '401'
+                    message: Following request fields have invalid values - {type, category, callbackUrl, subscriber name, subscriber type, subscriber registry, registeredEntityId, subscriptionId}
+                SUBSCRIPTION_ID_REQUIRED:
+                  value:
+                    code: '401'
+                    message: Unique Subscription ID is required
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: '1107-1206'
+                    message: URI does not represent a recognized resource
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+
+  /v1/notification-subscriptions/{subscriptionId}:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/SubscriptionIdPath'
+    get:
+      summary: Get a notification subscription
+      operationId: getNotificationSubscription
+      description: Call to get notification subscription
+      tags:
+        - Event Notification Subscriptions
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationSubscription'
+              examples:
+                Notification Subscription by ID success response:
+                  value:
+                    type: CONSENT_REVOKED
+                    category: CONSENT
+                    callbackUrl: 'https://abc.com/notification'
+                    subscriber:
+                      name: ABC Inc
+                      type: DATA_ACCESS_PLATFORM
+                      registry: PRIVATE
+                      registeredEntityId: rCGs7Q7ehtLAataGuc7AYGpobsv5
+                    effectiveDate: '2021-11-24'
+                    subscriptionId: GUID-SubscriptionId2
+        '400':
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SUBSCRIPTION_ID_REQUIRED:
+                  value:
+                    code: '401'
+                    message: Subscription ID is required
+                INVALID_SUBSCRIPTION_ID:
+                  value:
+                    code: '401'
+                    message: Following request fields have invalid values - {subscriptionId}
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: '1107-1206'
+                    message: URI does not represent a recognized resource
+                INVALID_SUBSCRIPTION_ID:
+                  value:
+                    code: '1107'
+                    message: Invalid subscription id
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+
+    delete:
+      summary: Delete a notification subscription
+      operationId: deleteNotificationSubscription
+      description: Delete a notification subscription
+      tags:
+        - Event Notification Subscriptions
+      responses:
+        '204':
+          description: No Content
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+        '400':
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SUBSCRIPTION_ID_REQUIRED:
+                  value:
+                    code: '401'
+                    message: Subscription ID is required
+                INVALID_SUBSCRIPTION_ID:
+                  value:
+                    code: '401'
+                    message: Following request fields have invalid values - {subscriptionId}
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: '1107-1206'
+                    message: URI does not represent a recognized resource
+                INVALID_SUBSCRIPTION_ID:
+                  value:
+                    code: '1107'
+                    message: Invalid subscription id
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Base64(client_id:client_secret)
+
+  parameters:
+    ############################################################
+    #
+    # Shared request parameters (usable by core and all extensions)
+    #
+    ############################################################
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    ############################################################
+    #
+    # Event Notification Subscriptions request parameters
+    #
+    ############################################################
+
+    SubscriptionIdPath:
+      name: subscriptionId
+      in: path
+      description: ID of notification subscription
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  schemas:
+    ############################################################
+    #
+    # Event Notification Subscriptions entities
+    #
+    ############################################################
+
+    NotificationSubscription:
+      title: Notification Subscription entity
+      description: Provides the fields of a notification subscription
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/NotificationType'
+          description: Type of notification
+        category:
+          $ref: '#/components/schemas/NotificationCategory'
+          description: Category of notification
+        callbackUrl:
+          type: string
+          description: Callback URL. Previous callback URL will be updated with latest.
+        subscriber:
+          $ref: '#/components/schemas/Party'
+          description: The Party who is subscribing to the notification
+        effectiveDate:
+          $ref: '#/components/schemas/DateString'
+          description: Effective date of notification
+        subscriptionId:
+          type: string
+          description: Subscription id of notification
+          maxLength: 64
+      required:
+        - type
+        - category
+        - callbackUrl
+        - subscriber
+        - subscriptionId
+
+    ############################################################
+    #
+    # Shared entity definitions
+    #
+    ############################################################
+
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+        or at the account level to indicate a problem specific to a particular
+        account
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Long term persistent identifier which can be used to trace error
+            condition back to log information
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+
+    Party:
+      title: Party entity
+      description: FDX Participant - an entity or person that is a part of a FDX API transaction
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          description: Human recognizable common name
+          type: string
+        type:
+          description: Extensible string enum identifying the type of the party
+          $ref: '#/components/schemas/PartyType'
+        registry:
+          description: The registry containing the party's registration with name and id, PRIVATE
+          $ref: '#/components/schemas/Registry'
+        registeredEntityId:
+          description: Registered id of party
+          type: string
+
+    ############################################################
+    #
+    # Event Notification Subscriptions data types
+    #
+    ############################################################
+
+    NotificationCategory:
+      title: Notification Category
+      description: Category of Notification
+      type: string
+      enum:
+        - CONSENT
+
+    NotificationType:
+      title: Notification Type
+      description: Type of notification
+      type: string
+      enum:
+        - CONSENT_REVOKED
+        - CONSENT_UPDATED
+
+    ############################################################
+    #
+    # Shared data types
+    #
+    ############################################################
+
+    DateString:
+      title: Date String
+      description: >-
+        ISO 8601 full-date in format 'YYYY-MM-DD' according
+        to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date
+      maxLength: 10
+      example: '2021-07-15'
+
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: >-
+        Universally unique identifier for this interaction,
+        used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+
+    PartyType:
+      title: Party Type
+      description: Identifies the type of a party
+      type: string
+      enum:
+        - DATA_ACCESS_PLATFORM
+        - DATA_RECIPIENT
+
+    Registry:
+      title: Registry
+      description: Identifies the type of a Registry
+      type: string
+      enum:
+        - PRIVATE
+
+  responses:
+    ############################################################
+    #
+    # Standard error responses
+    #
+    ############################################################
+
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_BASICAUTHENTICATION_SOURCE:
+              value:
+                code: '603'
+                message: Authentication failed
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '603-403'
+                message: Data recipient connection does not include Event Notifications API
+
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: The request method is not supported by this resource
+
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
+
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: Internal Server Error
+            SUBSYSTEM_UNAVAILABLE_ERROR:
+              value:
+                code: '501'
+                message: Subsystem unavailable
+
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server

@@ -1,0 +1,77 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/_original/*.yaml info.version across the 15 published specs (harvested 2026-09-04); no dated changelog
+  is published
+specification: API Commons Change Log
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+published: false
+scheme: semver in OpenAPI info.version, with the major version also carried in the URI path
+description: Truist publishes no dated changelog, release-notes page or RSS feed for its APIs. The only version signal
+  a consumer can read is the info.version on each published contract, which is why it is recorded here as a snapshot
+  rather than as a history. The contract versions below are the values live on the Truist Developer Center on 2026-09-04.
+current_versions:
+- api: Commercial Accounts
+  contract_version: 4.3.0
+  openapi: 3.0.1
+  spec: openapi/bbandt-corp-commercial-accounts-openapi.yml
+- api: Commercial Account Balance
+  contract_version: 3.6.0
+  openapi: 3.0.1
+  spec: openapi/bbandt-corp-commercial-account-balance-openapi.yml
+- api: Commercial Account Transactions
+  contract_version: 3.6.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-commercial-account-transactions-openapi.yml
+- api: Personal and Small Business Accounts
+  contract_version: 2.6.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-accounts-openapi.yml
+- api: Branch/ATM Locator
+  contract_version: 1.2.0
+  openapi: 3.0.1
+  spec: openapi/bbandt-corp-retail-locator-openapi.yml
+- api: Personal and Small Business Transactions
+  contract_version: 2.4.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-accounts-transaction-openapi.yml
+- api: Personal and Small Business Client Contact
+  contract_version: 1.5.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-customers-openapi.yml
+- api: Retail Oauth Authentication
+  contract_version: 3.3.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+- api: User Consent
+  contract_version: 1.1.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-consents-openapi.yml
+- api: Retail Dynamic Client Registration
+  contract_version: 1.3.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-register-recipient-openapi.yml
+- api: Personal and Small Business Account Payment Networks
+  contract_version: 1.3.2
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-payment-networks-openapi.yml
+- api: Account Address
+  contract_version: 1.2.1
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-accounts-contact-openapi.yml
+- api: Credit Transfers
+  contract_version: 2.6.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+- api: Personal and Small Business Event Notifications
+  contract_version: 1.1.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-event-notifications-openapi.yml
+- api: Personal and Small Business Event Subscriptions
+  contract_version: 1.2.0
+  openapi: 3.1.0
+  spec: openapi/bbandt-corp-retail-event-subscriptions-openapi.yml
+entries: []
+gap: 'A dated changelog is the single cheapest operational artifact missing from this program: 15 contracts carry independent
+  semver, and a consumer has no way to learn that 2.6.0 replaced 2.5.x, or what changed.'

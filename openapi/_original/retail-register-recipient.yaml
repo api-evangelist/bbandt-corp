@@ -1,0 +1,825 @@
+openapi: 3.1.0
+info:
+  version: '1.3.0'
+  # build: '0'
+  title: Data Recipient Registration
+  description: Truist Financial, following FDX V5.4.1 Recipient API
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+servers:
+  - url: 'https://api-sandbox.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Sandbox environment
+  - url: 'https://apicert-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Certification environment
+  - url: 'https://api-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Production environment
+tags:
+  - name: Recipients
+    description: Manage recipients
+security:
+  - BasicAuth: []
+
+paths:
+  ############################################################
+  #
+  # Recipient Registration paths
+  #
+  ############################################################
+
+  /v1/register:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+    post:
+      summary: Recipient Registration Request
+      description: Request to Register Recipient by Creating a Recipient Record
+      operationId: createRecipient
+      tags:
+        - Recipients
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipientRequest'
+            examples:
+              Create Recipient Record at Provider:
+                value:
+                  client_name: My Example Client
+                  description: Recipient application for specified financial use case
+                  redirect_uris:
+                    - https://partner.example.net/callback
+                  logo_uri: https://client.example.org/logo.png
+                  auto_connect: true
+                  client_uri: https://example.net/
+                  contacts:
+                    - support@example.net
+                    - https://example.net/contact-us
+                  scope: ACCOUNT_DETAILED TRANSACTIONS
+                  duration_type:
+                    - TIME_BOUND
+                  duration_period: 365
+                  lookback_period: 180
+                  intermediaries:
+                    - name: Data Access Platform Name
+                      description: Company servicing permissioned financial data sharing
+                      uri: https://partner.example/
+                      logo_uri: https://partner.example/logo.png
+                      contacts:
+                        - support@dap-partner.com
+                        - https://dap-partner.com/contact-us
+                    - name: Digital Service Provider Name
+                      description: Digital Service Provider to the Recipient
+                      uri: https://sub-partner-one.example/
+                      logo_uri: https://sub-partner-one.example/logo.png
+                      contacts:
+                        - support@sub-partner-one.com
+                        - https://sub-partner-one.com/contact-us
+      responses:
+        '201':
+          description: Created
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                Provider Response With Full Record Of Recipient:
+                  value:
+                    eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5NzAKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6qJp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJNqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7TpdQyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoSK5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg
+        '202':
+          description: Accepted
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                Accepted DR registration still pending its Payment Networks setup:
+                  value:
+                    eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5NzAKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6qJp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJNqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7TpdQyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoSK5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg
+                Accepted DR registration still pending authorization server setup:
+                  value:
+                    eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5NzAKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6qJp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJNqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7TpdQyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoSK5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg
+        '400':
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MISSING_REQUIRED_PARAMETER:
+                  value:
+                    code: '401'
+                    message: Following required parameters are missing - {client_name,
+                      redirect_uris, client_uri, contacts, scope, duration_type,
+                      intermediary name, intermediary uri, intermediary contacts}
+                INVALID_CLIENT_METADATA:
+                  value:
+                    code: '401'
+                    message: Following request fields have invalid values - {redirect_uris, logo_uri,
+                      client_uri, auto_connect, contacts, scope, duration_type, duration_period,
+                      lookback_period, intermediary uri, intermediary logo_uri, contacts}
+                OUT_OF_CONTRACT_METADATA:
+                  value:
+                    code: '401'
+                    message: Following request fields have out of contract metadata - {scope,
+                      duration_type, duration_period, lookback_period}
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '409':
+          $ref: '#/components/responses/409'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+
+  /v1/register/{clientId}:
+    parameters:
+      - $ref: '#/components/parameters/ClientIdPath'
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+    get:
+      summary: Get Recipient
+      operationId: getRecipient
+      tags:
+        - Recipients
+      description: Get a specific recipient data identified with clientId
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                Provider Response With Full Record Of Recipient:
+                  value:
+                    eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5NzAKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6qJp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJNqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7TpdQyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoSK5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+    put:
+      summary: Update a Recipient
+      operationId: updateRecipient
+      tags:
+        - Recipients
+      description: Update data for a specific recipient identified with clientId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipientRequest'
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                Updated Provider Response With Full Record Of Recipient:
+                  value:
+                    eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5NzAKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6qJp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJNqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7TpdQyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoSK5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg
+        '400':
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                MISSING_REQUIRED_PARAMETER:
+                  value:
+                    code: '401'
+                    message: Following required parameters are missing - {client_name,
+                      redirect_uris, client_uri, contacts, scope, duration_type,
+                      intermediary name, intermediary uri, intermediary contacts}
+                INVALID_CLIENT_METADATA:
+                  value:
+                    code: '401'
+                    message: Following request fields have invalid values - {redirect_uris, logo_uri,
+                      client_uri, auto_connect, contacts, scope, duration_type, duration_period,
+                      lookback_period, intermediary uri, intermediary logo_uri, contacts}
+                OUT_OF_CONTRACT_METADATA:
+                  value:
+                    code: '401'
+                    message: Following request fields have out of contract metadata - {scope,
+                      duration_type, duration_period, lookback_period}
+                UPDATE_NOT_YET_IMPLEMENTED:
+                  value:
+                    code: '401'
+                    message: Following requested field updates are not yet supported
+                      by Truist - {client_name, auto_connect, duration_type, duration_period}
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '409':
+          $ref: '#/components/responses/409'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+    delete:
+      summary: Delete Recipient
+      operationId: deleteRecipient
+      tags:
+        - Recipients
+      description: Delete data for a specific recipient identified with clientId
+      responses:
+        '204':
+          description: No Content
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Base64(client_id:client_secret)
+
+  parameters:
+    ############################################################
+    #
+    # Recipient Registration request parameters
+    #
+    ############################################################
+
+    ClientIdPath:
+      name: clientId
+      in: path
+      description: Client Identifier. Uniquely identifies a Client
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+      example: 'uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tn'
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request identifier
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique request identifier
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  examples:
+    ############################################################
+    #
+    # Examples of decrypted responses
+    #
+    ############################################################
+
+    Provider-Response-With-Full-Record-Of-Recipient:
+      description: >-
+        Completed recipient creation will return the submitted request attribute
+        values plus new client_id and client_secret with status APPROVED
+      value:
+        client_name: My Example Client
+        description: Recipient Application servicing financial use case requiring permissioned data sharing
+        redirect_uris:
+          - 'https://partner.example.net/callback-one'
+          - 'https://partner.example.net/callback-two'
+        logo_uri: 'https://client.example.org/logo.png'
+        auto_connect: true
+        client_uri: 'https://example.net/'
+        contacts:
+          - support@example.net
+          - 'https://example.net/contact-us'
+        scope: ACCOUNT_DETAILED TRANSACTIONS INVESTMENTS
+        duration_type:
+          - TIME_BOUND
+        duration_period: 365
+        lookback_period: 180
+        intermediaries:
+          - name: Data Access Platform Name
+            description: Data Access Platform specializing in servicing permissioned data sharing for Data Recipients
+            uri: 'https://partner.example/'
+            logo_uri: 'https://partner.example/logo.png'
+            contacts:
+              - support@dap-partner.com
+              - 'https://dap-partner.com/contact-us'
+          - name: Digital Service Provider Name
+            description: Digital Service Provider to the Recipient
+            uri: 'https://sub-partner-one.example/'
+            logo_uri: 'https://sub-partner-one.example/logo.png'
+            contacts:
+              - support@sub-partner-one.com
+              - 'https://sub-partner-one.com/contact-us'
+        client_id: V8tvEkZWhDAdxSaKGUJZ
+        client_secret: SpsuwZIxnp8bBEhp5sk1EKiIKTZ4X4DKU
+        status: APPROVED
+
+    Accepted-DR-registration-still-pending-its-Payment-Networks-setup:
+      description: >-
+        Recipient created and can begin creating customer consents
+        but is not yet available for Tokenized Account Numbers.
+        Response will return the submitted request attribute values plus
+        new client_id and client_secret with status PAYMENT_SUPPORT_ERROR
+      value:
+        client_name: My Example Client
+        description: Recipient Application servicing financial use case requiring permissioned data sharing
+        redirect_uris:
+          - 'https://partner.example.net/callback-one'
+          - 'https://partner.example.net/callback-two'
+        logo_uri: 'https://client.example.org/logo.png'
+        auto_connect: true
+        client_uri: 'https://example.net/'
+        contacts:
+          - support@example.net
+          - 'https://example.net/contact-us'
+        scope: ACCOUNT_DETAILED TRANSACTIONS INVESTMENTS PAYMENT_SUPPORT
+        duration_type:
+          - TIME_BOUND
+        duration_period: 365
+        lookback_period: 180
+        intermediaries:
+          - name: Data Access Platform Name
+            description: Data Access Platform specializing in servicing permissioned data sharing for Data Recipients
+            uri: 'https://partner.example/'
+            logo_uri: 'https://partner.example/logo.png'
+            contacts:
+              - support@dap-partner.com
+              - 'https://dap-partner.com/contact-us'
+          - name: Digital Service Provider Name
+            description: Digital Service Provider to the Recipient
+            uri: 'https://sub-partner-one.example/'
+            logo_uri: 'https://sub-partner-one.example/logo.png'
+            contacts:
+              - support@sub-partner-one.com
+              - 'https://sub-partner-one.com/contact-us'
+        client_id: V8tvEkZWhDAdxSaKGUJZ
+        client_secret: SpsuwZIxnp8bBEhp5sk1EKiIKTZ4X4DKU
+        status: PAYMENT_SUPPORT_ERROR
+
+    Accepted-DR-registration-still-pending-authorization-server-setup:
+      description: >-
+        Recipient created but is not yet available for customer consents,
+        response will return the submitted request attribute values plus
+        new client_id and client_secret with status PENDING
+      value:
+        client_name: My Example Client
+        description: Recipient Application servicing financial use case requiring permissioned data sharing
+        redirect_uris:
+          - 'https://partner.example.net/callback-one'
+          - 'https://partner.example.net/callback-two'
+        logo_uri: 'https://client.example.org/logo.png'
+        auto_connect: true
+        client_uri: 'https://example.net/'
+        contacts:
+          - support@example.net
+          - 'https://example.net/contact-us'
+        scope: ACCOUNT_DETAILED TRANSACTIONS INVESTMENTS PAYMENT_SUPPORT
+        duration_type:
+          - TIME_BOUND
+        duration_period: 365
+        lookback_period: 180
+        intermediaries:
+          - name: Data Access Platform Name
+            description: Data Access Platform specializing in servicing permissioned data sharing for Data Recipients
+            uri: 'https://partner.example/'
+            logo_uri: 'https://partner.example/logo.png'
+            contacts:
+              - support@dap-partner.com
+              - 'https://dap-partner.com/contact-us'
+          - name: Digital Service Provider Name
+            description: Digital Service Provider to the Recipient
+            uri: 'https://sub-partner-one.example/'
+            logo_uri: 'https://sub-partner-one.example/logo.png'
+            contacts:
+              - support@sub-partner-one.com
+              - 'https://sub-partner-one.com/contact-us'
+        client_id: V8tvEkZWhDAdxSaKGUJZ
+        client_secret: SpsuwZIxnp8bBEhp5sk1EKiIKTZ4X4DKU
+        status: PENDING
+
+  schemas:
+    ############################################################
+    #
+    # Recipient Registration data entities
+    #
+    ############################################################
+
+    Recipient:
+      title: Recipient Provider
+      type: object
+      description: Record of Recipient at the Provider in snake case to match IETF RFC 7591 naming formats
+      allOf:
+        - $ref: '#/components/schemas/RecipientRequest'
+        - type: object
+          properties:
+            client_id:
+              type: string
+              description: OAuth 2.0 client identifier. Unique ID representing Data Recipient and Identity Chain combination
+            client_secret:
+              type: string
+              description: OAuth 2.0 client secret string
+            status:
+              $ref: '#/components/schemas/RecipientStatus'
+              description: Status of Recipient creation through dynamic client registration per
+                FDX RFC 0117 and FDX Recipient Registration Guidelines document
+      required:
+        - client_id
+        - status
+
+    ############################################################
+    #
+    # Shared data entities (usable by core and all extensions)
+    #
+    ############################################################
+
+    Intermediary:
+      title: Intermediary
+      description: >-
+        Data Access Platform, Service Provider, or any other entity in
+        the data sharing chain between a Data Provider to a Data Recipient.
+        In snake case to match IETF RFC 7591 naming formats
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of intermediary party
+        description:
+          type: string
+          description: A short description of the intermediary
+        uri:
+          type: string
+          format: uri
+          description: A URL string of a web page providing information about the intermediary
+        logo_uri:
+          type: string
+          format: uri
+          description: A URL string that references a logo for this intermediary
+        contacts:
+          type: array
+          items:
+            type: string
+          description: Array of strings representing ways to contact people responsible for this intermediary
+      required:
+        - name
+        - uri
+        - contacts
+
+    RecipientRequest:
+      title: Recipient Request
+      type: object
+      description: Used to request a recipient registration.
+        In snake case to match IETF RFC 7591 naming formats
+      properties:
+        client_name:
+          $ref: '#/components/schemas/Identifier'
+          description: >-
+            The Data Recipient or Data Recipient Application name displayed by Data Provider during
+            the consent Flow as well as in the Consent Dashboard.
+            Must be unique from all previously registered client names.
+            Truist allows alphanumeric, spaces and these special characters: underscore (_), hyphen (-),
+            period (.), pound sign (#), dollar sign ($), percent (%), ampersand (&) and comma (,).
+            Prior name value must be sent in Truist PUT /register/{id} update call,
+            even though functionality to permit update of name field is still being built.
+        description:
+          type: string
+          description: A short description of the Data Recipient application.
+            If not sent in an update request the prior value will be cleared
+        redirect_uris:
+          type: array
+          items:
+            type: string
+          description: An array of eligible Redirect URI targets
+        logo_uri:
+          type: string
+          description: Data Recipient Logo URL location.
+            If not sent in an update request the prior value will be cleared
+          format: uri
+        auto_connect:
+          type: boolean
+          description: Flag which provides information whether Data Recipient customers can auto-connect new accounts.
+            Prior auto_connect value, if true, must be sent in Truist PUT /register/{id} update call,
+            even though functionality to permit update of auto_connect field is still being built
+        client_uri:
+          type: string
+          description: The URI which provides additional information about the Data Recipient
+          format: uri
+        contacts:
+          type: array
+          items:
+            type: string
+          description: Array of strings representing ways to contact individuals responsible for the Data Recipient application
+        scope:
+          type: string
+          description: String form field with a list of data clusters.
+            Prior or updated scope value must be sent in Truist PUT /register/{id} update call,
+            Data Recipient scope will be set to the value in PUT request
+        duration_type:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentDurationType'
+          description: The type of consent duration for the Data Recipient consumers.
+            Only value of duration_type which Truist currently supports and accepts is ['TIME_BOUND']
+        duration_period:
+          type: number
+          description: The maximum consent duration in days that can be requested for a Recipient consumer.
+            Maximum value is 365. Prior duration_period value must be sent in Truist PUT /register/{id} update call,
+            even though functionality to permit update of duration_period field is still being built
+        lookback_period:
+          type: number
+          description: >-
+            The maximum number of days allowed for Data Recipient consumers to obtain in transaction history,
+            effective from the current date.
+            If not sent in an update request the prior value will be left unchanged
+        intermediaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/Intermediary'
+          description: An array of the intermediaries for this data recipient.
+            If not sent in an update request the prior values will be cleared
+      required:
+        - client_name
+        - redirect_uris
+        - client_uri
+        - contacts
+        - scope
+        - duration_type
+
+    ############################################################
+    #
+    # Shared data types (usable by core and all extensions)
+    #
+    ############################################################
+
+    ConsentDurationType:
+      title: Consent Duration Type
+      description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
+      type: string
+      enum:
+        - TIME_BOUND
+
+    RecipientStatus:
+      title: Status
+      description: Status of Recipient creation through dynamic client registration per
+        FDX RFC 0117 and FDX Recipient Registration Guidelines document
+      type: string
+      enum:
+        - APPROVED
+        - PAYMENT_SUPPORT_ERROR
+        - PENDING
+        - SUSPENDED
+        - TERMINATED
+
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+        or at the account level to indicate a problem specific to a particular
+        account
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Error code defined by FDX API Specification or Data Provider
+            indicating the error situation which has occurred
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: >-
+        Universally unique identifier for this interaction,
+        used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  responses:
+    ############################################################
+    #
+    # Standard error responses
+    #
+    ############################################################
+
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_BASICAUTHENTICATION_SOURCE:
+              value:
+                code: '603'
+                message: Authentication failed
+
+    '403':
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '403'
+                message: Forbidden, inadequate authorization
+
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '1107-1206'
+                message: URI does not represent a recognized resource
+
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: Method Not Allowed
+
+    '409':
+      description: Conflict
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            DUPLICATE_CLIENT:
+              value:
+                code: '409'
+                message: Duplicate Client Name request
+
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
+
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: System down for maintenance
+
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: Scheduled Maintenance
+
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server

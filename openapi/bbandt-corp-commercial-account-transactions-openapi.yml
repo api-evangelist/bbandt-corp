@@ -1,0 +1,342 @@
+openapi: 3.1.0
+info:
+  version: "3.6.0"
+  # build: '0'
+  title: Commercial Account Transactions
+  description: "Retrieve all available transactions and get additional details for a specific transaction"
+  contact:
+    name: Truist API Support
+    url: "https://developer.truist.com/contact-us"
+servers:
+  - url: "https://api-sandbox.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Sandbox environment
+  - url: "https://apicert.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Certification environment
+  - url: "https://api.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Production environment
+tags:
+  - name: Commercial Account Transactions
+    description: Returns account transactions for a specific account
+security:
+  - OAuth: ["read:accounts"]
+paths:
+  /v3/accounts/{accountId}/transactions:
+    get:
+      tags:
+        - Commercial Account Transactions
+      description: Returns account transactions for a specific account
+      summary: Get account transactions
+      operationId: GetAccountTransactions
+      parameters:
+        - $ref: "#/components/parameters/FapiInteractionIdHeader"
+        - $ref: "#/components/parameters/AccountIdPath"
+        - name: transactionDate
+          in: query
+          description: Transaction date to query for transactions. ISO 8601 date as "yyyy-mm-dd".
+          required: true
+          schema:
+            type: string
+            format: date
+            pattern: \d{4}\-\d\d\-\d\d
+          example: "2023-07-07"
+        - name: previousDateIndicator
+          in: query
+          description: Indicator for Previous (P) or Current (C) date
+          schema:
+            $ref: "#/components/schemas/PreviousDateIndicator"
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostedOrPending"
+              examples:
+                DEPOSIT_ACCOUNT_PENDING_ANDOR_POSTED:
+                  value:
+                    transactions:
+                      - transactionId: "100000000074870116020230907"
+                        postedDate: "2023-09-07"
+                        description: "AUTOMATIC ACCOUNT TRANSFER - ACCOUNT NUMBER 204465883"
+                        status: cleared
+                        amount: 1626.81
+                        baiCode: "698"
+                        transactionType: "DB"
+                      - transactionId: "100000000074874531220230906"
+                        postedDate: "2023-09-06"
+                        description: "ACH CORP DEBIT - CUSTOMER ID 1020000350239 - COMM LOANS TRUIST - 4060027566/0000090016"
+                        status: cleared
+                        amount: 5114.41
+                        baiCode: "451"
+                        transactionType: "CR"
+                      - transactionId: null,
+                        postedDate: "2023-09-11"
+                        description: "Credit Line Sweep Available"
+                        status: cleared
+                        amount: 100000
+                        baiCode: "451"
+                CREDITCARD_ACCOUNT_PENDING_ANDOR_POSTED:
+                  value:
+                    transactions:
+                      - transactionId: "100000000074870116020233333"
+                        postedDate: "2023-09-05"
+                        description: "PAYMENT - THANK YOU ORLANDO FL"
+                        status: cleared
+                        amount: 1626.81
+                        transactionType: "CR"
+                      - transactionId: "100000000074870116020233334"
+                        transactionDate: "2023-09-06"
+                        description: "TVLINC 17386919 DRISCO 7702915219 GA"
+                        status: pending
+                        amount: 5114.41
+                        transactionType: "CR"
+                LOAN_ACCOUNT_PENDING_ANDOR_POSTED:
+                  value:
+                    transactions:
+                      - transactionId: "100000000074870116020230907"
+                        postedDate: "2023-09-07"
+                        description: "Interest Payment"
+                        status: cleared
+                        amount: 1626.81
+                        transactionType: "CR"
+                      - transactionId: "100000000074874531220230906"
+                        postedDate: "2023-08-07"
+                        description: "Principal Payment"
+                        status: cleared
+                        amount: 5114.41
+                        transactionType: "CR"
+
+        "400":
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                PREVCURR_MISSING:
+                  value:
+                    code: "400"
+                    message: "Bad request. previousDateIndicator can be C or P"
+                TRANSDATE_MISSING:
+                  value:
+                    code: "400"
+                    message: "Bad request. transactionDate should be passed as a mandatory field"
+                INVALID_DATE:
+                  value:
+                    code: "400"
+                    message: "Bad request. The date does not match ISO 8601"
+        "403":
+          description: Forbidden
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                NO_ENTITLMENT:
+                  value:
+                    code: "403"
+                    message: "Account is not entitled for transactions"
+        "404":
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "404"
+                    message: "URI does not represent a recognised resource"
+                ACCOUNT_NOT_FOUND:
+                  value:
+                    code: "404"
+                    message: "Account Number not found"
+                NO_TRANSACTIONS:
+                  value:
+                    code: "404"
+                    message: "No Transactions available for the given input"
+
+        "405":
+          description: Method Not Allowed
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                METHOD_NOT_ALLOWED:
+                  value:
+                    code: "405"
+                    message: "The request method is not supported by this resource"
+        "500":
+          description: Internal Server Error
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                SYSTEM_DOWN:
+                  value:
+                    code: "500"
+                    message: "System Down for maintenance"
+
+components:
+  parameters:
+    AccountIdPath:
+      name: accountId
+      in: path
+      description: Unique identifier for account,
+        a surrogate account key in lieu of the actual account number
+      required: true
+      schema:
+        type: string
+      example: "ZZZmrmm3C3JjK"
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      required: false
+      schema:
+        type: string
+      example: rrt-9705854100-bgce-821-23397-1
+
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier
+      required: true
+      schema:
+        type: string
+      example: "rrt-970585410023330903-b-gce-821-23397-1"
+
+  schemas:
+    PostedOrPending:
+      description: Array of posted or pending transactions for the account,
+        or error status for the same.
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
+
+    Transaction:
+      title: Each transaction response
+      type: object
+      properties:
+        transactionid:
+          description: Transaction's Bank Reference number
+          type: string
+        postedDate:
+          description: Transactions posted date
+          type: string
+          example: "2019-05-20"
+        description:
+          description: Descriptions for transaction
+          type: string
+        status:
+          $ref: "#/components/schemas/TransactionStatus"
+          description: Status of transaction, cleared or pending
+        amount:
+          description: Amount of the Transaction in USD.
+          type: number
+        baiCode:
+          description: Bank administration code (BAI Code)
+          type: string
+        transactionType:
+          $ref: "#/components/schemas/TransactionType"
+          description: Type of transaction, Debit (DB) or Credit (CR)
+        transactionDate:
+          description: Transactions date. Applicable only for credit card accounts
+          type: string
+          format: date
+          example: "2019-05-20"
+
+    TransactionDetail:
+      description: Detailed transaction info.
+      type: object
+      properties:
+        accountId:
+          description: Unique identifier for account, a surrogate account key in lieu of the actual account number
+          type: string
+        transactionId:
+          description: Transaction's Bank Reference number
+          type: string
+        description:
+          description: Transaction description
+          type: string
+        status:
+          $ref: "#/components/schemas/TransactionStatus"
+        reference:
+          description: Reference
+          type: string
+
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+        or at the account level to indicate a problem specific to a particular
+        account
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Long term persistent identifier which can be used to trace error
+            condition back to log information
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+
+    PreviousDateIndicator:
+      description: Indicator for Previous (P) or Current (C) date
+      type: string
+      enum:
+        - P
+        - C
+
+    TransactionStatus:
+      description: Status of transaction, cleared or pending
+      type: string
+      enum:
+        - cleared
+        - pending
+
+    TransactionType:
+      description: Type of transaction, Debit (DB) or Credit (CR)
+      type: string
+      enum:
+        - "DB"
+        - "CR"
+
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+          tokenUrl: https://api-sandbox.truist.com/commercial/auth/v1/oauth/token
+          scopes:
+            read:accounts: Scope required to access the transaction info

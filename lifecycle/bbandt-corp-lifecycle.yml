@@ -1,0 +1,112 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/_original/*.yaml ; https://developer.truist.com/dptl-product-ms-unauth/apiCloud/v1/products ; https://content.truist.com/caas/open-banking/prod/truist-developer-center/apis/get-started.model.json
+specification: API Commons Lifecycle
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+versioning:
+  scheme: URI path major version plus a semantic contract version in info.version
+  path_versions:
+  - /v1
+  - /v2
+  - /v3
+  description: 'Each Truist API carries its major version in the path (for example GET /v2/accounts, GET /v3/accounts/{accountId})
+    and a separate semver contract version in the OpenAPI info.version. The two move independently: Personal and Small
+    Business Accounts is path v2 at contract 2.6.0, Commercial Account Balance is path v3 at contract 3.6.0.'
+  current:
+  - api: Commercial Accounts
+    path_version: /v3
+    contract_version: 4.3.0
+    openapi: 3.0.1
+  - api: Commercial Account Balance
+    path_version: /v3
+    contract_version: 3.6.0
+    openapi: 3.0.1
+  - api: Commercial Account Transactions
+    path_version: /v3
+    contract_version: 3.6.0
+    openapi: 3.1.0
+  - api: Personal and Small Business Accounts
+    path_version: /v2
+    contract_version: 2.6.0
+    openapi: 3.1.0
+  - api: Branch/ATM Locator
+    path_version: /v1
+    contract_version: 1.2.0
+    openapi: 3.0.1
+  - api: Personal and Small Business Transactions
+    path_version: /v2
+    contract_version: 2.4.0
+    openapi: 3.1.0
+  - api: Personal and Small Business Client Contact
+    path_version: /v1
+    contract_version: 1.5.0
+    openapi: 3.1.0
+  - api: Retail Oauth Authentication
+    path_version: /v3
+    contract_version: 3.3.0
+    openapi: 3.1.0
+  - api: User Consent
+    path_version: /v1
+    contract_version: 1.1.0
+    openapi: 3.1.0
+  - api: Retail Dynamic Client Registration
+    path_version: /v1
+    contract_version: 1.3.0
+    openapi: 3.1.0
+  - api: Personal and Small Business Account Payment Networks
+    path_version: /v1
+    contract_version: 1.3.2
+    openapi: 3.1.0
+  - api: Account Address
+    path_version: /v1
+    contract_version: 1.2.1
+    openapi: 3.1.0
+  - api: Credit Transfers
+    path_version: /v2
+    contract_version: 2.6.0
+    openapi: 3.1.0
+  - api: Personal and Small Business Event Notifications
+    path_version: /v1
+    contract_version: 1.1.0
+    openapi: 3.1.0
+  - api: Personal and Small Business Event Subscriptions
+    path_version: /v1
+    contract_version: 1.2.0
+    openapi: 3.1.0
+environments:
+- name: sandbox
+  host: api-sandbox.truist.com
+  description: Simulated/mock data. Client Key and Client Secret issued at application creation are sandbox-only.
+- name: certification
+  hosts:
+  - apicert.truist.com
+  - apicert-secure.truist.com
+  description: Certification environment declared in servers[] of every commercial and retail data spec.
+- name: production
+  hosts:
+  - api.truist.com
+  - api-secure.truist.com
+  description: Reached only after "Promote to production" is approved by the Truist engagement team; production credentials
+    are issued at that point.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  note: 'No deprecation or sunset policy is published on the Truist Developer Center, and no operation, parameter or
+    schema in any of the 15 published specs is marked deprecated: true. Truist does version in the path, so a breaking
+    change would land as a new /vN, but the retirement terms for the old one are not stated publicly.'
+status_page:
+  published: false
+  note: No status or uptime page was found. https://status.truist.com/ does not resolve (curl exit 6, no DNS record,
+    probed 2026-09-04) and the developer portal links no status surface. Incident communication runs through the Contact
+    us form and the assigned engagement team.
+sla:
+  published: false
+  note: No public SLA. Availability and support terms are set in the executed Truist developer / open-banking agreement.
+support:
+  channel: https://developer.truist.com/contact-us
+  type: web form
+  faq: https://developer.truist.com/faq

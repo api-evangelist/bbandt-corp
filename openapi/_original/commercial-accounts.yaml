@@ -1,0 +1,328 @@
+openapi: 3.0.1
+info:
+  version: "4.3.0"
+  # build: "0"
+  title: Commercial Accounts
+  description: "Access to list of commercial accounts for Truist clients"
+  contact:
+    name: Truist API Support
+    url: "https://developer.truist.com/contact-us"
+servers:
+  - url: "https://api-sandbox.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Sandbox environment
+  - url: "https://apicert.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Certification environment
+  - url: "https://api.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Production environment
+security:
+  - OAuth: ["read:accounts"]
+tags:
+  - name: Commercial Accounts
+    description: Retrieves the list of accounts
+
+paths:
+  /v3/accounts:
+    get:
+      tags:
+        - Commercial Accounts
+      summary: Get accounts
+      description: Retrieves the list of accounts
+      operationId: GetAccountList
+      parameters:
+        - $ref: "#/components/parameters/FapiInteractionIdHeader"
+        - name: accountType
+          in: query
+          description:
+            Specify the account type to filter. If the value is left blank, all account types will be returned.
+            Possible values are CHECKING, SAVINGS, CREDITCARD, COMMERCIALLOAN, and COMMERCIALLINEOFCREDIT
+          required: false
+          schema:
+            type: string
+          style: form
+          explode: false
+          example: CHECKING,SAVINGS
+
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Accounts"
+
+        "400":
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INVALID_ACCOUNTTYPE:
+                  value:
+                    code: "400"
+                    message: "Bad Request. Invalid accountType"
+
+        "401":
+          description: Unauthorized
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INVALID_ACCESS_TOKEN:
+                  value:
+                    code: "401"
+                    message: "The access token is invalid"
+                ACCESS_TOKEN_EXPIRED:
+                  value:
+                    code: "401"
+                    message: "The access token expired"
+
+        "404":
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                ACCOUNT_NOT_AVAILABLE:
+                  value:
+                    code: "404"
+                    message: "Accounts not available for the given onlineId"
+                DATA_NOT_AVAILABLE:
+                  value:
+                    code: "404"
+                    message: "Data Not Found for the OnlineId"
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "404"
+                    message: "Resource Not Found"
+        "405":
+          description: Method Not Allowed
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                METHOD_NOT_ALLOWED:
+                  value:
+                    code: "405"
+                    message: "Requested Method is not found"
+        "500":
+          description: Internal Server Error
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                SYSTEM_UNAVAILABLE:
+                  value:
+                    code: "500"
+                    message: "System unavailable"
+                SYSTEM_DOWN:
+                  value:
+                    code: "500"
+                    message: "System down for maintenance"
+      security:
+        - OAuth: ["read:accounts"]
+
+components:
+  parameters:
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      required: false
+      schema:
+        type: string
+      example: rrt-9705854100-bgce-821-23397-1
+
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+          tokenUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/token
+          scopes:
+            read:accounts: Scope is requied to access account balance data
+
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier
+      required: true
+      schema:
+        type: string
+      example: "rrt-970585410023330903-b-gce-821-23397-1"
+
+  schemas:
+    Accounts:
+      title: Commercial account eligible account list
+      description: Accounts returned by API upon successful search
+      type: object
+      properties:
+        accounts:
+          description: List of commercial accounts for a user
+          type: array
+          items:
+            $ref: "#/components/schemas/Account"
+      example:
+        accounts:
+          - accountId: "ZZZmrmm3C3JjK"
+            accountType: "CHECKING"
+            displayName: "************611116"
+            bankNumber: "102"
+            description: "BUSINESS VALUE 500 CHECKING"
+            currency:
+              currencyRate: "1"
+              currencyCode: "USD"
+              originalCurrencyCode: "USD"
+            accountNumber: "************611116"
+            balanceType: "ASSET"
+            status: "ACTIVE"
+          - accountId: "EEEYrywGqx222"
+            accountType: "CHECKING"
+            displayName: "************711117"
+            bankNumber: "302"
+            description: "TEST GARDENS"
+            currency:
+              currencyRate: "1"
+              currencyCode: "USD"
+              originalCurrencyCode: "USD"
+            accountNumber: "************711117"
+            balanceType: "ASSET"
+          - accountId: "bbbPQvIjH725L"
+            accountType: "CHECKING"
+            displayName: "************311113"
+            bankNumber: "302"
+            description: "TEST  RELATIONS"
+            currency:
+              currencyRate: "1"
+              currencyCode: "USD"
+              originalCurrencyCode: "USD"
+            accountNumber: "************311113"
+            balanceType: "ASSET"
+            status: "ACTIVE"
+          - accountId: "KKKjdDFISTQQB"
+            accountType: "COMMERCIALLINEOFCREDIT"
+            displayName: "************818114"
+            bankNumber: "302"
+            description: "BUSINESS LOAN"
+            currency:
+              currencyRate: "1"
+              currencyCode: "USD"
+              originalCurrencyCode: "USD"
+            accountNumber: "************818114"
+            balanceType: "ASSET"
+            status: "ACTIVE"
+
+    Account:
+      title: Summary data for an account
+      description: Summary data for an account
+      type: object
+      properties:
+        accountId:
+          description: Unique identifier for account,
+            a surrogate account key in lieu of the actual account number
+          type: string
+        accountType:
+          description: Account type identified by the bank
+          $ref: "#/components/schemas/AccountType"
+        displayName:
+          description: Account display name (currently obfuscated account number)
+          type: string
+        bankNumber:
+          description: Bank number to identify the bank branch
+          type: string
+        description:
+          description: Account description (account title)
+          type: string
+        currency:
+          $ref: "#/components/schemas/Currency"
+        accountNumber:
+          description: Masked account number showing last 6 digits
+          type: string
+        balanceType:
+          description: Type of Account ("ASSET", "LIABILITY")
+          $ref: "#/components/schemas/BalanceType"
+        status:
+          description: Status of the account
+          $ref: "#/components/schemas/Status"
+
+    AccountType:
+      title: Enumeration of account types
+      description: Account type identified by the bank
+      type: string
+      enum:
+        - CHECKING
+        - SAVINGS
+        - CREDITCARD
+        - COMMERCIALLOAN
+        - COMMERCIALLINEOFCREDIT
+
+    Currency:
+      title: Account currency code
+      description: Currency code information
+      type: object
+      properties:
+        currencyRate:
+          description: Currency rate between original and converted currency
+          type: string
+        currencyCode:
+          description: Currency identifier. USD is the only option available at this time.
+          type: string
+        originalCurrencyCode:
+          description: Currency identifier. USD is the only option available at this time.
+          type: string
+
+    BalanceType:
+      title: Type of account balance
+      description: Type of account balance
+      type: string
+      enum:
+        - ASSET
+        - LIABILITY
+
+    Status:
+      title: Status of the account
+      description: Status of the account
+      type: string
+      enum:
+        - ACTIVE
+        - CLOSED
+        - DORMANT
+
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: Defined error type codes
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error

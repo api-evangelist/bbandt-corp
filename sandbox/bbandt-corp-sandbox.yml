@@ -1,0 +1,48 @@
+generated: '2026-09-04'
+method: searched
+source: https://content.truist.com/caas/open-banking/prod/truist-developer-center/apis/get-started.model.json ; https://content.truist.com/caas/open-banking/prod/truist-developer-center/faqs.model.json
+  ; openapi/_original/*.yaml servers[]
+specification: API Commons Sandbox
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+available: true
+gated: true
+description: Truist runs a full sandbox environment at api-sandbox.truist.com, declared as the first server in every
+  one of the 15 published specs. It returns mock responses. Access requires a registered developer account, a registered
+  company, and a created application — it is not anonymous, and no shared demo credentials are published.
+environments:
+- mode: sandbox
+  host: api-sandbox.truist.com
+  credentials: Client Key + Client Secret, issued when an application is created in the Truist Developer Center
+  scope: Sandbox only — Truist states plainly that "The Client Key and Client Secret are for the Sandbox environment
+    only."
+  data: simulated / mock responses
+- mode: certification
+  hosts:
+  - apicert.truist.com
+  - apicert-secure.truist.com
+  credentials: issued by the engagement team
+  data: certification
+- mode: production
+  hosts:
+  - api.truist.com
+  - api-secure.truist.com
+  credentials: issued only after "Promote to production" is approved; a member of the engagement team works the request
+  data: live customer data
+try_it_out:
+  available: true
+  description: The developer portal embeds a Swagger "Try it out" console that executes requests against the sandbox
+    and returns mock responses.
+  gated: requires sign-in
+  url: https://developer.truist.com/api/view-api
+test_values: []
+test_values_note: Truist publishes no test cards, magic account numbers, fixture accounts or trigger values on any anonymous
+  surface. The mock data set is exposed only inside a signed-in application.
+onboarding_steps:
+- Register for a developer account at developer.truist.com
+- Activate the account from the emailed link and set a password
+- Browse the API catalog and documentation (API > View APIs)
+- Register company information and create an application, accepting the terms
+- Receive sandbox Client Key and Client Secret and integrate against api-sandbox.truist.com
+- Request "Promote to production"; the Truist engagement team works the request and issues production credentials

@@ -1,0 +1,542 @@
+openapi: 3.1.0
+info:
+  version: '1.3.2'
+  # build: '0'
+  title: Personal and Small Business Account Payment Networks
+  description: Truist Financial, following FDX V6.4.1 Core API
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+  x-fdx-csdf-account-categories: [ANY]
+servers:
+  - url: 'https://api-sandbox.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Sandbox environment
+  - url: 'https://apicert-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Certification environment
+  - url: 'https://api-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Production environment
+security:
+  - OAuth: [PAYMENT_SUPPORT]
+tags:
+  - name: Money Movement
+    description: View account money movement details
+paths:
+  ############################################################
+  #
+  # Core paths
+  #
+  ############################################################
+
+  /v1/accounts/{accountId}/payment-networks:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+    x-fdx-csdf-account-categories: [REG_E]
+    get:
+      operationId: getAccountPaymentNetworks
+      tags:
+        - Money Movement
+      description: Get payment networks supported by the account
+      summary: Get payment networks supported by the account
+      x-fdx-csdf-account-categories: [REG_E]
+      parameters:
+        - $ref: '#/components/parameters/AccountIdPath'
+        - $ref: '#/components/parameters/IdentifierTypesQuery'
+        - $ref: '#/components/parameters/FdxApiDataRecipientIdHeader'
+      responses:
+        '200':
+          description: Information required to execute a payment transaction against this account
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            text/plain:
+              schema:
+                type: string
+              examples:
+                Example JWT value:
+                  value: eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzcyI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZfV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5NzAKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6qJp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJNqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7TpdQyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoSK5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+      security:
+        - OAuth: [PAYMENT_SUPPORT]
+
+components:
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize'
+          tokenUrl: 'https://api-sandbox.truist.com/retail/auth/oauth/v3/token'
+          scopes:
+            PAYMENT_SUPPORT: Scope required to access payment networks supported by the account
+
+  parameters:
+    ############################################################
+    #
+    # Core request parameters
+    #
+    ############################################################
+
+    AccountIdPath:
+      name: accountId
+      in: path
+      description: Account Identifier
+      required: true
+      schema:
+        type: string
+      example: 'uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr'
+
+    IdentifierTypesQuery:
+      name: identifierTypes
+      in: query
+      description: Comma separated list of `identifier` types being requested, such as
+        if a specific type is required for the requested `paymentNetworkTypes`.
+        Submit one or both of `ACCOUNT_NUMBER`, `TOKENIZED_ACCOUNT_NUMBER`.
+        If parameter is omitted or both values are sent, Truist will default
+        to `ACCOUNT_NUMBER` until mid-2026 after which the default will change
+        to `TOKENIZED_ACCOUNT_NUMBER`
+      style: form
+      explode: false
+      required: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/PaymentNetworkIdentifierType'
+
+    FdxApiDataRecipientIdHeader:
+      name: FDX-API-Data-Recipient-Id
+      in: header
+      description: ID for the data recipient making the request
+      schema:
+        $ref: '#/components/schemas/Identifier'
+        description: >-
+          If the FDX API service is being called by a Data Access Platform which supports multiple
+          data recipients, the FDX API client must provide a header that identifies the calling
+          data recipient. Data Recipient ID header values for Truist must correspond to
+            * `client_id` from dynamic client registration in the Truist data recipient registry
+      required: false
+
+    ############################################################
+    #
+    # Shared request parameters (usable by core and all extensions)
+    #
+    ############################################################
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+
+  schemas:
+    ############################################################
+    #
+    # Core data entities
+    #
+    ############################################################
+
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: >-
+        Universally unique identifier for this interaction,
+        used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    AccountPaymentNetwork:
+      title: Payment Network Supported by Account
+      description: This provides details required to execute a transaction against the account
+        within the payment network
+      type: object
+      x-fdx-csdf-account-categories: [REG_E]
+      properties:
+        bankId:
+          type: string
+          description: Bank identifier used by the payment network ie. Routing Number
+          x-fdx-csdf-account-categories: [REG_E]
+        identifier:
+          type: string
+          description: >-
+            The number used to identify the account within the payment network.
+            If identifierType is ACCOUNT_NUMBER, this is the account number;
+            if identifierType is TOKENIZED_ACCOUNT_NUMBER, this is a tokenized account number
+          x-fdx-csdf-account-categories: [REG_E]
+        identifierType:
+          $ref: '#/components/schemas/PaymentNetworkIdentifierType'
+          description: Type of identifier. One of `ACCOUNT_NUMBER` or `TOKENIZED_ACCOUNT_NUMBER`
+          x-fdx-csdf-account-categories: [REG_E]
+        type:
+          $ref: '#/components/schemas/PaymentNetworkType'
+          description: Type of payment network. Will be US_ACH or US_RTP
+          x-fdx-csdf-account-categories: [REG_E]
+        transferIn:
+          type: boolean
+          description: Can transfer funds to the account using this information
+          x-fdx-csdf-account-categories: [REG_E]
+        transferOut:
+          type: boolean
+          description: Can transfer funds from the account using this information
+          x-fdx-csdf-account-categories: [REG_E]
+
+    AccountPaymentNetworkList:
+      title: Array of account payment networks
+      description: An array of payment networks supported by the account
+      type: object
+      x-fdx-csdf-account-categories: [REG_E]
+      properties:
+        paymentNetworks:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountPaymentNetwork'
+          description: Array of payment networks
+          x-fdx-csdf-account-categories: [REG_E]
+      example:
+        paymentNetworks:
+          # Example results with tokenized account numbers:
+          - bankId: "031918938"
+            identifier: "20455825878341"
+            identifierType: "TOKENIZED_ACCOUNT_NUMBER"
+            type: "US_ACH"
+            transferIn: true
+            transferOut: true
+          - bankId: "031918938"
+            identifier: "20455825878341"
+            identifierType: "TOKENIZED_ACCOUNT_NUMBER"
+            type: "US_RTP"
+            transferIn: true
+            transferOut: true
+          # Example results with real account numbers:
+          - bankId: "053101121"
+            identifier: "1411017679"
+            identifierType: "ACCOUNT_NUMBER"
+            type: "US_ACH"
+            transferIn: true
+            transferOut: true
+          - bankId: "053101121"
+            identifier: "1411017679"
+            identifierType: "ACCOUNT_NUMBER"
+            type: "US_RTP"
+            transferIn: true
+            transferOut: true
+
+    ############################################################
+    #
+    # Core data types
+    #
+    ############################################################
+
+    PaymentNetworkIdentifierType:
+      title: Payment Network Identifier Type
+      description: >-
+        Enumerated values for type of account `identifier` used on a payment network.
+
+          | Value | Description |
+          |-------|-------------|
+          | ACCOUNT_NUMBER | The 'real' account number, which is sensitive data and should only be exchanged if encrypted |
+          | TOKENIZED_ACCOUNT_NUMBER | A token representation of an account number which Provider or Token Issuer can use to identify the real account |
+      type: string
+      x-fdx-csdf-account-categories: [REG_E]
+      enum:
+        - ACCOUNT_NUMBER
+        - TOKENIZED_ACCOUNT_NUMBER
+
+    PaymentNetworkType:
+      title: Payment Network Type
+      description: >-
+        Suggested values for Payment Network Type.
+          | Value | Description |
+          |-----|-----|
+          | US_ACH | Automated Clearing House |
+          | US_RTP| US Real Time Payments System |
+      type: string
+      x-fdx-csdf-account-categories: [REG_E]
+      enum:
+        - US_ACH
+        - US_RTP
+
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+      x-fdx-csdf-account-categories: [ANY]
+
+    ############################################################
+    #
+    # Shared data entities (usable by core and all extensions)
+    #
+    ############################################################
+
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+        or at the account level to indicate a problem specific to a particular
+        account
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        code:
+          type: string
+          description: >-
+            Error code defined by FDX API Specification or Data Provider
+            indicating the error situation which has occurred
+          x-fdx-csdf-technical: true
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+          x-fdx-csdf-technical: true
+
+  responses:
+    ############################################################
+    #
+    # Standard error responses
+    #
+    ############################################################
+
+    '400':
+      description: Bad Request
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ACCOUNTID_REQUIRED:
+              value:
+                code: '401'
+                message: Account ID is required
+            FDX_API_DATA_RECIPIENT_ID_REQUIRED:
+              value:
+                code: '401'
+                message: Invalid input, FDX-API-Data-Recipient-Id is required
+            FDX_API_DATA_RECIPIENT_ID_INVALID:
+              value:
+                code: '401'
+                message: Invalid input, FDX-API-Data-Recipient-Id does not match customer consent
+            IDENTIFIER_TYPES_INVALID:
+              value:
+                code: '401'
+                message: Invalid Input - Query parameter 'identifierTypes' is invalid
+
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            AUTHENTICATION_FAILED:
+              value:
+                code: '603'
+                message: Authentication failed
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '603-403'
+                message: Data recipient connection does not include PAYMENT_SUPPORT
+
+    '403':
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INSUFFICIENT_SCOPE:
+              value:
+                code: '602'
+                message: Customer connection does not authorize payment networks
+            DATA_RECIPIENT_TEMPORARY_SUSPENSION:
+              value:
+                code: '480'
+                message: Forbidden due to temporary suspension of Data Recipient connections
+
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '1107'
+                message: URI does not represent a recognized resource
+            INVALID_ACCOUNT:
+              value:
+                code: '701'
+                message: Invalid account id
+            ACCOUNTID_NOT_FOUND:
+              value:
+                code: '701'
+                message: Account Id is required
+            FDX_API_DATA_RECIPIENT_ID_RECORD_NOT_FOUND:
+              value:
+                code: '1001'
+                message: Data Recipient ID is not found
+
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: The request method is not supported by this resource
+
+    '409':
+      description: Conflict
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            DATA_RECIPIENT_NOT_YET_INITIALIZED:
+              value:
+                code: '409'
+                message: Data Recipient not yet initialized for tokenized account numbers
+
+    '422':
+      description: Unprocessable Entity
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCOUNT_TYPE:
+              value:
+                code: '704'
+                message: Account type not supported for Payment Networks
+
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Spike Arrest Violation
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota Violation
+
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: System down for maintenance
+
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server

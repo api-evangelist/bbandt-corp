@@ -1,0 +1,250 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/_original/*.yaml (15 published Truist OpenAPI contracts)
+specification: API Commons MCP Server
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+status: candidate
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: oauth
+  verified: searched
+description: Truist publishes no MCP server. Searched the Truist Developer Center (product catalog, FAQs, get-started
+  content), npm, PyPI and GitHub on 2026-09-04 and found no hosted MCP endpoint and no stdio package. This is a CANDIDATE
+  tool list derived from the 31 operations in Truist’s own published OpenAPI contracts — it describes what an MCP server
+  over this estate would expose, and asserts nothing about a server Truist runs.
+search_evidence:
+- url: https://developer.truist.com/dptl-product-ms-unauth/apiCloud/v1/products
+  status: 200
+  note: Full product catalog — 15 API products, none an MCP server.
+- url: https://registry.npmjs.org/-/v1/search?text=truist
+  status: 200
+  note: 2 results, neither first-party nor an MCP server.
+- url: https://api.github.com/orgs/truist/repos
+  status: 404
+  note: No Truist GitHub organization; github.com/truist is an unrelated personal account.
+auth_note: Any server over this estate inherits OAuth 2.0 authorization_code with per-customer consent; tokens are per-end-user,
+  not per-application, so tools cannot be exercised without a consented customer session.
+tool_count: 31
+tools:
+- name: GetAccountList
+  api: Commercial Accounts
+  method: GET
+  path: /v3/accounts
+  description: Get accounts
+  openapi: openapi/bbandt-corp-commercial-accounts-openapi.yml
+  consequence: read
+- name: getAccountInfo
+  api: Commercial Account Balance
+  method: GET
+  path: /v3/accounts/{accountId}
+  description: Get account balance
+  openapi: openapi/bbandt-corp-commercial-account-balance-openapi.yml
+  consequence: read
+- name: GetAccountTransactions
+  api: Commercial Account Transactions
+  method: GET
+  path: /v3/accounts/{accountId}/transactions
+  description: Get account transactions
+  openapi: openapi/bbandt-corp-commercial-account-transactions-openapi.yml
+  consequence: read
+- name: searchForAccounts
+  api: Personal and Small Business Accounts
+  method: GET
+  path: /v2/accounts
+  description: Search for accounts
+  openapi: openapi/bbandt-corp-retail-accounts-openapi.yml
+  consequence: read
+- name: getAccount
+  api: Personal and Small Business Accounts
+  method: GET
+  path: /v2/accounts/{accountId}
+  description: Get an account
+  openapi: openapi/bbandt-corp-retail-accounts-openapi.yml
+  consequence: read
+- name: searchForAll
+  api: Branch/ATM Locator
+  method: GET
+  path: /v1/open-banking/locator
+  description: Search for All Locations
+  openapi: openapi/bbandt-corp-retail-locator-openapi.yml
+  consequence: read
+- name: searchForBranches
+  api: Branch/ATM Locator
+  method: GET
+  path: /v1/open-banking/locator/branches
+  description: Search for Branches
+  openapi: openapi/bbandt-corp-retail-locator-openapi.yml
+  consequence: read
+- name: searchForATMs
+  api: Branch/ATM Locator
+  method: GET
+  path: /v1/open-banking/locator/atms
+  description: Search for ATMs
+  openapi: openapi/bbandt-corp-retail-locator-openapi.yml
+  consequence: read
+- name: searchForAccountTransactions
+  api: Personal and Small Business Transactions
+  method: GET
+  path: /v2/accounts/{accountId}/transactions
+  description: Search for account transactions
+  openapi: openapi/bbandt-corp-retail-accounts-transaction-openapi.yml
+  consequence: read
+- name: getCustomerInfo
+  api: Personal and Small Business Client Contact
+  method: GET
+  path: /v1/customers/current
+  description: Get current authenticated customer information
+  openapi: openapi/bbandt-corp-retail-customers-openapi.yml
+  consequence: read
+- name: authorize
+  api: Retail Oauth Authentication
+  method: GET
+  path: /v3/authorize
+  description: Get authorization from the resource owner
+  openapi: openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+  consequence: read
+- name: token
+  api: Retail Oauth Authentication
+  method: POST
+  path: /v3/token
+  description: Get an access token
+  openapi: openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+  consequence: write
+- name: getConsentGrant
+  api: User Consent
+  method: GET
+  path: /v1/consents/{consentId}
+  description: Get Consent Grant
+  openapi: openapi/bbandt-corp-retail-consents-openapi.yml
+  consequence: read
+- name: revokeConsentGrant
+  api: User Consent
+  method: PUT
+  path: /v1/consents/{consentId}/revocation
+  description: Revoke a Consent Grant
+  openapi: openapi/bbandt-corp-retail-consents-openapi.yml
+  consequence: write
+- name: createRecipient
+  api: Retail Dynamic Client Registration
+  method: POST
+  path: /v1/register
+  description: Recipient Registration Request
+  openapi: openapi/bbandt-corp-retail-register-recipient-openapi.yml
+  consequence: write
+- name: getRecipient
+  api: Retail Dynamic Client Registration
+  method: GET
+  path: /v1/register/{clientId}
+  description: Get Recipient
+  openapi: openapi/bbandt-corp-retail-register-recipient-openapi.yml
+  consequence: read
+- name: updateRecipient
+  api: Retail Dynamic Client Registration
+  method: PUT
+  path: /v1/register/{clientId}
+  description: Update a Recipient
+  openapi: openapi/bbandt-corp-retail-register-recipient-openapi.yml
+  consequence: write
+- name: deleteRecipient
+  api: Retail Dynamic Client Registration
+  method: DELETE
+  path: /v1/register/{clientId}
+  description: Delete Recipient
+  openapi: openapi/bbandt-corp-retail-register-recipient-openapi.yml
+  consequence: write
+- name: getAccountPaymentNetworks
+  api: Personal and Small Business Account Payment Networks
+  method: GET
+  path: /v1/accounts/{accountId}/payment-networks
+  description: Get payment networks supported by the account
+  openapi: openapi/bbandt-corp-retail-payment-networks-openapi.yml
+  consequence: read
+- name: getAccountContact
+  api: Account Address
+  method: GET
+  path: /v1/accounts/{accountId}/contact
+  description: Get an account's contact information
+  openapi: openapi/bbandt-corp-retail-accounts-contact-openapi.yml
+  consequence: read
+- name: createRtpCreditTransfer
+  api: Credit Transfers
+  method: POST
+  path: /v2/payments/rtp/credit-transfers
+  description: Post credit transfers
+  openapi: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  consequence: write
+- name: getRealTimePaymentTransactions
+  api: Credit Transfers
+  method: GET
+  path: /v2/payments/rtp/credit-transfers
+  description: Get credit transfers
+  openapi: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  consequence: read
+- name: updatePaymentStatus
+  api: Credit Transfers
+  method: PUT
+  path: /v2/payments/rtp/credit-transfers
+  description: Credit transfers cancel
+  openapi: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  consequence: write
+- name: getEligibleCreditTransfer
+  api: Credit Transfers
+  method: GET
+  path: /v2/payments/rtp/credit-transfers/accounts
+  description: Get accounts
+  openapi: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  consequence: read
+- name: createRtpCreditTransferApprove
+  api: Credit Transfers
+  method: POST
+  path: /v2/payments/rtp/credit-transfers/approvals
+  description: Post credit transfers
+  openapi: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  consequence: write
+- name: getRealTimePaymentApprovals
+  api: Credit Transfers
+  method: GET
+  path: /v2/payments/rtp/credit-transfers/approvals
+  description: Get credit transfer approval list
+  openapi: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  consequence: read
+- name: createRtpPaymentAcknowledgment
+  api: Credit Transfers
+  method: POST
+  path: /v2/payments/rtp/credit-transfers/{paymentId}/acknowledgements
+  description: Post credit transfers acknowledge
+  openapi: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  consequence: write
+- name: publishNotification
+  api: Personal and Small Business Event Notifications
+  method: POST
+  path: /v1/notifications
+  description: Publish a notification
+  openapi: openapi/bbandt-corp-retail-event-notifications-openapi.yml
+  consequence: write
+- name: createNotificationSubscription
+  api: Personal and Small Business Event Subscriptions
+  method: POST
+  path: /v1/notification-subscriptions
+  description: Create a notification subscription
+  openapi: openapi/bbandt-corp-retail-event-subscriptions-openapi.yml
+  consequence: write
+- name: getNotificationSubscription
+  api: Personal and Small Business Event Subscriptions
+  method: GET
+  path: /v1/notification-subscriptions/{subscriptionId}
+  description: Get a notification subscription
+  openapi: openapi/bbandt-corp-retail-event-subscriptions-openapi.yml
+  consequence: read
+- name: deleteNotificationSubscription
+  api: Personal and Small Business Event Subscriptions
+  method: DELETE
+  path: /v1/notification-subscriptions/{subscriptionId}
+  description: Delete a notification subscription
+  openapi: openapi/bbandt-corp-retail-event-subscriptions-openapi.yml
+  consequence: write

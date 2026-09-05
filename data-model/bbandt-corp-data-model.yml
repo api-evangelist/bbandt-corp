@@ -1,0 +1,2009 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/_original/*.yaml — components.schemas $ref graph plus id-reference fields across all 15 published Truist
+  specs
+specification: API Commons Data Model
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+description: Entity graph of the Truist open-banking estate. The retail side is the FDX Core data model (Account and
+  its subclasses DepositAccount / LoanAccount / LocAccount / InvestmentAccount, AccountHolder, Holding, Security, TaxLot),
+  the commercial side is a lighter account + transaction model, and Credit Transfers carries an ISO 20022-flavoured RTP
+  payment model.
+identifier_conventions:
+- field: accountId
+  description: Opaque tokenized account identifier — Truist explicitly positions this as "stop storing the full account
+    number". Example uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr.
+- field: consentId
+  description: Identifier for a customer consent grant.
+- field: clientId
+  description: RFC 7591 dynamically registered data-recipient client identifier.
+- field: paymentId
+  description: RTP payment identifier, e.g. 20221128053101121T1B073712193739891.
+- field: subscriptionId
+  description: Event-notification subscription identifier, max length 64.
+- field: correlationId
+  description: Caller-supplied identifier on Credit Transfers, required on submission and queryable afterwards.
+entity_count: 163
+relationship_count: 94
+entities:
+- name: 302AccountTypesNotSupported
+  kind: scalar
+  title: null
+  description: None of the requested accountTypes are supported
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302InvalidCardinality
+  kind: scalar
+  title: null
+  description: The requested cardinality is unknown, use SINGLE or MULTIPLE
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302InvalidScope
+  kind: scalar
+  title: null
+  description: The requested scope is invalid, unknown, or malformed
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302MissingNonce
+  kind: scalar
+  title: null
+  description: 'The request is missing a required parameter: nonce'
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302MissingResponseType
+  kind: scalar
+  title: null
+  description: Missing response type
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302MissingScope
+  kind: scalar
+  title: null
+  description: 'The request is missing a required parameter: scope'
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302MissingState
+  kind: scalar
+  title: null
+  description: 'The request is missing a required parameter: state'
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302MissingValidScope
+  kind: scalar
+  title: null
+  description: The requested scopes are not valid for data recipient
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302RedirectURI
+  kind: scalar
+  title: null
+  description: Success Response
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302RegistrationNotSupported
+  kind: scalar
+  title: null
+  description: The registration parameter is not supported
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302RequestNotSupported
+  kind: scalar
+  title: null
+  description: The request parameter is not supported
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302RequestURINotSupported
+  kind: scalar
+  title: null
+  description: The request_uri parameter is not supported
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302ServerError
+  kind: scalar
+  title: null
+  description: The authorization server encountered an unexpected condition that prevented it from fulfilling the request
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302Unavailable
+  kind: scalar
+  title: null
+  description: The authorization server is currently unable to handle the request
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302UnsupportedResponseType
+  kind: scalar
+  title: null
+  description: The authorization server does not support obtaining an authorization code using this method
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: 302UserDenied
+  kind: scalar
+  title: null
+  description: The user denied the request
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: APIErrorResponse
+  kind: object
+  title: null
+  description: null
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: ATMs
+  kind: object
+  title: ATMs Entity
+  description: searchForATMs
+  apis:
+  - Branch/ATM Locator
+  specs:
+  - retail-locator.yaml
+- name: Account
+  kind: object
+  title: Summary data for an account
+  description: Summary data for an account
+  apis:
+  - Commercial Accounts
+  - Commercial Account Balance
+  - Personal and Small Business Accounts
+  - Credit Transfers
+  specs:
+  - commercial-accounts.yaml
+  - commercial-account-balance.yaml
+  - retail-accounts.yaml
+  - commercial-credit-transfers-oas-v2.yaml
+- name: AccountBillPayStatus
+  kind: enum
+  title: Account Bill Pay Status
+  description: 'Indicates bill pay capabilities for an account.   * `ACTIVE`: Can be used for bill payment   * `AVAILABLE`:
+    Account can be requested for bill payment   * `NOT_AVAILABLE`: Account cannot participate in bill payment   * `P'
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: AccountCategory
+  kind: enum
+  title: Account Category type
+  description: The category of account
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-transaction.yaml
+- name: AccountContact
+  kind: object
+  title: Account Contact entity
+  description: Contact information for the account
+  apis:
+  - Personal and Small Business Accounts
+  - Account Address
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-contact.yaml
+- name: AccountDescriptor
+  kind: object
+  title: Account Descriptor entity
+  description: This descriptor provides minimal information about the account for use in lightweight arrays
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: AccountDetail
+  kind: object
+  title: Commercial account eligible account list
+  description: Accounts returned by API upon successful search
+  apis:
+  - Commercial Account Balance
+  specs:
+  - commercial-account-balance.yaml
+- name: AccountHolder
+  kind: object
+  title: Account Holder entity
+  description: Defines the account holder's relationship with an account.
+  apis:
+  - Personal and Small Business Accounts
+  - Account Address
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-contact.yaml
+- name: AccountHolderRelationship
+  kind: enum
+  title: Account Holder Relationship
+  description: Types of relationships between accounts and holders
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: AccountList
+  kind: object
+  title: Commercial Account List
+  description: Accounts returned by API upon successful search
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: AccountPaymentNetwork
+  kind: object
+  title: Payment Network Supported by Account
+  description: This provides details required to execute a transaction against the account within the payment network
+  apis:
+  - Personal and Small Business Account Payment Networks
+  specs:
+  - retail-payment-networks.yaml
+- name: AccountPaymentNetworkList
+  kind: object
+  title: Array of account payment networks
+  description: An array of payment networks supported by the account
+  apis:
+  - Personal and Small Business Account Payment Networks
+  specs:
+  - retail-payment-networks.yaml
+- name: AccountStatus
+  kind: enum
+  title: Account Status
+  description: The status of an account
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: AccountType
+  kind: enum
+  title: Enumeration of account types
+  description: Account type identified by the bank
+  apis:
+  - Commercial Accounts
+  - Personal and Small Business Accounts
+  - Credit Transfers
+  specs:
+  - commercial-accounts.yaml
+  - retail-accounts.yaml
+  - commercial-credit-transfers-oas-v2.yaml
+- name: AccountWithDetails
+  kind: object
+  title: Account With Details entity
+  description: This provides an instance of an account with full details
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: Accounts
+  kind: object
+  title: Commercial account eligible account list
+  description: Accounts returned by API upon successful search
+  apis:
+  - Commercial Accounts
+  - Personal and Small Business Accounts
+  specs:
+  - commercial-accounts.yaml
+  - retail-accounts.yaml
+- name: AcknowledgePaymentRequest
+  kind: object
+  title: Payment acknowledgement request
+  description: Payment acknowledgement request for credit transfer
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: AcknowledgePaymentResponse
+  kind: object
+  title: Payment acknowledgement response
+  description: Payment acknowledgement response for credit transfer
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: ActorType
+  kind: enum
+  title: FDX API Actor Type
+  description: Indicates whether a customer is present and has requested the operation (USER), or if a batch job has
+    requested the operation (BATCH)
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Transactions
+  - Personal and Small Business Client Contact
+  - Retail Oauth Authentication
+  - Account Address
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-transaction.yaml
+  - retail-customers.yaml
+  - retail-auth-oauth.yaml
+  - retail-accounts-contact.yaml
+- name: Address
+  kind: object
+  title: null
+  description: Location of the branch
+  apis:
+  - Branch/ATM Locator
+  - Personal and Small Business Client Contact
+  - Account Address
+  - Credit Transfers
+  specs:
+  - retail-locator.yaml
+  - retail-customers.yaml
+  - retail-accounts-contact.yaml
+  - commercial-credit-transfers-oas-v2.yaml
+- name: BalanceDetails
+  kind: object
+  title: null
+  description: Balance details
+  apis:
+  - Commercial Account Balance
+  specs:
+  - commercial-account-balance.yaml
+- name: BalanceType
+  kind: enum
+  title: Type of account balance
+  description: Type of account balance
+  apis:
+  - Commercial Accounts
+  - Commercial Account Balance
+  - Personal and Small Business Accounts
+  specs:
+  - commercial-accounts.yaml
+  - commercial-account-balance.yaml
+  - retail-accounts.yaml
+- name: Branches
+  kind: object
+  title: Branches Entity
+  description: List of Branch Locations
+  apis:
+  - Branch/ATM Locator
+  specs:
+  - retail-locator.yaml
+- name: BusinessOrConsumer
+  kind: enum
+  title: Business or Consumer Type
+  description: Indicator if parent entity is a consumer or business
+  apis:
+  - Personal and Small Business Accounts
+  - Account Address
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-contact.yaml
+- name: CancelPaymentRequest
+  kind: object
+  title: Request definition for status update
+  description: Update payment status
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: CancelStatus
+  kind: enum
+  title: Update real time payment schema
+  description: Update payment status
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: CompoundingPeriod
+  kind: enum
+  title: Compounding Period
+  description: Interest compounding Period
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: ConsentDurationPeriod
+  kind: scalar
+  title: Consent Duration Period
+  description: Consent duration, in days, from day of original grant
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ConsentDurationType
+  kind: enum
+  title: Consent Duration Type
+  description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
+  apis:
+  - User Consent
+  - Retail Dynamic Client Registration
+  specs:
+  - retail-consents.yaml
+  - retail-register-recipient.yaml
+- name: ConsentGrant
+  kind: object
+  title: Consent Grant entity
+  description: Record of user consent
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ConsentGrantParty
+  kind: object
+  title: Consent Grant Party entity
+  description: Details on the non-end user parties in the Consent Grant. Includes the legal entity operating branded
+    products or services in the data sharing chain. Descriptive information is collected during Data Recipient registratio
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ConsentGrantResource
+  kind: object
+  title: Consent Grant Resource entity
+  description: Entity of permissioned resources
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ConsentGrantStatus
+  kind: enum
+  title: Consent Grant Status
+  description: Current status of Consent Grant
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ConsentId
+  kind: scalar
+  title: Consent Identifier
+  description: Unique ID for a consent grant
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ConsentResourceType
+  kind: enum
+  title: Consent Resource Type
+  description: Resource for which data may be permissioned; can be extended to support additional types of resources
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ConsentRevocationRequest
+  kind: object
+  title: Consent revocation request entity
+  description: Details of request to revoke consent grant
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ConsentUpdateReason
+  kind: enum
+  title: Consent Update Reason
+  description: Reason for Updating a Consent Grant
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: ContactDetails
+  kind: object
+  title: Contact details address
+  description: null
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: CorrelationId
+  kind: scalar
+  title: null
+  description: The Correlation ID is unique ID made by removing hyphens from a standard UUID to make it 32 characters
+    long.
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: CreditCardAccount
+  kind: object
+  title: schema definition for commercial CreditCardAccount details.
+  description: Credit card account details
+  apis:
+  - Commercial Account Balance
+  specs:
+  - commercial-account-balance.yaml
+- name: Currency
+  kind: object
+  title: Account currency code
+  description: Currency code information
+  apis:
+  - Commercial Accounts
+  - Personal and Small Business Accounts
+  specs:
+  - commercial-accounts.yaml
+  - retail-accounts.yaml
+- name: Customer
+  kind: object
+  title: Customer entity
+  description: Represents a customer
+  apis:
+  - Personal and Small Business Client Contact
+  - Account Address
+  specs:
+  - retail-customers.yaml
+  - retail-accounts-contact.yaml
+- name: CustomerName
+  kind: object
+  title: Customer Name entity
+  description: The name of an individual in their role as a customer
+  apis:
+  - Personal and Small Business Client Contact
+  - Account Address
+  specs:
+  - retail-customers.yaml
+  - retail-accounts-contact.yaml
+- name: DataCluster
+  kind: enum
+  title: Data Cluster
+  description: Name of permissioned [cluster of data elements](https://fdx.atlassian.net/wiki/spaces/FDX/pages/872906996/v1.1+Data+Clusters)
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: DateString
+  kind: scalar
+  title: Date String
+  description: ISO 8601 full-date in format 'YYYY-MM-DD' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Transactions
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-transaction.yaml
+  - retail-event-subscriptions.yaml
+- name: DebitCreditMemo
+  kind: enum
+  title: Debit Credit Memo
+  description: The posting type of a transaction
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: DebtClass
+  kind: enum
+  title: Debt Class
+  description: The classification of a debt instrument
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: DebtSecurity
+  kind: object
+  title: Debt Security entity
+  description: An investment in a debt security
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: DebtType
+  kind: enum
+  title: Debt Type
+  description: The type of a debt instrument
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: DeliveryAddress
+  kind: object
+  title: Delivery Address
+  description: A delivery address and its location type
+  apis:
+  - Personal and Small Business Client Contact
+  - Account Address
+  specs:
+  - retail-customers.yaml
+  - retail-accounts-contact.yaml
+- name: DeliveryAddressType
+  kind: enum
+  title: Delivery Address Type
+  description: The location type of an address
+  apis:
+  - Personal and Small Business Client Contact
+  - Account Address
+  specs:
+  - retail-customers.yaml
+  - retail-accounts-contact.yaml
+- name: DepositAccount
+  kind: object
+  title: schema definition for commercial DepositAccount details.
+  description: Deposit account details
+  apis:
+  - Commercial Account Balance
+  - Personal and Small Business Accounts
+  specs:
+  - commercial-account-balance.yaml
+  - retail-accounts.yaml
+- name: DepositTransaction
+  kind: object
+  title: Deposit Transaction entity
+  description: A transaction on a deposit account type
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: DepositTransactionType
+  kind: enum
+  title: Deposit Transaction Type
+  description: The type of a deposit transaction
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: Error
+  kind: object
+  title: Error
+  description: An error entity which can be used at the API level for error responses
+  apis:
+  - Commercial Accounts
+  - Commercial Account Balance
+  - Commercial Account Transactions
+  - Personal and Small Business Accounts
+  - Branch/ATM Locator
+  - Personal and Small Business Transactions
+  - Personal and Small Business Client Contact
+  - Retail Oauth Authentication
+  - User Consent
+  - Retail Dynamic Client Registration
+  - Personal and Small Business Account Payment Networks
+  - Account Address
+  - Credit Transfers
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - commercial-accounts.yaml
+  - commercial-account-balance.yaml
+  - commercial-account-transactions.yaml
+  - retail-accounts.yaml
+  - retail-locator.yaml
+  - retail-accounts-transaction.yaml
+  - retail-customers.yaml
+  - retail-auth-oauth.yaml
+  - retail-consents.yaml
+  - retail-register-recipient.yaml
+  - retail-payment-networks.yaml
+  - retail-accounts-contact.yaml
+  - commercial-credit-transfers-oas-v2.yaml
+  - retail-event-notifications.yaml
+  - retail-event-subscriptions.yaml
+- name: FapiInteractionId
+  kind: scalar
+  title: FAPI Interaction ID
+  description: Universally unique identifier for this interaction, used across all FDX API requests and responses
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Transactions
+  - Personal and Small Business Client Contact
+  - User Consent
+  - Retail Dynamic Client Registration
+  - Personal and Small Business Account Payment Networks
+  - Account Address
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-transaction.yaml
+  - retail-customers.yaml
+  - retail-consents.yaml
+  - retail-register-recipient.yaml
+  - retail-payment-networks.yaml
+  - retail-accounts-contact.yaml
+  - retail-event-notifications.yaml
+  - retail-event-subscriptions.yaml
+- name: FiAttribute
+  kind: object
+  title: FI Attribute entity
+  description: Financial Institution provider-specific attribute
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Transactions
+  - Personal and Small Business Event Notifications
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-transaction.yaml
+  - retail-event-notifications.yaml
+- name: GetApprovalsPaymentResponse
+  kind: object
+  title: All reported transactions
+  description: Real time payment transaction list
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: HateoasLink
+  kind: object
+  title: HATEOAS Link
+  description: REST application constraint (Hypermedia As The Engine Of Application State)
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: Holding
+  kind: object
+  title: Holding entity
+  description: A holding in an investment account
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: HoldingType
+  kind: enum
+  title: Holding Type
+  description: The type of an investment holding    | Value | Description |   |-----|-----|   | ANNUITY | Financial product
+    that pays out a fixed stream of payments |   | BOND | Debt security as a loan to a government, agency or compan
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: HttpAction
+  kind: enum
+  title: HTTP Action Type
+  description: HTTP Methods to use for requests
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: Identifier
+  kind: scalar
+  title: Identifier
+  description: Value for a unique identifier
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Transactions
+  - Personal and Small Business Client Contact
+  - User Consent
+  - Retail Dynamic Client Registration
+  - Personal and Small Business Account Payment Networks
+  - Account Address
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-transaction.yaml
+  - retail-customers.yaml
+  - retail-consents.yaml
+  - retail-register-recipient.yaml
+  - retail-payment-networks.yaml
+  - retail-accounts-contact.yaml
+  - retail-event-subscriptions.yaml
+- name: IndividualName
+  kind: object
+  title: Individual name
+  description: First name, middle initial, last name, suffix fields
+  apis:
+  - Personal and Small Business Client Contact
+  - Account Address
+  specs:
+  - retail-customers.yaml
+  - retail-accounts-contact.yaml
+- name: Intermediary
+  kind: object
+  title: Intermediary
+  description: Data Access Platform, Service Provider, or any other entity in the data sharing chain between a Data Provider
+    to a Data Recipient. In snake case to match IETF RFC 7591 naming formats
+  apis:
+  - Retail Dynamic Client Registration
+  specs:
+  - retail-register-recipient.yaml
+- name: InvestmentAccount
+  kind: object
+  title: Investment Account entity
+  description: An investment account type and information such as balances, transactions, holdings and privileges
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: InvestmentBalance
+  kind: object
+  title: Investment Balance entity
+  description: A point-in-time balance of the investment account
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: InvestmentBalanceType
+  kind: enum
+  title: Investment Balance Type
+  description: The type of an investment balance
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: InvestmentTransaction
+  kind: object
+  title: Investment Transaction entity
+  description: An investment transaction
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: InvestmentTransactionType
+  kind: enum
+  title: Investment Transaction Type
+  description: The type of an investment transaction
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: Iso3166CountryCode
+  kind: enum
+  title: ISO 3166 Country Code
+  description: ISO 3166-1 alpha-2 codes as of April 5, 2023, from officially assigned Country Codes on [ISO Online Browsing
+    Platform](https://www.iso.org/obp/ui/). Change log is at [ISO 3166 Maintenance Agency](https://www.iso.org/fr/c
+  apis:
+  - Personal and Small Business Client Contact
+  - Account Address
+  - Credit Transfers
+  specs:
+  - retail-customers.yaml
+  - retail-accounts-contact.yaml
+  - commercial-credit-transfers-oas-v2.yaml
+- name: Iso4217Code
+  kind: enum
+  title: ISO 4217 Code
+  description: Currency, fund and precious metal codes effective from May 12, 2025 and ISO 4217 amendment 179 per [ISO
+    4217 Currency Code Maintenance](https://www.six-group.com/en/products-services/financial-information/data-standards.
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: LineOfBusiness
+  kind: enum
+  title: null
+  description: Truist Line of Business to which the account maps("Commercial, "Retail")
+  apis:
+  - Commercial Account Balance
+  specs:
+  - commercial-account-balance.yaml
+- name: LineOfCreditAccount
+  kind: object
+  title: schema definition for commercial LineOfCreditAccount details
+  description: Line of credit Account details
+  apis:
+  - Commercial Account Balance
+  specs:
+  - commercial-account-balance.yaml
+- name: LoanAccount
+  kind: object
+  title: Schema definition for commercial LoanAccount details
+  description: Loan account details.
+  apis:
+  - Commercial Account Balance
+  - Personal and Small Business Accounts
+  specs:
+  - commercial-account-balance.yaml
+  - retail-accounts.yaml
+- name: LoanTransaction
+  kind: object
+  title: Loan Transaction entity
+  description: A transaction on a loan account
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: LoanTransactionType
+  kind: enum
+  title: Loan Transaction Type
+  description: 'Defines the type of a loan transaction:   * `FEE`: Fee charge. For example, a late payment fee   * `INTEREST`:
+    Interest charge   * `PAYMENT`: Required payment that satisfies the minimum payment (e.g. principal + interest'
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: LocAccount
+  kind: object
+  title: Line-Of-Credit Account entity
+  description: A line-of-credit account
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: LocTransaction
+  kind: object
+  title: Line-Of-Credit Transaction entity
+  description: A line-of-credit transaction
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: LocTransactionType
+  kind: enum
+  title: Line-Of-Credit Transaction Type
+  description: The type of a line-of-credit transaction
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: Location
+  kind: object
+  title: null
+  description: A base ATM or branch location
+  apis:
+  - Branch/ATM Locator
+  specs:
+  - retail-locator.yaml
+- name: Locations
+  kind: object
+  title: All or ATM Locations
+  description: List of All or just ATM Locations
+  apis:
+  - Branch/ATM Locator
+  specs:
+  - retail-locator.yaml
+- name: LookbackPeriod
+  kind: scalar
+  title: Lookback Period
+  description: Period, in days, for which historical data may be requested; period is measured from request time, not
+    grant time
+  apis:
+  - User Consent
+  specs:
+  - retail-consents.yaml
+- name: MultipleRtpPaymentRequest
+  kind: object
+  title: MultipleRtpPaymentRequest.
+  description: Object for holding multiple payment transfers.
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: Notification
+  kind: object
+  title: Notification entity
+  description: Provides the base fields of a notification. Clients will read the `type` property to determine the expected
+    notification payload
+  apis:
+  - Personal and Small Business Event Notifications
+  specs:
+  - retail-event-notifications.yaml
+- name: NotificationCategory
+  kind: enum
+  title: Notification Category
+  description: Category of Notification
+  apis:
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-event-notifications.yaml
+  - retail-event-subscriptions.yaml
+- name: NotificationPayload
+  kind: object
+  title: Notification Payload entity
+  description: Custom key-value pairs payload for a notification
+  apis:
+  - Personal and Small Business Event Notifications
+  specs:
+  - retail-event-notifications.yaml
+- name: NotificationPayloadIdType
+  kind: enum
+  title: Notification Payload Id Type
+  description: Type of entity causing origination of a notification
+  apis:
+  - Personal and Small Business Event Notifications
+  specs:
+  - retail-event-notifications.yaml
+- name: NotificationPriority
+  kind: enum
+  title: Notification Priority
+  description: Priority of notification
+  apis:
+  - Personal and Small Business Event Notifications
+  specs:
+  - retail-event-notifications.yaml
+- name: NotificationSeverity
+  kind: enum
+  title: Notification Severity
+  description: Severity level of notification
+  apis:
+  - Personal and Small Business Event Notifications
+  specs:
+  - retail-event-notifications.yaml
+- name: NotificationSubscription
+  kind: object
+  title: Notification Subscription entity
+  description: Provides the fields of a notification subscription
+  apis:
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-event-subscriptions.yaml
+- name: NotificationType
+  kind: enum
+  title: Notification Type
+  description: Type of notification
+  apis:
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-event-notifications.yaml
+  - retail-event-subscriptions.yaml
+- name: Option
+  kind: enum
+  title: Option
+  description: Yes ot No
+  apis:
+  - Branch/ATM Locator
+  specs:
+  - retail-locator.yaml
+- name: PageMetadata
+  kind: object
+  title: Page Metadata
+  description: Offset IDs for paginated result sets
+  apis:
+  - Personal and Small Business Transactions
+  - Credit Transfers
+  specs:
+  - retail-accounts-transaction.yaml
+  - commercial-credit-transfers-oas-v2.yaml
+- name: PageMetadataLinks
+  kind: object
+  title: Page Metadata Links
+  description: Resource URLs for retrieving next or previous datasets
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: PaginatedArray
+  kind: object
+  title: Paginated Array
+  description: Base class for results that may be paginated
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: Party
+  kind: object
+  title: Party entity
+  description: FDX Participant - an entity or person that is a part of a FDX API transaction
+  apis:
+  - User Consent
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-consents.yaml
+  - retail-event-notifications.yaml
+  - retail-event-subscriptions.yaml
+- name: PartyType
+  kind: enum
+  title: Party Type
+  description: Identifies the type of a party
+  apis:
+  - User Consent
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-consents.yaml
+  - retail-event-notifications.yaml
+  - retail-event-subscriptions.yaml
+- name: PaymentAction
+  kind: enum
+  title: Payment action indicates whether the payment is sent or received from Truist account
+  description: 'The payment action of a submitted RTP:   - sent   - received'
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: PaymentDate
+  kind: scalar
+  title: null
+  description: Date to dispatch the payment. ISO 8601 date as "yyyy-mm-dd". Only applicable for future dated(OTFD) and
+    One time payments.
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: PaymentDetails
+  kind: object
+  title: Payment Details entity
+  description: Details of this payment
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: PaymentFrequency
+  kind: enum
+  title: Payment Frequency
+  description: The frequency of payments.
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: PaymentIds
+  kind: object
+  title: IDs for the submitted payment.
+  description: Correlation and payment IDs for the payment
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: PaymentNetworkIdentifierType
+  kind: enum
+  title: Payment Network Identifier Type
+  description: Enumerated values for type of account `identifier` used on a payment network.    | Value | Description
+    |   |-------|-------------|   | ACCOUNT_NUMBER | The 'real' account number, which is sensitive data and should only
+    b
+  apis:
+  - Personal and Small Business Account Payment Networks
+  specs:
+  - retail-payment-networks.yaml
+- name: PaymentNetworkType
+  kind: enum
+  title: Payment Network Type
+  description: Suggested values for Payment Network Type.   | Value | Description |   |-----|-----|   | US_ACH | Automated
+    Clearing House |   | US_RTP| US Real Time Payments System |
+  apis:
+  - Personal and Small Business Account Payment Networks
+  specs:
+  - retail-payment-networks.yaml
+- name: PaymentSubType
+  kind: enum
+  title: Schema definition for payment subtype type which will indicates whether its Inbound or Outbound transfers
+  description: 'The subtype of a submitted RTP:   - RTP Credit Type   - Request for Return of Funds   - Inbound Request
+    Credit'
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: PaymentType
+  kind: enum
+  title: Schema definition for payment type
+  description: TCH Payment type
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: PositionType
+  kind: enum
+  title: Position Type
+  description: The type of an investment position
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: PostedOrPending
+  kind: object
+  title: null
+  description: Array of posted or pending transactions for the account, or error status for the same.
+  apis:
+  - Commercial Account Transactions
+  specs:
+  - commercial-account-transactions.yaml
+- name: PreviousDateIndicator
+  kind: enum
+  title: null
+  description: Indicator for Previous (P) or Current (C) date
+  apis:
+  - Commercial Account Transactions
+  specs:
+  - commercial-account-transactions.yaml
+- name: Recipient
+  kind: object
+  title: Recipient Provider
+  description: Record of Recipient at the Provider in snake case to match IETF RFC 7591 naming formats
+  apis:
+  - Retail Dynamic Client Registration
+  specs:
+  - retail-register-recipient.yaml
+- name: RecipientRequest
+  kind: object
+  title: Recipient Request
+  description: Used to request a recipient registration. In snake case to match IETF RFC 7591 naming formats
+  apis:
+  - Retail Dynamic Client Registration
+  specs:
+  - retail-register-recipient.yaml
+- name: RecipientStatus
+  kind: enum
+  title: Status
+  description: Status of Recipient creation through dynamic client registration per FDX RFC 0117 and FDX Recipient Registration
+    Guidelines document
+  apis:
+  - Retail Dynamic Client Registration
+  specs:
+  - retail-register-recipient.yaml
+- name: Registry
+  kind: enum
+  title: Registry
+  description: Identifies the type of a Registry
+  apis:
+  - User Consent
+  - Personal and Small Business Event Subscriptions
+  specs:
+  - retail-consents.yaml
+  - retail-event-subscriptions.yaml
+- name: ResultType
+  kind: enum
+  title: Result Type
+  description: 'Flag to indicate if you want a lightweight array of metadata (AccountDescriptor or Tax or Operations)
+    or full item details (Account or a Tax subclass or Availability details). If set to ''lightweight'', should only
+    return '
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: RewardType
+  kind: enum
+  title: Reward Type
+  description: 'The type of the reward balance. Example: a reward program awarding "Stars" for purchases would use the
+    `POINTS` reward type.   * `CASHBACK`: Rewards balances enumerated using a monetary amount   * `MILES`: Rewards balanc'
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: RtpCreditor
+  kind: object
+  title: Payer or Recipient Information
+  description: Common details for RtpCreditor
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: RtpPaymentDetail
+  kind: object
+  title: Individual real-time payment information for each recipient
+  description: Payment and recipient information
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: RtpPaymentRequest
+  kind: object
+  title: RTP Credit Transfer Request
+  description: Real-Time payment, pacs.008, Intiate Transfer from one account number to several recipients
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: RtpResponse
+  kind: object
+  title: Response definition for the RTP Transfer
+  description: Status of the RTP Transfer
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: RtpStatus
+  kind: enum
+  title: RTP Submitted Status
+  description: 'The status of a submitted RTP:   - needsApproval   - rejected   - approved   - completed   - canceled   -
+    scheduled   - processing   - rejectedByApprover   - failed   - expired   - all'
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: RtpTransactionStatus
+  kind: enum
+  title: RTP Status of Transaction
+  description: 'The status of a submitted RTP:   - needsApproval   - rejected   - approved   - completed   - canceled   -
+    scheduled   - processing   - rejectedByApprover   - failed   - expired'
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: Scope
+  kind: enum
+  title: Scope
+  description: The enum values of defined scopes. Scope offline_access must be included to get back refresh_tokens
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: Security
+  kind: object
+  title: Security entity
+  description: A base Security entity which defines the type of this security
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: SecurityCategory
+  kind: enum
+  title: Security Category
+  description: The type of security
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: SecurityIdType
+  kind: enum
+  title: Security Id Type
+  description: The source of the identifier for a security   | Value | Description |   |-----|-----|   | CINS | CUSIP
+    International Numbering System) is a global securities identification numbering system that provides |   | CMC |
+    Coin
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: SecurityType
+  kind: enum
+  title: Security Type
+  description: The type of a security   | Value | Description |   |-----|-----|   | ANNUITY | Financial product that
+    pays out a fixed stream of payments. Added by Truist per RFC 0394 with FDX v6.5 |   | BOND | Debt security as a loan
+    t
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: Status
+  kind: enum
+  title: Status of the account
+  description: Status of the account
+  apis:
+  - Commercial Accounts
+  specs:
+  - commercial-accounts.yaml
+- name: String255
+  kind: scalar
+  title: String 255
+  description: String of maximum length 255
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: String64
+  kind: scalar
+  title: String 64
+  description: String of maximum length 64
+  apis:
+  - Personal and Small Business Client Contact
+  - Account Address
+  specs:
+  - retail-customers.yaml
+  - retail-accounts-contact.yaml
+- name: TaxLot
+  kind: object
+  title: Tax Lot entity
+  description: Block of securities receiving the same tax treatment
+  apis:
+  - Personal and Small Business Accounts
+  specs:
+  - retail-accounts.yaml
+- name: TelephoneNumber
+  kind: object
+  title: Telephone Number
+  description: Standard for international phone numbers
+  apis:
+  - Personal and Small Business Client Contact
+  specs:
+  - retail-customers.yaml
+- name: TelephoneNumberType
+  kind: enum
+  title: Telephone Number Type
+  description: Purpose or type of telephone number
+  apis:
+  - Personal and Small Business Client Contact
+  specs:
+  - retail-customers.yaml
+- name: Timestamp
+  kind: scalar
+  title: Timestamp
+  description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Transactions
+  - User Consent
+  - Personal and Small Business Event Notifications
+  specs:
+  - retail-accounts.yaml
+  - retail-accounts-transaction.yaml
+  - retail-consents.yaml
+  - retail-event-notifications.yaml
+- name: TokenRequest
+  kind: object
+  title: null
+  description: null
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: TokenResponse
+  kind: object
+  title: null
+  description: null
+  apis:
+  - Retail Oauth Authentication
+  specs:
+  - retail-auth-oauth.yaml
+- name: Transaction
+  kind: object
+  title: Each transaction response
+  description: null
+  apis:
+  - Commercial Account Transactions
+  - Personal and Small Business Transactions
+  - Credit Transfers
+  specs:
+  - commercial-account-transactions.yaml
+  - retail-accounts-transaction.yaml
+  - commercial-credit-transfers-oas-v2.yaml
+- name: TransactionDetail
+  kind: object
+  title: null
+  description: Detailed transaction info.
+  apis:
+  - Commercial Account Transactions
+  specs:
+  - commercial-account-transactions.yaml
+- name: TransactionReward
+  kind: object
+  title: Transaction Reward entity
+  description: Rewards earned on a transaction
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: TransactionStatus
+  kind: enum
+  title: null
+  description: Status of transaction, cleared or pending
+  apis:
+  - Commercial Account Transactions
+  - Personal and Small Business Transactions
+  specs:
+  - commercial-account-transactions.yaml
+  - retail-accounts-transaction.yaml
+- name: TransactionType
+  kind: enum
+  title: null
+  description: Type of transaction, Debit (DB) or Credit (CR)
+  apis:
+  - Commercial Account Transactions
+  specs:
+  - commercial-account-transactions.yaml
+- name: Transactions
+  kind: object
+  title: Transactions entity
+  description: Optionally paginated array of transactions
+  apis:
+  - Personal and Small Business Transactions
+  - Credit Transfers
+  specs:
+  - retail-accounts-transaction.yaml
+  - commercial-credit-transfers-oas-v2.yaml
+- name: UnitType
+  kind: enum
+  title: Unit Type
+  description: The units of an investment transaction
+  apis:
+  - Personal and Small Business Transactions
+  specs:
+  - retail-accounts-transaction.yaml
+- name: UpdatePaymentRequest
+  kind: object
+  title: Request definition for status update
+  description: Update payment status
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: UpdatePaymentResponse
+  kind: object
+  title: Succcessful response for payment update
+  description: response for successful status update
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+- name: UpdateStatus
+  kind: enum
+  title: Update real time payment schema
+  description: Update payment status
+  apis:
+  - Credit Transfers
+  specs:
+  - commercial-credit-transfers-oas-v2.yaml
+relationships:
+- from: Accounts
+  to: Account
+  cardinality: has_many
+  via: accounts
+  spec: commercial-accounts.yaml
+- from: Account
+  to: account
+  cardinality: belongs_to
+  via: accountId
+  spec: commercial-accounts.yaml
+  inferred_from: id-reference field name
+- from: Account
+  to: Currency
+  cardinality: has_one
+  via: currency
+  spec: commercial-accounts.yaml
+- from: AccountDetail
+  to: DepositAccount
+  cardinality: has_one
+  via: depositAccount
+  spec: commercial-account-balance.yaml
+- from: AccountDetail
+  to: LoanAccount
+  cardinality: has_one
+  via: loanAccount
+  spec: commercial-account-balance.yaml
+- from: AccountDetail
+  to: LineOfCreditAccount
+  cardinality: has_one
+  via: lineOfCreditAccount
+  spec: commercial-account-balance.yaml
+- from: AccountDetail
+  to: CreditCardAccount
+  cardinality: has_one
+  via: creditCardAccount
+  spec: commercial-account-balance.yaml
+- from: PostedOrPending
+  to: Transaction
+  cardinality: has_many
+  via: transactions
+  spec: commercial-account-transactions.yaml
+- from: Transaction
+  to: transaction
+  cardinality: belongs_to
+  via: transactionid
+  spec: commercial-account-transactions.yaml
+  inferred_from: id-reference field name
+- from: TransactionDetail
+  to: account
+  cardinality: belongs_to
+  via: accountId
+  spec: commercial-account-transactions.yaml
+  inferred_from: id-reference field name
+- from: TransactionDetail
+  to: transaction
+  cardinality: belongs_to
+  via: transactionId
+  spec: commercial-account-transactions.yaml
+  inferred_from: id-reference field name
+- from: AccountContact
+  to: AccountHolder
+  cardinality: has_many
+  via: holders
+  spec: retail-accounts.yaml
+- from: AccountDescriptor
+  to: Identifier
+  cardinality: has_one
+  via: accountId
+  spec: retail-accounts.yaml
+- from: AccountDescriptor
+  to: DateString
+  cardinality: has_one
+  via: accountOpenDate
+  spec: retail-accounts.yaml
+- from: AccountDescriptor
+  to: Currency
+  cardinality: has_one
+  via: currency
+  spec: retail-accounts.yaml
+- from: AccountDescriptor
+  to: FiAttribute
+  cardinality: has_many
+  via: fiAttributes
+  spec: retail-accounts.yaml
+- from: Accounts
+  to: AccountWithDetails
+  cardinality: has_many
+  via: accounts
+  spec: retail-accounts.yaml
+- from: Holding
+  to: holding
+  cardinality: belongs_to
+  via: holdingId
+  spec: retail-accounts.yaml
+  inferred_from: id-reference field name
+- from: Holding
+  to: security
+  cardinality: belongs_to
+  via: securityId
+  spec: retail-accounts.yaml
+  inferred_from: id-reference field name
+- from: Holding
+  to: TaxLot
+  cardinality: has_many
+  via: taxLots
+  spec: retail-accounts.yaml
+- from: Holding
+  to: DebtSecurity
+  cardinality: has_one
+  via: debtSecurity
+  spec: retail-accounts.yaml
+- from: Holding
+  to: Currency
+  cardinality: has_one
+  via: currency
+  spec: retail-accounts.yaml
+- from: InvestmentBalance
+  to: DateString
+  cardinality: has_one
+  via: balanceDate
+  spec: retail-accounts.yaml
+- from: InvestmentBalance
+  to: Currency
+  cardinality: has_one
+  via: currency
+  spec: retail-accounts.yaml
+- from: TaxLot
+  to: DateString
+  cardinality: has_one
+  via: originalPurchaseDate
+  spec: retail-accounts.yaml
+- from: Location
+  to: Address
+  cardinality: has_one
+  via: address
+  spec: retail-locator.yaml
+- from: Branches
+  to: Location
+  cardinality: has_many
+  via: branchLocations
+  spec: retail-locator.yaml
+- from: ATMs
+  to: Location
+  cardinality: has_many
+  via: atmLocations
+  spec: retail-locator.yaml
+- from: Locations
+  to: Location
+  cardinality: has_many
+  via: locations
+  spec: retail-locator.yaml
+- from: PaginatedArray
+  to: PageMetadata
+  cardinality: has_one
+  via: page
+  spec: retail-accounts-transaction.yaml
+- from: PaginatedArray
+  to: PageMetadataLinks
+  cardinality: has_one
+  via: links
+  spec: retail-accounts-transaction.yaml
+- from: PageMetadataLinks
+  to: HateoasLink
+  cardinality: has_one
+  via: next
+  spec: retail-accounts-transaction.yaml
+- from: Transaction
+  to: Identifier
+  cardinality: has_one
+  via: accountId
+  spec: retail-accounts-transaction.yaml
+- from: Transaction
+  to: Identifier
+  cardinality: has_one
+  via: transactionId
+  spec: retail-accounts-transaction.yaml
+- from: Transaction
+  to: Identifier
+  cardinality: has_one
+  via: referenceTransactionId
+  spec: retail-accounts-transaction.yaml
+- from: Transaction
+  to: Timestamp
+  cardinality: has_one
+  via: postedTimestamp
+  spec: retail-accounts-transaction.yaml
+- from: Transaction
+  to: Timestamp
+  cardinality: has_one
+  via: transactionTimestamp
+  spec: retail-accounts-transaction.yaml
+- from: Transaction
+  to: String255
+  cardinality: has_one
+  via: memo
+  spec: retail-accounts-transaction.yaml
+- from: Transaction
+  to: TransactionReward
+  cardinality: has_one
+  via: reward
+  spec: retail-accounts-transaction.yaml
+- from: Transaction
+  to: FiAttribute
+  cardinality: has_many
+  via: fiAttributes
+  spec: retail-accounts-transaction.yaml
+- from: Transactions
+  to: PaginatedArray
+  cardinality: has_one
+  via: paginatedArray
+  spec: retail-accounts-transaction.yaml
+- from: Address
+  to: String64
+  cardinality: has_one
+  via: line1
+  spec: retail-customers.yaml
+- from: Address
+  to: String64
+  cardinality: has_one
+  via: line2
+  spec: retail-customers.yaml
+- from: Address
+  to: String64
+  cardinality: has_one
+  via: line3
+  spec: retail-customers.yaml
+- from: Address
+  to: String64
+  cardinality: has_one
+  via: city
+  spec: retail-customers.yaml
+- from: Address
+  to: String64
+  cardinality: has_one
+  via: region
+  spec: retail-customers.yaml
+- from: Customer
+  to: Identifier
+  cardinality: has_one
+  via: customerId
+  spec: retail-customers.yaml
+- from: Customer
+  to: CustomerName
+  cardinality: has_one
+  via: name
+  spec: retail-customers.yaml
+- from: Customer
+  to: DeliveryAddress
+  cardinality: has_many
+  via: addresses
+  spec: retail-customers.yaml
+- from: Customer
+  to: TelephoneNumber
+  cardinality: has_many
+  via: telephones
+  spec: retail-customers.yaml
+- from: TokenRequest
+  to: client_
+  cardinality: belongs_to
+  via: client_id
+  spec: retail-auth-oauth.yaml
+  inferred_from: id-reference field name
+- from: TokenResponse
+  to: grant_
+  cardinality: belongs_to
+  via: grant_id
+  spec: retail-auth-oauth.yaml
+  inferred_from: id-reference field name
+- from: ConsentGrant
+  to: Identifier
+  cardinality: has_one
+  via: id
+  spec: retail-consents.yaml
+- from: ConsentGrant
+  to: ConsentGrantParty
+  cardinality: has_many
+  via: parties
+  spec: retail-consents.yaml
+- from: ConsentGrant
+  to: Timestamp
+  cardinality: has_one
+  via: createdTime
+  spec: retail-consents.yaml
+- from: ConsentGrant
+  to: Timestamp
+  cardinality: has_one
+  via: expirationTime
+  spec: retail-consents.yaml
+- from: ConsentGrant
+  to: Timestamp
+  cardinality: has_one
+  via: updatedTime
+  spec: retail-consents.yaml
+- from: ConsentGrant
+  to: ConsentDurationPeriod
+  cardinality: has_one
+  via: durationPeriod
+  spec: retail-consents.yaml
+- from: ConsentGrant
+  to: LookbackPeriod
+  cardinality: has_one
+  via: lookbackPeriod
+  spec: retail-consents.yaml
+- from: ConsentGrant
+  to: ConsentGrantResource
+  cardinality: has_many
+  via: resources
+  spec: retail-consents.yaml
+- from: ConsentGrantResource
+  to: Identifier
+  cardinality: has_one
+  via: resourceId
+  spec: retail-consents.yaml
+- from: Party
+  to: registeredEntity
+  cardinality: belongs_to
+  via: registeredEntityId
+  spec: retail-consents.yaml
+  inferred_from: id-reference field name
+- from: RecipientRequest
+  to: Identifier
+  cardinality: has_one
+  via: client_name
+  spec: retail-register-recipient.yaml
+- from: RecipientRequest
+  to: Intermediary
+  cardinality: has_many
+  via: intermediaries
+  spec: retail-register-recipient.yaml
+- from: AccountPaymentNetwork
+  to: bank
+  cardinality: belongs_to
+  via: bankId
+  spec: retail-payment-networks.yaml
+  inferred_from: id-reference field name
+- from: AccountPaymentNetworkList
+  to: AccountPaymentNetwork
+  cardinality: has_many
+  via: paymentNetworks
+  spec: retail-payment-networks.yaml
+- from: AccountList
+  to: Account
+  cardinality: has_many
+  via: accounts
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: PaymentIds
+  to: correlation
+  cardinality: belongs_to
+  via: correlationId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: PaymentIds
+  to: payment
+  cardinality: belongs_to
+  via: paymentId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: RtpPaymentDetail
+  to: correlation
+  cardinality: belongs_to
+  via: correlationId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: RtpPaymentDetail
+  to: fromAccount
+  cardinality: belongs_to
+  via: fromAccountId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: RtpPaymentDetail
+  to: RtpCreditor
+  cardinality: has_one
+  via: creditor
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: RtpPaymentDetail
+  to: PaymentDate
+  cardinality: has_one
+  via: paymentDate
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: RtpResponse
+  to: PaymentIds
+  cardinality: has_many
+  via: payments
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: GetApprovalsPaymentResponse
+  to: Transaction
+  cardinality: has_many
+  via: transactions
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: RtpCreditor
+  to: Address
+  cardinality: has_one
+  via: address
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: RtpCreditor
+  to: ContactDetails
+  cardinality: has_one
+  via: contactDetails
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: RtpCreditor
+  to: legalEntity
+  cardinality: belongs_to
+  via: legalEntityId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: Transactions
+  to: PageMetadata
+  cardinality: has_one
+  via: pageMetadata
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: Transactions
+  to: Transaction
+  cardinality: has_many
+  via: transactions
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: Transaction
+  to: correlation
+  cardinality: belongs_to
+  via: correlationId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: Transaction
+  to: payment
+  cardinality: belongs_to
+  via: paymentId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: Transaction
+  to: Frequency
+  cardinality: has_one
+  via: frequency
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: Transaction
+  to: payFromAccount
+  cardinality: belongs_to
+  via: payFromAccountId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: Transaction
+  to: payToAccount
+  cardinality: belongs_to
+  via: payToAccountId
+  spec: commercial-credit-transfers-oas-v2.yaml
+  inferred_from: id-reference field name
+- from: MultipleRtpPaymentRequest
+  to: RtpPaymentRequest
+  cardinality: has_many
+  via: payments
+  spec: commercial-credit-transfers-oas-v2.yaml
+- from: Notification
+  to: notification
+  cardinality: belongs_to
+  via: notificationId
+  spec: retail-event-notifications.yaml
+  inferred_from: id-reference field name
+- from: Notification
+  to: Timestamp
+  cardinality: has_one
+  via: sentOn
+  spec: retail-event-notifications.yaml
+- from: Notification
+  to: Party
+  cardinality: has_one
+  via: publisher
+  spec: retail-event-notifications.yaml
+- from: Notification
+  to: NotificationPayload
+  cardinality: has_one
+  via: notificationPayload
+  spec: retail-event-notifications.yaml
+- from: NotificationPayload
+  to: FiAttribute
+  cardinality: has_one
+  via: customFields
+  spec: retail-event-notifications.yaml
+- from: NotificationSubscription
+  to: Party
+  cardinality: has_one
+  via: subscriber
+  spec: retail-event-subscriptions.yaml
+- from: NotificationSubscription
+  to: DateString
+  cardinality: has_one
+  via: effectiveDate
+  spec: retail-event-subscriptions.yaml
+- from: NotificationSubscription
+  to: subscription
+  cardinality: belongs_to
+  via: subscriptionId
+  spec: retail-event-subscriptions.yaml
+  inferred_from: id-reference field name

@@ -1,0 +1,38 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Truist Retail Oauth Authentication
+  version: 1.0.0
+extends: openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+x-generated: '2026-09-04'
+x-method: generated
+x-source: Derived from the verbatim Truist contract at https://developer.truist.com/assets/data/swagger-prod/retail-auth-oauth.yaml
+  ; adds API Evangelist catalog metadata only. The original spec is never mutated.
+actions:
+- target: $.info
+  update:
+    x-api-evangelist:
+      provider: BB&T Corp (Truist)
+      providerId: bbandt-corp
+      apiId: bbandt-corp:retail-oauth-authentication
+      harvested: '2026-09-04'
+      harvestedFrom: https://developer.truist.com/assets/data/swagger-prod/retail-auth-oauth.yaml
+      portal: https://developer.truist.com/api/retail-oauth-authentication/overview
+      documentation: https://developer.truist.com/api/retail-oauth-authentication/documentation
+      lineOfBusiness: Retail
+      apiType: Management
+      artifacts:
+        authentication: authentication/bbandt-corp-authentication.yml
+        scopes: scopes/bbandt-corp-scopes.yml
+        errors: errors/bbandt-corp-problem-types.yml
+        conventions: conventions/bbandt-corp-conventions.yml
+        conformance: conformance/bbandt-corp-conformance.yml
+        lifecycle: lifecycle/bbandt-corp-lifecycle.yml
+        rateLimits: rate-limits/bbandt-corp-rate-limits.yml
+        dataModel: data-model/bbandt-corp-data-model.yml
+- target: $.info
+  update:
+    x-environments:
+    - mode: sandbox
+      url: https://api-sandbox.truist.com/retail/auth/oauth
+    - mode: production
+      url: https://api.truist.com/retail/auth/oauth

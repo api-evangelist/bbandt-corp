@@ -1,14 +1,16 @@
 aid: bbandt-corp
-url: >-
-  https://raw.githubusercontent.com/api-evangelist/bbandt-corp/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/bbandt-corp/refs/heads/main/apis.yml
 name: BB&T Corp (Truist)
-description: >-
-  BB&T Corporation was a major financial services holding company that merged with SunTrust
-  Banks in December 2019 to form Truist Financial Corporation. The combined entity operates
-  as Truist Bank and maintains a developer portal at developer.truist.com offering REST APIs
-  for account information, transaction data, and banking services for personal, small business,
-  and commercial customers. The APIs support open banking integrations and financial technology
-  applications.
+description: BB&T Corporation merged with SunTrust Banks in December 2019 to form Truist Financial Corporation,
+  the sixth-largest US commercial bank. Truist runs an open-banking API program at developer.truist.com
+  and publishes fifteen first-party OpenAPI contracts covering 31 operations — personal and small-business
+  accounts, transactions, client contact, account address and payment networks; commercial accounts, balances
+  and transactions; RTP real-time credit transfers; OAuth 2.0 authentication, customer consent, RFC 7591
+  dynamic client registration, event subscriptions and notifications, and a branch/ATM locator. The retail
+  surface is built to the Financial Data Exchange (FDX) API (V5.4.1, V6.4.1 and v6.5) and every API carries
+  the FAPI x-fapi-interaction-id correlation header. Access is OAuth 2.0 authorization_code with per-customer
+  consent; sandbox is self-serve after registration, production requires manual approval by a Truist engagement
+  team.
 type: Index
 kind: company
 deliveryModel:
@@ -36,175 +38,416 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/bbandt-corp.png
 tags:
-  - Banking
-  - Financial-Services
-  - Open Banking
-  - Truist
-  - BB&T
-  - Fortune 500
+- Banking
+- Financial-Services
+- Open Banking
+- Truist
+- BB&T
+- Fortune 500
 tags_raw:
-  - Banking
-  - Financial Services
-  - Open Banking
-  - Truist
-  - BB&T
-  - Fortune 500
+- Banking
+- Financial Services
+- Open Banking
+- Truist
+- BB&T
+- Fortune 500
 access: 3rd-Party
 created: '2026-03-23'
-modified: '2026-04-21'
-position: Consuming
+modified: '2026-09-04'
+position: Producing
 specificationVersion: '0.23'
 apis:
-  - aid: bbandt-corp:personal-small-business-accounts
-    name: Truist Personal and Small Business Accounts API
-    description: >-
-      Provides access to personal and small business account data including account
-      balances, account details, and account lists for authenticated customers.
-      Supports open banking use cases for fintech applications.
-    humanURL: https://developer.truist.com/api/personal-and-small-business-accounts/overview
-    tags:
-      - Banking
-      - Account
-      - Personal Banking
-      - Small Business
-    tags_raw:
-      - Banking
-      - Accounts
-      - Personal Banking
-      - Small Business
-    properties:
-      - type: Documentation
-        url: https://developer.truist.com/api/personal-and-small-business-accounts/overview
-
-  - aid: bbandt-corp:personal-small-business-transactions
-    name: Truist Personal and Small Business Transactions API
-    description: >-
-      Provides access to transaction history and transaction details for personal
-      and small business bank accounts. Enables fintech applications to retrieve
-      customer transaction data with proper authorization.
-    humanURL: https://developer.truist.com/api/personal-and-small-business-transactions/overview
-    tags:
-      - Banking
-      - Transaction
-      - Personal Banking
-      - Small Business
-    tags_raw:
-      - Banking
-      - Transactions
-      - Personal Banking
-      - Small Business
-    properties:
-      - type: Documentation
-        url: https://developer.truist.com/api/personal-and-small-business-transactions/overview
-
-  - aid: bbandt-corp:commercial-accounts
-    name: Truist Commercial Accounts API
-    description: >-
-      Provides access to commercial banking account data including account balances,
-      account details, and account management for business customers. Supports
-      treasury management and commercial banking integrations.
-    humanURL: https://developer.truist.com/api/commercial-accounts/overview
-    tags:
-      - Banking
-      - Account
-      - Commercial Banking
-    tags_raw:
-      - Banking
-      - Accounts
-      - Commercial Banking
-    properties:
-      - type: Documentation
-        url: https://developer.truist.com/api/commercial-accounts/overview
-
-  - aid: bbandt-corp:commercial-account-transactions
-    name: Truist Commercial Account Transactions API
-    description: >-
-      Provides access to transaction history and transaction details for commercial
-      bank accounts. Supports enterprise financial applications, ERP integrations,
-      and treasury management workflows.
-    humanURL: https://developer.truist.com/api/commercial-account-transactions/overview
-    tags:
-      - Banking
-      - Transaction
-      - Commercial Banking
-    tags_raw:
-      - Banking
-      - Transactions
-      - Commercial Banking
-    properties:
-      - type: Documentation
-        url: https://developer.truist.com/api/commercial-account-transactions/overview
-
-  - aid: bbandt-corp:association-services
-    name: Truist Association Services API
-    description: >-
-      Provides banking and payment services APIs for associations, HOAs, and membership
-      organizations. Supports dues collection, payment processing, and financial
-      management for association management companies.
-    humanURL: https://developer.truist.com/categories/association-services
-    tags:
-      - Banking
-      - Association Services
-      - Payments
-    properties:
-      - type: Documentation
-        url: https://developer.truist.com/categories/association-services
-
-common:
-  - type: DomainSecurity
-    url: security/bbandt-corp-domain-security.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/truistfinancialcorporation
-  - type: Portal
-    url: https://developer.truist.com/
-  - type: Website
-    url: https://www.truist.com/
+- aid: bbandt-corp:commercial-accounts
+  name: Truist Commercial Accounts
+  description: Access a list of commercial accounts. See the full picture of your commercial accounts.
+    Get a complete picture of your clients’ Truist accounts so you can recommend products and services
+    tailored to them. Truist publishes an OpenAPI 3.0.1 contract (v4.3.0) for this product on the Truist
+    Developer Center.
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Banking
+  - Commercial Banking
+  - Open Banking
+  - Information Reporting
+  properties:
   - type: Documentation
-    url: https://developer.truist.com/api/view-api
-  - type: GettingStarted
-    url: https://developer.truist.com/api/working-with-truist
-  - type: TermsOfService
-    url: https://www.truist.com/terms-and-conditions
-  - type: PrivacyPolicy
-    url: https://www.truist.com/privacy-security
-  - type: SpectralRules
-    url: rules/bbandt-spectral-rules.yml
-  - type: Vocabulary
-    url: vocabulary/bbandt-vocabulary.yaml
-  - type: JSONLD
-    url: json-ld/bbandt-context.jsonld
-  - type: Features
-    data:
-      - name: Open Banking APIs
-        description: REST APIs enabling fintech applications to access account and transaction data with customer consent.
-      - name: Personal Banking APIs
-        description: APIs for personal and small business banking account access including balances and transaction history.
-      - name: Commercial Banking APIs
-        description: APIs for commercial account management, treasury operations, and enterprise banking integrations.
-      - name: Association Services
-        description: Specialized APIs for association management companies to handle dues, payments, and financial reporting.
-      - name: OAuth 2.0 Authentication
-        description: Secure OAuth 2.0 based authentication for customer data access with proper consent flows.
-  - type: UseCases
-    data:
-      - name: Personal Finance Apps
-        description: Build personal finance management apps that aggregate account and transaction data for Truist customers.
-      - name: Accounting Software Integration
-        description: Integrate Truist commercial accounts with accounting software like QuickBooks or Xero.
-      - name: Treasury Management
-        description: Enable enterprise treasury teams to access real-time commercial account balances and transaction data.
-      - name: Association Management
-        description: Automate dues collection and financial reporting for homeowners associations and membership organizations.
-  - type: Integrations
-    data:
-      - name: Plaid
-        description: Third-party data aggregator providing alternative connectivity to Truist account data.
-      - name: Tink
-        description: Open banking platform providing access to Truist banking data via aggregation.
-      - name: QuickBooks
-        description: Accounting software integration for Truist commercial banking customers.
-  - type: Blog
-    url: https://media.truist.com/news-releases?pagetemplate=rss
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-commercial-accounts-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-commercial-accounts-overlay.yaml
+- aid: bbandt-corp:commercial-account-balance
+  name: Truist Commercial Account Balance
+  description: Get balance information for the current or previous day. Easily access company balance
+    information when and where you want it. Get balance information when you need it—before making payments
+    to avoid overdraft or for reporting solutions. Truist publishes an OpenAPI 3.0.1 contract (v3.6.0)
+    for this product on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/commercial-account-balance/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Banking
+  - Commercial Banking
+  - Open Banking
+  - Information Reporting
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-commercial-account-balance-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-commercial-account-balance-overlay.yaml
+- aid: bbandt-corp:commercial-account-transactions
+  name: Truist Commercial Account Transactions
+  description: Access transactions from the current or previous day. Access account transactions easily
+    and seamlessly. Access transaction information—for everything from reporting to auditing. Truist publishes
+    an OpenAPI 3.1.0 contract (v3.6.0) for this product on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/commercial-account-transactions/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Banking
+  - Commercial Banking
+  - Open Banking
+  - Information Reporting
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-commercial-account-transactions-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-commercial-account-transactions-overlay.yaml
+- aid: bbandt-corp:personal-small-business-accounts
+  name: Truist Personal and Small Business Accounts
+  description: Access details for checking, savings, credit, loan, and investment accounts. Seamlessly
+    access account information for Truist clients. Truist publishes an OpenAPI 3.1.0 contract (v2.6.0)
+    for this product on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/personal-and-small-business-accounts/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Data
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-accounts-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-accounts-overlay.yaml
+- aid: bbandt-corp:branch-atm-locator
+  name: Truist Branch/ATM Locator
+  description: Locate Truist branches and ATMs. Locate any Truist branch or ATM across our footprint.
+    Quickly locate all Truist branches and ATMs throughout our footprint. And see the opening hours and
+    the facilities available at each individual branch. Truist publishes an OpenAPI 3.0.1 contract (v1.2.0)
+    for this product on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/branch-atm-locator/overview
+  baseURL: https://api-sandbox.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Data
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-locator-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-locator-overlay.yaml
+- aid: bbandt-corp:personal-small-business-transactions
+  name: Truist Personal and Small Business Transactions
+  description: Access transaction data for a specific personal or small business account. Seamlessly access
+    personal and small business transaction information for Truist clients. Truist publishes an OpenAPI
+    3.1.0 contract (v2.4.0) for this product on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/personal-and-small-business-transactions/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Data
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-accounts-transaction-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-accounts-transaction-overlay.yaml
+- aid: bbandt-corp:personal-and-small-business-client-contact
+  name: Truist Personal and Small Business Client Contact
+  description: Get a client's contact info—name, email, address, and phone number. Quickly access client
+    contact information. Truist publishes an OpenAPI 3.1.0 contract (v1.5.0) for this product on the Truist
+    Developer Center.
+  humanURL: https://developer.truist.com/api/personal-and-small-business-client-contact/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Data
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-customers-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-customers-overlay.yaml
+- aid: bbandt-corp:retail-oauth-authentication
+  name: Truist Retail Oauth Authentication
+  description: Set up consent authorization tokens to access a client's Truist account data. OAuth API
+    Truist publishes an OpenAPI 3.1.0 contract (v3.3.0) for this product on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/retail-oauth-authentication/overview
+  baseURL: https://api.truist.com/retail/auth/oauth
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Management
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-auth-oauth-overlay.yaml
+- aid: bbandt-corp:user-consent
+  name: Truist User Consent
+  description: View or revoke a client's consent. Consent API Truist publishes an OpenAPI 3.1.0 contract
+    (v1.1.0) for this product on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/user-consent/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Management
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-consents-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-consents-overlay.yaml
+- aid: bbandt-corp:retail-dynamic-client-registration
+  name: Truist Retail Dynamic Client Registration
+  description: Enable data access platforms to manage registrations for fintech applications. Dynamic
+    Client Registration API Truist publishes an OpenAPI 3.1.0 contract (v1.3.0) for this product on the
+    Truist Developer Center.
+  humanURL: https://developer.truist.com/api/retail-dynamic-client-registration/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Management
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-register-recipient-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-register-recipient-overlay.yaml
+- aid: bbandt-corp:personal-and-small-business-account-payment-networks
+  name: Truist Personal and Small Business Account Payment Networks
+  description: Retrieve tokenized account numbers for initiating transactions on client deposit accounts.
+    Account Payment Networks API Truist publishes an OpenAPI 3.1.0 contract (v1.3.2) for this product
+    on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Data
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-payment-networks-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-payment-networks-overlay.yaml
+- aid: bbandt-corp:account-address
+  name: Truist Account Address
+  description: Retrieve all addresses associated with a specific account. Access account address information
+    for Truist clients Truist publishes an OpenAPI 3.1.0 contract (v1.2.1) for this product on the Truist
+    Developer Center.
+  humanURL: https://developer.truist.com/api/account-address/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Data
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-accounts-contact-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-accounts-contact-overlay.yaml
+- aid: bbandt-corp:credit-transfers
+  name: Truist Credit Transfers
+  description: Process real-time credit transfer payments to and from eligible accounts. Credit Transfers
+    API Truist publishes an OpenAPI 3.1.0 contract (v2.6.0) for this product on the Truist Developer Center.
+  humanURL: https://developer.truist.com/api/credit-transfers/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Banking
+  - Commercial Banking
+  - Open Banking
+  - Real-time payments
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-commercial-credit-transfers-oas-v2-overlay.yaml
+- aid: bbandt-corp:personal-and-small-business-event-notifications
+  name: Truist Personal and Small Business Event Notifications
+  description: Publish a notification to Truist of consent revocation for one of our connected customers.
+    Event Notifications API Truist publishes an OpenAPI 3.1.0 contract (v1.1.0) for this product on the
+    Truist Developer Center.
+  humanURL: https://developer.truist.com/api/personal-and-small-business-event-notifications/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Management
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-event-notifications-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-event-notifications-overlay.yaml
+- aid: bbandt-corp:personal-and-small-business-event-subscriptions
+  name: Truist Personal and Small Business Event Subscriptions
+  description: Subscribe to receive Truist events about your connected customers and their fintech applications.
+    Event Subscriptions API Truist publishes an OpenAPI 3.1.0 contract (v1.2.0) for this product on the
+    Truist Developer Center.
+  humanURL: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/overview
+  baseURL: https://api-secure.truist.com/retail
+  tags:
+  - Banking
+  - Personal Banking
+  - Open Banking
+  - Management
+  properties:
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: OpenAPI
+    url: openapi/bbandt-corp-retail-event-subscriptions-openapi.yml
+  - type: Overlay
+    url: overlays/bbandt-corp-retail-event-subscriptions-overlay.yaml
+common:
+- type: OAuthScopes
+  url: scopes/bbandt-corp-scopes.yml
+- type: Authentication
+  url: authentication/bbandt-corp-authentication.yml
+- type: DomainSecurity
+  url: security/bbandt-corp-domain-security.yml
+- type: LinkedIn
+  url: https://www.linkedin.com/company/truistfinancialcorporation
+- type: Portal
+  url: https://developer.truist.com/
+- type: Website
+  url: https://www.truist.com/
+- type: Documentation
+  url: https://developer.truist.com/api/view-api
+- type: GettingStarted
+  url: https://developer.truist.com/api/working-with-truist
+- type: TermsOfService
+  url: https://www.truist.com/terms-and-conditions
+- type: SpectralRules
+  url: rules/bbandt-spectral-rules.yml
+- type: Vocabulary
+  url: vocabulary/bbandt-vocabulary.yaml
+- type: JSONLD
+  url: json-ld/bbandt-context.jsonld
+- type: Features
+  data:
+  - name: Open Banking APIs
+    description: REST APIs enabling fintech applications to access account and transaction data with customer
+      consent.
+  - name: Personal Banking APIs
+    description: APIs for personal and small business banking account access including balances and transaction
+      history.
+  - name: Commercial Banking APIs
+    description: APIs for commercial account management, treasury operations, and enterprise banking integrations.
+  - name: Association Services
+    description: Specialized APIs for association management companies to handle dues, payments, and financial
+      reporting.
+  - name: OAuth 2.0 Authentication
+    description: Secure OAuth 2.0 based authentication for customer data access with proper consent flows.
+- type: UseCases
+  data:
+  - name: Personal Finance Apps
+    description: Build personal finance management apps that aggregate account and transaction data for
+      Truist customers.
+  - name: Accounting Software Integration
+    description: Integrate Truist commercial accounts with accounting software like QuickBooks or Xero.
+  - name: Treasury Management
+    description: Enable enterprise treasury teams to access real-time commercial account balances and
+      transaction data.
+  - name: Association Management
+    description: Automate dues collection and financial reporting for homeowners associations and membership
+      organizations.
+- type: Integrations
+  data:
+  - name: Plaid
+    description: Third-party data aggregator providing alternative connectivity to Truist account data.
+  - name: Tink
+    description: Open banking platform providing access to Truist banking data via aggregation.
+  - name: QuickBooks
+    description: Accounting software integration for Truist commercial banking customers.
+- type: Blog
+  url: https://media.truist.com/news-releases?pagetemplate=rss
+- type: PrivacyPolicy
+  url: https://www.truist.com/privacy
+- type: APIReference
+  url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+- type: Support
+  url: https://developer.truist.com/contact-us
+- type: HelpCenter
+  url: https://developer.truist.com/faq
+- type: SignUp
+  url: https://developer.truist.com/signup
+- type: Login
+  url: https://developer.truist.com/ui/login
+- type: ErrorCatalog
+  url: errors/bbandt-corp-problem-types.yml
+- type: Conformance
+  url: conformance/bbandt-corp-conformance.yml
+- type: Lifecycle
+  url: lifecycle/bbandt-corp-lifecycle.yml
+- type: Conventions
+  url: conventions/bbandt-corp-conventions.yml
+- type: DataModel
+  url: data-model/bbandt-corp-data-model.yml
+- type: Sandbox
+  url: sandbox/bbandt-corp-sandbox.yml
+- type: Webhooks
+  url: asyncapi/bbandt-corp-event-notifications-webhooks.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: LLMsTxt
+  url: llms/bbandt-corp-llms.txt
+- type: X-MCPServerCandidate
+  url: mcp/bbandt-corp-mcp.yml
+- type: Packages
+  url: packages/bbandt-corp-packages.yml
+- type: Plans
+  url: plans/bbandt-corp-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/bbandt-corp-rate-limits.yml
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-04'
+  status: enriched
+  artifacts_added: 65
+  pass: local-v3

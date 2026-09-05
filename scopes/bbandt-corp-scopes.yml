@@ -1,0 +1,161 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/bbandt-corp-commercial-account-balance-openapi.yml, openapi/bbandt-corp-commercial-account-transactions-openapi.yml,
+  openapi/bbandt-corp-commercial-accounts-openapi.yml, openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml,
+  openapi/bbandt-corp-retail-accounts-contact-openapi.yml, openapi/bbandt-corp-retail-accounts-openapi.yml, openapi/bbandt-corp-retail-accounts-transaction-openapi.yml,
+  openapi/bbandt-corp-retail-auth-oauth-openapi.yml, openapi/bbandt-corp-retail-customers-openapi.yml, openapi/bbandt-corp-retail-payment-networks-openapi.yml
+schemes:
+- name: OAuth
+  source: openapi/bbandt-corp-commercial-account-balance-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+    tokenUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-commercial-account-transactions-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+    tokenUrl: https://api-sandbox.truist.com/commercial/auth/v1/oauth/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-commercial-accounts-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+    tokenUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+    tokenUrl: https://api-sandbox.truist.com/commercial/auth/v2/oauth/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-retail-accounts-contact-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize
+    tokenUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-retail-accounts-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize
+    tokenUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-retail-accounts-transaction-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize
+    tokenUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize
+    tokenUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-retail-customers-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api-sandbox.truist.com/retail-aggregator/auth/v1/oauth/authorize
+    tokenUrl: https://api-sandbox.truist.com/retail-aggregator/auth/v1/oauth/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+- name: OAuth
+  source: openapi/bbandt-corp-retail-payment-networks-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize
+    tokenUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/token
+  description: The production authorization URL will be provided after the onboarding process is completed.
+scopes:
+- scope: ACCOUNT_BASIC
+  description: Scope required to access accountList
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-accounts-openapi.yml
+- scope: ACCOUNT_DETAILED
+  description: Scope required to access account details of accountId
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-accounts-openapi.yml
+- scope: CUSTOMER_CONTACT
+  description: Scope required to access account contact
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-accounts-contact-openapi.yml
+  - openapi/bbandt-corp-retail-customers-openapi.yml
+- scope: PAYMENT_SUPPORT
+  description: Scope required to access payment networks supported by the account
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-payment-networks-openapi.yml
+- scope: TRANSACTIONS
+  description: Scope required to access account transactions
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-accounts-transaction-openapi.yml
+- scope: address
+  description: This scope value requests access to the email and email_verified Claims.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+- scope: email
+  description: This scope value requests access to the phone_number and phone_number_verified Claims.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+- scope: phone
+  description: This scope value requests access to the address Claim
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+- scope: profile
+  description: This scope value requests access to the End-User's default profile Claims, which are:name, family_name,
+    given_name, middle_name, zoneinfo, locale, and updated_at.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+- scope: read:accounts
+  description: Scope is requied to access account balance data
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-commercial-account-balance-openapi.yml
+  - openapi/bbandt-corp-commercial-account-transactions-openapi.yml
+  - openapi/bbandt-corp-commercial-accounts-openapi.yml
+  - openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+- scope: read:payments
+  description: Scope required to read payment details
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+- scope: write:payments
+  description: Scope required to create or update payments
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+docs: https://developer.truist.com/api/retail-oauth-authentication/documentation
+note: Two scope vocabularies coexist. The retail (FDX) APIs use resource scopes — ACCOUNT_BASIC (account list), ACCOUNT_DETAILED
+  (account detail), TRANSACTIONS, CUSTOMER_CONTACT, PAYMENT_SUPPORT — plus the standard OIDC scopes profile, email, phone
+  and address. The commercial APIs use verb:resource scopes — read:accounts, read:payments, write:payments. Scope descriptions
+  are taken verbatim from the specs; note that Truist swapped the descriptions of the email/phone/address OIDC scopes
+  in retail-auth-oauth.yaml, which is a defect in their contract, not in this reading.

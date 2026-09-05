@@ -1,0 +1,2333 @@
+openapi: 3.1.0
+info:
+  version: '2.6.0'
+  # build: '1'
+  title: Personal and Small Business Accounts
+  description: Truist Financial, following FDX V5.4.1 Core API
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+  x-fdx-csdf-account-categories: [ANY]
+servers:
+  - url: 'https://api-sandbox.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Sandbox environment
+  - url: 'https://apicert-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Certification environment
+  - url: 'https://api-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Production environment
+security:
+  - OAuth: [ACCOUNT_BASIC, ACCOUNT_DETAILED]
+tags:
+  - name: Account Information
+    description: Search and view customer accounts
+paths:
+  ############################################################
+  #
+  # Core paths
+  #
+  ############################################################
+
+  /v2/accounts:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+    x-fdx-csdf-account-categories: [ANY]
+    get:
+      operationId: searchForAccounts
+      tags:
+        - Account Information
+      summary: Search for accounts
+      description: Query all information for user accounts
+      x-fdx-csdf-account-categories: [ANY]
+      parameters:
+        - $ref: '#/components/parameters/ResultTypeQuery'
+      responses:
+        '200':
+          description: Array of accounts
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accounts'
+              examples:
+                accountList-resultType-as-details:
+                  summary: resultType as details
+                  value:
+                    accounts:
+                      - depositAccount:
+                          accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                          accountNumber: '***************11111'
+                          accountCategory: DEPOSIT_ACCOUNT
+                          accountType: CHECKING
+                          nickname: Checking 1111
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************11111'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 48302.6
+                          availableBalance: 48300.6
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 0.01
+                          transferIn: true
+                          transferOut: true
+                          billPayStatus: ACTIVE
+                      - depositAccount:
+                          accountId: CD69feLdRMb8EskxYG2KepL4XLiSnOFRyyT
+                          accountNumber: '***************22222'
+                          accountCategory: DEPOSIT_ACCOUNT
+                          accountType: SAVINGS
+                          nickname: nickname 2222
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************22222'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 1402.23
+                          availableBalance: 1400.23
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 0.01
+                          transferIn: true
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+                      - depositAccount:
+                          accountId: we3CrAgVWYks1hhQTjWOlROIxaY4SXoy45e
+                          accountNumber: '***************33333'
+                          accountCategory: DEPOSIT_ACCOUNT
+                          accountType: CD
+                          nickname: CD 3333
+                          routingTransitNumber: '053201607'
+                          accountNumberDisplay: '***************3333'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 32613.85
+                          availableBalance: 0.0
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 0.01
+                          transferIn: false
+                          transferOut: false
+                          billPayStatus: NOT_AVAILABLE
+                      - locAccount:
+                          accountId: 300ucQsGTV9Tlm2Sl3yy2hF4x60OmrFCerw
+                          accountNumber: '***************66666'
+                          accountCategory: LOC_ACCOUNT
+                          accountType: CREDITCARD
+                          nickname: Visa Card 6666
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************66666'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 100.0
+                          availableBalance: 900.0
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 0.0
+                          transferIn: true
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+                      - locAccount:
+                          accountId: Y4qEwEk62xYOrpKIEssEk6ztpCOQdhfXtle
+                          accountNumber: '***************77777'
+                          accountCategory: LOC_ACCOUNT
+                          accountType: CREDITCARD
+                          nickname: Master Card 7777
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************77777'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 1834.57
+                          availableBalance: 23165.0
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 0.0
+                          transferIn: true
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+                      - locAccount:
+                          accountId: PsBgRpTAT66ogdvy0wAa3qFZNpiDigawtQS
+                          accountNumber: '***************08888'
+                          accountCategory: LOC_ACCOUNT
+                          accountType: LINEOFCREDIT
+                          nickname: Credit Line 8888 08888
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************88888'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 230.86
+                          availableBalance: 249769.6
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 0.0
+                          transferIn: true
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+                      - locAccount:
+                          accountId: apPAcDP0EJZpFYM9cAJCe2k0DENEX4rjGOO
+                          accountNumber: '***************99999'
+                          accountCategory: LOC_ACCOUNT
+                          accountType: LINEOFCREDIT
+                          nickname: Home Equity Line 9999
+                          routingTransitNumber: '051503394'
+                          accountNumberDisplay: '***************99999'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 31869.32
+                          availableBalance: 12258.61
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 0.0
+                          transferIn: true
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+                      - loanAccount:
+                          accountId: YEseynEIcdFdAkyDWllqMJ3Yu7tGUPmARot
+                          accountNumber: '***************10010'
+                          accountCategory: LOAN_ACCOUNT
+                          accountType: PERSONALLOAN
+                          nickname: Loan 10010/NC Land
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************10010'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 13757.84
+                          availableBalance: 485.19
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 4.25
+                          transferIn: false
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+                      - loanAccount:
+                          accountId: 35igCYFycMrL0l470ny9wuE5mMoa2LXOoas
+                          accountNumber: '***************11011'
+                          accountCategory: LOAN_ACCOUNT
+                          accountType: MORTGAGE
+                          nickname: Mortgage 1011
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************11011'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 2130.29
+                          availableBalance: 948.36
+                          currency:
+                            currencyCode: USD
+                          contact:
+                            holders:
+                              - relationship: PRIMARY
+                          interestRate: 0.0
+                          transferIn: false
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+                      - investmentAccount:
+                          accountId: MNAQSglxnPDZk4ccuQ7qV8mP
+                          accountNumber: '*******12012'
+                          accountCategory: INVESTMENT_ACCOUNT
+                          accountType: BROKERAGEPRODUCT
+                          nickname: Investments 2012
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '*******12012'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 140037.25
+                          availableBalance: 140037.25
+                          currency:
+                            currencyCode: USD
+                          interestRate: 0.0
+                          transferIn: true
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+                      - investmentAccount:
+                          accountId: ras1TIme7BN6bKcnZBnYVmPrzvBSO7w42ft
+                          accountNumber: '***************13013'
+                          accountCategory: INVESTMENT_ACCOUNT
+                          accountType: TRUST
+                          nickname: IRA 3013
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************13013'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 729870.95
+                          availableBalance: 785556.76
+                          currency:
+                            currencyCode: USD
+                          interestRate: 0.0
+                          transferIn: false
+                          transferOut: false
+                          billPayStatus: NOT_AVAILABLE
+                      - investmentAccount:
+                          accountId: cccoayXSAFQhGaFgjSbzJdDOayMIXSHU64e
+                          accountNumber: '***************14014'
+                          accountCategory: INVESTMENT_ACCOUNT
+                          accountType: IRA
+                          nickname: IRA 4014
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '***************14014'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 27775.64
+                          availableBalance: 0.0
+                          currency:
+                            currencyCode: USD
+                          interestRate: 0.2
+                          transferIn: false
+                          transferOut: false
+                          billPayStatus: NOT_AVAILABLE
+                      - investmentAccount:
+                          accountId: BFFS5lQdx8yXRVj8wkY6
+                          accountNumber: '****15015'
+                          accountCategory: INVESTMENT_ACCOUNT
+                          accountType: BROKERAGEPRODUCT
+                          nickname: Scott Stringfellow 5015
+                          routingTransitNumber: '053101121'
+                          accountNumberDisplay: '****15015'
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 50689.0
+                          availableBalance: 50689.0
+                          currency:
+                            currencyCode: USD
+                          interestRate: 0.2
+                          transferIn: true
+                          transferOut: true
+                          billPayStatus: NOT_AVAILABLE
+
+                accountList-resultType-as-lightweight:
+                  summary: resultType as lightweight
+                  value:
+                    accounts:
+                      - depositAccount:
+                          accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                          accountCategory: DEPOSIT_ACCOUNT
+                          accountType: CHECKING
+                          nickname: Checking 1111
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 48302.6
+                      - depositAccount:
+                          accountId: CD69feLdRMb8EskxYG2KepL4XLiSnOFRyyT
+                          accountCategory: DEPOSIT_ACCOUNT
+                          accountType: SAVINGS
+                          nickname: nickname 2222
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 1402.23
+                      - depositAccount:
+                          accountId: we3CrAgVWYks1hhQTjWOlROIxaY4SXoy45e
+                          accountCategory: DEPOSIT_ACCOUNT
+                          accountType: CD
+                          nickname: CD 3333
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 32613.85
+                      - locAccount:
+                          accountId: 300ucQsGTV9Tlm2Sl3yy2hF4x60OmrFCerw
+                          accountCategory: LOC_ACCOUNT
+                          accountType: CREDITCARD
+                          nickname: Visa Card 6666
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 100.0
+                      - locAccount:
+                          accountId: Y4qEwEk62xYOrpKIEssEk6ztpCOQdhfXtle
+                          accountCategory: LOC_ACCOUNT
+                          accountType: CREDITCARD
+                          nickname: Master Card 7777
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 1834.57
+                      - locAccount:
+                          accountId: PsBgRpTAT66ogdvy0wAa3qFZNpiDigawtQS
+                          accountCategory: LOC_ACCOUNT
+                          accountType: LINEOFCREDIT
+                          nickname: Credit Line 8888 08888
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 230.86
+                      - locAccount:
+                          accountId: apPAcDP0EJZpFYM9cAJCe2k0DENEX4rjGOO
+                          accountCategory: LOC_ACCOUNT
+                          accountType: LINEOFCREDIT
+                          nickname: Home Equity Line 9999
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 31869.32
+                      - loanAccount:
+                          accountId: YEseynEIcdFdAkyDWllqMJ3Yu7tGUPmARot
+                          accountCategory: LOAN_ACCOUNT
+                          accountType: PERSONALLOAN
+                          nickname: Loan 10010/NC Land
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 13757.84
+                      - loanAccount:
+                          accountId: 35igCYFycMrL0l470ny9wuE5mMoa2LXOoas
+                          accountCategory: LOAN_ACCOUNT
+                          accountType: MORTGAGE
+                          nickname: Mortgage 1011
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 2130.29
+                      - investmentAccount:
+                          accountId: MNAQSglxnPDZk4ccuQ7qV8mP
+                          accountCategory: INVESTMENT_ACCOUNT
+                          accountType: BROKERAGEPRODUCT
+                          nickname: Investments 2012
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 140037.25
+                      - investmentAccount:
+                          accountId: ras1TIme7BN6bKcnZBnYVmPrzvBSO7w42ft
+                          accountCategory: INVESTMENT_ACCOUNT
+                          accountType: TRUST
+                          nickname: IRA 3013
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 729870.95
+                      - investmentAccount:
+                          accountId: cccoayXSAFQhGaFgjSbzJdDOayMIXSHU64e
+                          accountCategory: INVESTMENT_ACCOUNT
+                          accountType: IRA
+                          nickname: IRA 4014
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 27775.64
+                      - investmentAccount:
+                          accountId: BFFS5lQdx8yXRVj8wkY6
+                          accountCategory: INVESTMENT_ACCOUNT
+                          accountType: BROKERAGEPRODUCT
+                          nickname: Scott Stringfellow 5015
+                          status: OPEN
+                          balanceAsOf: '2022-03-17T00:00:00.000Z'
+                          currentBalance: 50689.0
+        '400':
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_RESULTTYPE:
+                  value:
+                    code: '401'
+                    message: Bad request. resultType must either be lightweight or details
+                INVALID_SCOPE:
+                  value:
+                    code: '401'
+                    message: missing or invalid scope
+                INVALID_JSON:
+                  value:
+                    code: '401'
+                    message: The request payload is not in a valid JSON format
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Forbidden
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_COUNTRY_ID:
+                  value:
+                    code: '403'
+                    message: Service is not whitelisted for this country
+                INVALID_ORIGIN:
+                  value:
+                    code: '403'
+                    message: Invalid origin
+                INVALID_IP:
+                  value:
+                    code: '403'
+                    message: Invalid IP
+                INVALID_SCOPE:
+                  value:
+                    code: '602'
+                    message: Customer connection does not authorize account basic or account details
+                NO_APIPRODUCT_MATCHFOUND:
+                  value:
+                    code: '403'
+                    message: Data recipient connection does not include account basic or account details
+        '404':
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: '701'
+                    message: URI does not represent a recognised resource
+                ACCOUNT_NOT_FOUND:
+                  value:
+                    code: '701'
+                    message: Account not found
+                CUSTOMER_NOT_FOUND:
+                  value:
+                    code: '601'
+                    message: Customer not found
+        '405':
+          $ref: '#/components/responses/405'
+        '409':
+          $ref: '#/components/responses/409'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+      security:
+        - OAuth: [ACCOUNT_BASIC]
+
+  /v2/accounts/{accountId}:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+    x-fdx-csdf-account-categories: [ANY]
+    get:
+      operationId: getAccount
+      tags:
+        - Account Information
+      summary: Get an account
+      description: Get a specific account
+      x-fdx-csdf-account-categories: [ANY]
+      parameters:
+        - $ref: '#/components/parameters/AccountIdPath'
+      responses:
+        '200':
+          description: >-
+            This can be one of DepositAccount, LoanAccount, LocAccount or InvestmentAccount
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountWithDetails'
+              examples:
+                Checking-DepositAccount:
+                  summary: Checking Deposit Account
+                  value:
+                    depositAccount:
+                      accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                      accountCategory: DEPOSIT_ACCOUNT
+                      accountType: CHECKING
+                      accountNumber: '***************11111'
+                      accountNumberDisplay: '***************11111'
+                      productName: Classic Checking
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      lineOfBusiness: CONSUMER
+                      routingTransitNumber: '053101121'
+                      balanceType: ASSET
+                      contact:
+                        holders:
+                          - relationship: PRIMARY
+                      interestRate: 0.01
+                      annualPercentageYield: 0.01
+                      lastActivityDate: '2021-12-06'
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      currentBalance: 48302.6
+                      availableBalance: 48302.6
+
+                Saving-DepositAccount:
+                  summary: Saving Deposit Account
+                  value:
+                    depositAccount:
+                      accountId: CD69feLdRMb8EskxYG2KepL4XLiSnOFRyyT
+                      accountCategory: DEPOSIT_ACCOUNT
+                      accountType: SAVINGS
+                      accountNumber: '***************22222'
+                      accountNumberDisplay: '***************22222'
+                      productName: PERSONAL REGULAR SAVINGS RATE
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      lineOfBusiness: CONSUMER
+                      routingTransitNumber: '053101121'
+                      balanceType: ASSET
+                      contact:
+                        holders:
+                          - relationship: PRIMARY
+                      interestRate: 0.01
+                      annualPercentageYield: 0.01
+                      lastActivityDate: '2022-02-14'
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      currentBalance: 1402.23
+                      availableBalance: 1402.23
+
+                CD-DepositAccount:
+                  summary: Certificate of Deposit (CD) Account
+                  value:
+                    depositAccount:
+                      accountId: we3CrAgVWYks1hhQTjWOlROIxaY4SXoy45e
+                      accountCategory: DEPOSIT_ACCOUNT
+                      accountType: CD
+                      accountNumber: '***************33333'
+                      accountNumberDisplay: '***************33333'
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: ASSET
+                      interestRate: 0.01
+                      annualPercentageYield: 0.01
+                      lastActivityDate: '2022-03-16'
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      currentBalance: 32613.85
+                      availableBalance: 32613.85
+                      interestYtd: 0.8
+                      term: 6
+                      maturityDate: '2022-09-16'
+
+                CreditCard-locAccount:
+                  summary: Credit Card
+                  value:
+                    locAccount:
+                      accountId: 300ucQsGTV9Tlm2Sl3yy2hF4x60OmrFCerw
+                      accountCategory: LOC_ACCOUNT
+                      accountType: CREDITCARD
+                      accountNumber: '***************66666'
+                      accountNumberDisplay: '***************66666'
+                      productName: COMMERCIAL Corporate Executive
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: LIABILITY
+                      contact:
+                        holders:
+                          - relationship: PRIMARY
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      creditLine: 1000.0
+                      availableCredit: 900.0
+                      nextPaymentDate: '2022-04-03'
+                      currentBalance: 100.0
+                      minimumPaymentAmount: 0.0
+                      lastPaymentAmount: 0.0
+                      lastPaymentDate: '9999-01-01'
+                      pastDueAmount: 0.0
+                      lastStmtBalance: 100.0
+                      lastStmtDate: '2022-03-09'
+                      cashAdvanceLimit: 1000.0
+                      availableCash: 900.0
+                      financeCharges: 0.0
+                      cardNetwork: VISA
+                      purchasesApr: 18.99
+                      advancesApr: 24.99
+                      transfersApr: 22.5
+
+                CLA/CLN -Loc account:
+                  summary: CLA/CLN
+                  value:
+                    locAccount:
+                      accountId: apPAcDP0EJZpFYM9cAJCe2k0DENEX4rjGOO
+                      accountCategory: LOC_ACCOUNT
+                      accountType: LINEOFCREDIT
+                      accountNumber: '***************99999'
+                      accountNumberDisplay: '***************99999'
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: LIABILITY
+                      contact:
+                        holders:
+                          - relationship: PRIMARY
+                      interestRate: 2.74
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      creditLine: 98000.0
+                      availableCredit: 7355.35
+                      nextPaymentAmount: 190.6
+                      nextPaymentDate: '2022-03-18'
+                      currentBalance: 90991.75
+                      lastPaymentAmount: 250.0
+                      lastPaymentDate: '2022-02-18'
+                      lastStmtDate: '2022-02-21'
+                      payOffAmount: 90991.75
+                      maturityDate: '2026-04-13'
+                      originalPrincipal: 98000.0
+                      originatingDate: '2016-04-13'
+                      interestPaidYearToDate: 422.65
+                      purchasesApr: 18.99
+                      advancesApr: 24.99
+                      transfersApr: 22.5
+
+                CRL-locAccount:
+                  summary: CRL
+                  value:
+                    locAccount:
+                      accountId: PsBgRpTAT66ogdvy0wAa3qFZNpiDigawtQS
+                      accountCategory: LOC_ACCOUNT
+                      accountType: LINEOFCREDIT
+                      accountNumber: '***************08888'
+                      accountNumberDisplay: '***************08888'
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: LIABILITY
+                      contact:
+                        holders:
+                          - relationship: PRIMARY
+                      interestRate: 0.18
+                      lastActivityDate: '2022-03-15'
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      creditLine: 1200.0
+                      availableCredit: 1198.98
+                      nextPaymentAmount: 0.0
+                      currentBalance: 1.02
+                      lastPaymentAmount: 0.0
+                      lastStmtDate: '2022-02-22'
+                      payOffAmount: 1.02
+                      originalPrincipal: 1200.0
+                      originatingDate: '1989-08-03'
+                      purchasesApr: 18.99
+                      advancesApr: 24.99
+                      transfersApr: 22.5
+
+                CLA-consumerloan:
+                  summary: CRL Consumer Loan
+                  value:
+                    loanAccount:
+                      accountId: YEseynEIcdFdAkyDWllqMJ3Yu7tGUPmARot
+                      accountCategory: LOAN_ACCOUNT
+                      accountType: PERSONALLOAN
+                      accountNumber: '***************79001'
+                      accountNumberDisplay: '***************79001'
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: LIABILITY
+                      contact:
+                        holders:
+                          - relationship: PRIMARY
+                      interestRate: 9.5
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      principalBalance: 13757.84
+                      originalPrincipal: 60660.0
+                      originatingDate: '2005-11-15'
+                      nextPaymentAmount: 485.19
+                      nextPaymentDate: '2023-05-15'
+                      payOffAmount: 13872.47
+                      lastPaymentAmount: 0.0
+                      lastPaymentDate: '2022-03-14'
+                      maturityDate: '2023-10-15'
+                      interestPaidYearToDate: 195.19
+
+                Mortgage-loan:
+                  summary: Mortgage Loan
+                  value:
+                    loanAccount:
+                      accountId: 35igCYFycMrL0l470ny9wuE5mMoa2LXOoas
+                      accountCategory: LOAN_ACCOUNT
+                      accountType: MORTGAGE
+                      accountNumber: '***************11011'
+                      accountNumberDisplay: '***************11011'
+                      currency:
+                        currencyCode: USD
+                      interestRate: 0.075
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      principalBalance: 2130.29
+                      escrowBalance: 948.36
+                      originalPrincipal: 80493.9
+                      originatingDate: '1992-10-14'
+                      maturityDate: '2022-11-01'
+                      interestPaidYearToDate: 60.53
+                      contact:
+                        holders:
+                          - relationship: PRIMARY
+
+                IRA:
+                  summary: IRA INV
+                  value:
+                    investmentAccount:
+                      accountId: cccoayXSAFQhGaFgjSbzJdDOayMIXSHU64e
+                      accountCategory: INVESTMENT_ACCOUNT
+                      accountType: IRA
+                      accountNumber: '***************14014'
+                      accountNumberDisplay: '***************14014'
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: ASSET
+                      interestRate: 0.3
+                      lastActivityDate: '2022-02-28'
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      currentValue: 7857.42
+                      availableCashBalance: 7857.42
+                      interestYtd: 3.81
+                      maturityDate: '2022-04-08'
+
+                Brokerage:
+                  summary: Brokerage Product INV
+                  value:
+                    investmentAccount:
+                      accountId: MNAQSglxnPDZk4ccuQ7qV8mP
+                      accountCategory: INVESTMENT_ACCOUNT
+                      accountType: BROKERAGEPRODUCT
+                      accountNumber: '*******12012'
+                      accountNumberDisplay: '*******12012'
+                      nickname: Investments 3399
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: ASSET
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      currentValue: 78560
+                      availableCashBalance: 973410.09
+                      holdings:
+                        - holdingId: "037833100"
+                          securityId: "037833100"
+                          holdingName: "Common Stock"
+                          holdingType: "STOCK"
+                          positionType: "LONG"
+                          description: "APPLE INC"
+                          purchasedPrice: 200
+                          currentUnitPrice: 259.48
+                          units: 3.00
+                          currency:
+                            currencyCode: "USD"
+                          marketValue: 778.44
+                          debtSecurity:
+                            securityCategory: "DEBT_SECURITY"
+                            parValue: 5
+                            debtType: "COUPON"
+                            debtClass: "OTHER"
+                            couponRate: 5
+                            bondMaturityDate: '2025-07-15'
+                          taxLots:
+                            - currentValue: 30975.988
+                              costBasis: 25.84
+                              originalPurchaseDate: '2014-08-14'
+                              positionType: "LONG"
+                              purchasedPrice: 39
+                              quantity: 1144.715
+                        - holdingId: "38143AYM1"
+                          securityId: "38143AYM1"
+                          holdingName: "GOLDMAN SACHS BK USA NY CD ZERO CPN 0.00000% 09/03/2019"
+                          holdingType: "CD"
+                          positionType: "LONG"
+                          description: "Certificates of Deposit"
+                          purchasedPrice: 300
+                          currentUnitPrice: 1
+                          units: 1035.97
+                          currency:
+                            currencyCode: "USD"
+                          marketValue: 1035.97
+                          taxLots:
+                            - currentValue: 30975.988
+                              originalPurchaseDate: '2014-08-14'
+                              positionType: "LONG"
+                              purchasedPrice: 30
+                              quantity: 1144.715
+                      transferIn: true
+                      transferOut: true
+                      billPayStatus: "NOT_AVAILABLE"
+
+                SSF:
+                  summary: SSF
+                  value:
+                    investmentAccount:
+                      accountId: BFFS5lQdx8yXRVj8wkY6
+                      accountCategory: INVESTMENT_ACCOUNT
+                      accountType: BROKERAGEPRODUCT
+                      accountNumber: '*******15015'
+                      accountNumberDisplay: '*******15015'
+                      nickname: "Investments 1250"
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: ASSET
+                      currentValue: 0
+                      holdings:
+                        - holdingId: "FDIC66952"
+                          securityId: "FDIC66952"
+                          holdingName: "TIERED RATE MULTIBANK SWEEP NON-MANAGED"
+                          holdingType: "MUTUALFUND"
+                          description: "Non-Fidelity Mutual Funds"
+                          symbol: "QTMNQ"
+                          currentUnitPrice: 1
+                          units: 1035.97
+                          currency:
+                            currencyCode: "USD"
+                          marketValue: 1035.97
+                      availableCashBalance: 1035.97
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      transferIn: true
+                      transferOut: true
+                      billPayStatus: "NOT_AVAILABLE"
+
+                TRS:
+                  summary: TRS
+                  value:
+                    investmentAccount:
+                      accountId: ras1TIme7BN6bKcnZBnYVmPrzvBSO7w42ft
+                      accountCategory: INVESTMENT_ACCOUNT
+                      accountType: TRUST
+                      accountNumber: '***************13013'
+                      accountNumberDisplay: '***************13013'
+                      nickname: "Investments 3399"
+                      status: OPEN
+                      currency:
+                        currencyCode: USD
+                      balanceType: ASSET
+                      balanceAsOf: '2022-03-17T00:00:00.000Z'
+                      currentValue: 531723.6
+                      availableCashBalance: 0
+                      holdings:
+                        - holdingId: "291011104"
+                          securityId: "291011104"
+                          holdingName: "EMERSON ELEC CO"
+                          holdingType: "STOCK"
+                          description: "Common Stock"
+                          symbol: "EMR"
+                          currentUnitPrice: 116.15
+                          currentUnitPriceDate: "2025-05-21"
+                          units: 94.0
+                          currency:
+                            currencyCode: "USD"
+                          taxLots:
+                            - currentValue: 217.1
+                              costBasis: 73.43
+                              originalPurchaseDate: '2025-03-20'
+                              positionType: "LONG"
+                              purchasedPrice: 7.34
+                              quantity: 10
+                        - holdingId: "969457100"
+                          securityId: "969457100"
+                          holdingName: "WILLIAMS COS INC"
+                          holdingType: "STOCK"
+                          description: "Common Stock"
+                          symbol: "WMB"
+                          currentUnitPrice: 57.93
+                          currentUnitPriceDate: "2025-05-21"
+                          units: 246.0
+                          currency:
+                            currencyCode: "USD"
+                          taxLots:
+                            - currentValue: 217.1
+                              costBasis: 73.43
+                              originalPurchaseDate: '2025-03-20'
+                              positionType: "LONG"
+                              purchasedPrice: 7.34
+                              quantity: 6
+                      billPayStatus: "NOT_AVAILABLE"
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Forbidden
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_COUNTRY_ID:
+                  value:
+                    code: '403'
+                    message: Service is not whitelisted for this country
+                INVALID_ORIGIN:
+                  value:
+                    code: '403'
+                    message: Invalid origin
+                INVALID_IP:
+                  value:
+                    code: '403'
+                    message: Invalid IP
+                INVALID_SCOPE:
+                  value:
+                    code: '602'
+                    message: Customer connection does not authorize account details
+                NO_APIPRODUCT_MATCHFOUND:
+                  value:
+                    code: '403'
+                    message: Data recipient connection does not include account details
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '409':
+          $ref: '#/components/responses/409'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+      security:
+        - OAuth: [ACCOUNT_DETAILED]
+
+components:
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize'
+          tokenUrl: 'https://api-sandbox.truist.com/retail/auth/oauth/v3/token'
+          scopes:
+            ACCOUNT_BASIC: Scope required to access accountList
+            ACCOUNT_DETAILED: Scope required to access account details of accountId
+
+  parameters:
+    ############################################################
+    #
+    # Core request parameters
+    #
+    ############################################################
+
+    AccountIdPath:
+      name: accountId
+      in: path
+      description: Account Identifier
+      required: true
+      schema:
+        type: string
+      example: 'uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr'
+
+    ############################################################
+    #
+    # Shared request parameters (usable by core and all extensions)
+    #
+    ############################################################
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    FdxApiActorTypeHeader:
+      name: FDX-API-Actor-Type
+      in: header
+      description: Identifies whether the customer is present (USER) or it is a BATCH operation
+      schema:
+        $ref: '#/components/schemas/ActorType'
+      example: BATCH
+
+    ResultTypeQuery:
+      name: resultType
+      in: query
+      description: >-
+        Flag to indicate if you want a lightweight array of metadata (AccountDescriptor
+        or Tax or Operations) or full item details (Account or a Tax subclass or
+        Availability details). If set to 'lightweight', should only return the
+        fields associated with the metadata entity.
+        This field is not required, defaults to lightweight
+      required: false
+      schema:
+        $ref: '#/components/schemas/ResultType'
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  schemas:
+    ############################################################
+    #
+    # Core data entities
+    #
+    ############################################################
+
+    Account:
+      title: Account entity
+      description: An abstract account entity that concrete account entities extend
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      allOf:
+        - $ref: '#/components/schemas/AccountDescriptor'
+        - type: object
+          properties:
+            lineOfBusiness:
+              type: string
+              description: >-
+                The line of business, either CONSUMER or BUSINESS
+              x-fdx-csdf-account-categories: [ANY]
+            routingTransitNumber:
+              type: string
+              description: >-
+                Routing transit number (RTN) associated with
+                account number at owning institution
+              x-fdx-csdf-account-categories: [REG_E]
+            balanceType:
+              $ref: '#/components/schemas/BalanceType'
+              description: >-
+                ASSET (positive transaction amount increases balance),
+                LIABILITY (positive transaction amount decreases balance)
+              x-fdx-csdf-account-categories: [ANY]
+            contact:
+              $ref: '#/components/schemas/AccountContact'
+              description: Contact information associated with this account
+              x-fdx-csdf-account-categories: [ANY]
+            interestRate:
+              type: number
+              description: Interest Rate of Account
+            transferIn:
+              type: boolean
+              description: Account is eligible for incoming transfers
+              x-fdx-csdf-account-categories: [REG_E]
+            transferOut:
+              type: boolean
+              description: Account is eligible for outgoing transfers
+              x-fdx-csdf-account-categories: [REG_E]
+            billPayStatus:
+              $ref: '#/components/schemas/AccountBillPayStatus'
+              description: Defines account's ability to participate in bill payments
+              x-fdx-csdf-account-categories: [REG_E]
+            lastActivityDate:
+              $ref: '#/components/schemas/DateString'
+              description: Date that last transaction occurred on account
+              x-fdx-csdf-account-categories: [ANY]
+
+    AccountContact:
+      title: Account Contact entity
+      description: Contact information for the account
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        holders:
+          type: array
+          x-fdx-csdf-account-categories: [ANY]
+          items:
+            $ref: '#/components/schemas/AccountHolder'
+          description: Owners of the account
+
+    AccountHolder:
+      title: Account Holder entity
+      description: >-
+        Defines the account holder's relationship with an account.
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        relationship:
+          $ref: '#/components/schemas/AccountHolderRelationship'
+          description: "Customer's relationship to the account"
+          x-fdx-csdf-account-categories: [ANY]
+
+    AccountHolderRelationship:
+      title: Account Holder Relationship
+      description: Types of relationships between accounts and holders
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - AUTHORIZED_USER
+        - BUSINESS
+        - POWER_OF_ATTORNEY
+        - PRIMARY
+        - PRIMARY_JOINT
+        - PRIMARY_JOINT_TENANTS
+        - SECONDARY
+        - TRUSTEE
+
+    AccountDescriptor:
+      title: Account Descriptor entity
+      description: This descriptor provides minimal information about the account for use in lightweight arrays
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        accountCategory:
+          $ref: '#/components/schemas/AccountCategory'
+          description: The category of account
+          x-fdx-csdf-account-categories: [ANY]
+        accountId:
+          description: >-
+            Long-term persistent identity of the account, though not an account number.
+            This identity must be unique to the owning institution
+          $ref: '#/components/schemas/Identifier'
+          x-fdx-csdf-account-categories: [ANY]
+        accountType:
+          $ref: '#/components/schemas/AccountType'
+          description: Account type
+          x-fdx-csdf-account-categories: [ANY]
+        accountNumber:
+          description: >-
+            Shows masked customer account number. To retrieve a tokenized account number and its
+            corresponding routingTransitNumber for money movement transactions on a Checking
+            or Savings (DDA) account, call the Truist Account Payment Networks API for this accountId
+          type: string
+          x-fdx-csdf-account-categories: [ANY]
+        accountNumberDisplay:
+          description: >-
+            Account display number for the end user's handle at the owning
+            institution. This is to be displayed by the Interface Provider
+          type: string
+          x-fdx-csdf-account-categories: [ANY]
+        productName:
+          type: string
+          description: Marketed product name for this account. Used in UIs to assist in account selection
+          x-fdx-csdf-account-categories: [ANY]
+        nickname:
+          description: Name given by the user. Used in UIs to assist in account selection
+          type: string
+          x-fdx-csdf-account-categories: [ANY]
+        status:
+          $ref: '#/components/schemas/AccountStatus'
+          description: 'Account status. Values are: OPEN, CLOSED'
+          x-fdx-csdf-account-categories: [ANY]
+        accountOpenDate:
+          $ref: '#/components/schemas/DateString'
+          description: Account opening date
+          x-fdx-csdf-account-categories: [ANY]
+        currency:
+          $ref: '#/components/schemas/Currency'
+          description: Account currency
+          x-fdx-csdf-account-categories: [ANY]
+        fiAttributes:
+          type: array
+          description: Array of Financial institution-specific attributes
+          items:
+            $ref: '#/components/schemas/FiAttribute'
+          x-fdx-csdf-account-categories: [ANY]
+
+    AccountWithDetails:
+      title: Account With Details entity
+      description: This provides an instance of an account with full details
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      oneOf:
+        - type: object
+          properties:
+            depositAccount:
+              $ref: '#/components/schemas/DepositAccount'
+              description: A deposit account
+              x-fdx-csdf-account-categories: [REG_E]
+        - type: object
+          properties:
+            investmentAccount:
+              $ref: '#/components/schemas/InvestmentAccount'
+              description: An investment account
+        - type: object
+          properties:
+            locAccount:
+              $ref: '#/components/schemas/LocAccount'
+              description: A line-of-credit account
+              x-fdx-csdf-account-categories: [REG_Z]
+        - type: object
+          properties:
+            loanAccount:
+              $ref: '#/components/schemas/LoanAccount'
+              description: A loan account
+
+    Accounts:
+      title: Accounts entity
+      description: An optionally paginated array of accounts
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        accounts:
+          type: array
+          description: >-
+            An array of accounts with entity types dependent on the
+            account type (deposit, investment, loan or line of credit)
+            x-fdx-csdf-account-categories: [ANY]
+          items:
+            $ref: '#/components/schemas/AccountWithDetails'
+
+    Currency:
+      title: Currency entity
+      description: Represents an international currency
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        currencyCode:
+          $ref: '#/components/schemas/Iso4217Code'
+          description: ISO 4217 currency code
+          x-fdx-csdf-account-categories: [ANY]
+
+    DebtSecurity:
+      title: Debt Security entity
+      description: An investment in a debt security
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Security'
+        - type: object
+          properties:
+            parValue:
+              type: number
+              description: Par value amount
+            debtType:
+              $ref: '#/components/schemas/DebtType'
+              description: Debt type. One of COUPON, ZERO
+            debtClass:
+              $ref: '#/components/schemas/DebtClass'
+              description: Classification of debt. One of TREASURY, MUNICIPAL, CORPORATE, OTHER
+            couponRate:
+              type: number
+              description: Bond coupon rate for next closest call date
+            bondMaturityDate:
+              $ref: '#/components/schemas/DateString'
+              description: Bond maturity date
+
+    DepositAccount:
+      title: Deposit Account entity
+      description: Information for a deposit account type
+      type: object
+      x-fdx-csdf-account-categories: [REG_E]
+      allOf:
+        - $ref: '#/components/schemas/Account'
+        - type: object
+          properties:
+            balanceAsOf:
+              description: As-of date of balances
+              $ref: '#/components/schemas/Timestamp'
+              x-fdx-csdf-account-categories: [REG_E]
+            currentBalance:
+              type: number
+              description: Balance of funds in account
+              x-fdx-csdf-account-categories: [REG_E]
+            availableBalance:
+              type: number
+              description: Balance of funds available for use
+              x-fdx-csdf-account-categories: [REG_E]
+            annualPercentageYield:
+              type: number
+              description: Annual Percentage Yield
+              x-fdx-csdf-account-categories: [REG_E]
+            interestYtd:
+              type: number
+              description: YTD Interest
+              x-fdx-csdf-account-categories: [REG_E]
+            term:
+              type: integer
+              description: Term of CD in months
+              x-fdx-csdf-account-categories: [REG_E]
+            maturityDate:
+              $ref: '#/components/schemas/DateString'
+              description: Maturity date for CDs
+              x-fdx-csdf-account-categories: [REG_E]
+
+    InvestmentAccount:
+      title: Investment Account entity
+      description: >-
+        An investment account type and information such as balances, transactions,
+        holdings and privileges
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Account'
+        - type: object
+          properties:
+            balanceAsOf:
+              description: As-of date for balances
+              $ref: '#/components/schemas/Timestamp'
+            currentBalance:
+              type: number
+              description: Balance of funds in account
+            availableBalance:
+              type: number
+              description: Balance of funds available for use
+            currentValue:
+              type: number
+              description: Total current value of all investments
+            holdings:
+              type: array
+              description: Holdings in the investment account
+              items:
+                $ref: '#/components/schemas/Holding'
+            availableCashBalance:
+              description: >-
+                Cash balance across all sub-accounts. Should include sweep funds
+              type: number
+            balanceList:
+              type: array
+              description: List of balances. Aggregate of name value pairs
+              items:
+                $ref: '#/components/schemas/InvestmentBalance'
+            interestYtd:
+              type: number
+              description: YTD Interest
+            maturityDate:
+              $ref: '#/components/schemas/DateString'
+              description: Maturity date
+
+    Holding:
+      title: Holding entity
+      description: A holding in an investment account
+      type: object
+      properties:
+        holdingId:
+          type: string
+          description: Currently the CUSIP id for the holding.
+            May not be a unique value across the account's holdings
+        securityId:
+          type: string
+          description: Unique identifier of security
+        holdingName:
+          type: string
+          description: Holding name or security name
+        holdingType:
+          $ref: '#/components/schemas/HoldingType'
+          description: ANNUITY, BOND, CD, DEBT, DIGITALASSET, MUTUALFUND, OPTION, OTHER, STOCK
+        positionType:
+          $ref: '#/components/schemas/PositionType'
+          description: LONG, SHORT
+        description:
+          type: string
+          description: The description of the holding
+        symbol:
+          type: string
+          description: Ticker / Market symbol
+        purchasedPrice:
+          type: number
+          description: Price of holding at the time of purchase
+        currentUnitPrice:
+          type: number
+          description: Current unit price
+        currentUnitPriceDate:
+          type: number
+          description: Current unit price as of date
+        units:
+          type: number
+          description: Required for stock, mutual funds. Number of shares (with decimals)
+        taxLots:
+          type: array
+          description: Breakdown by tax lot
+          items:
+            $ref: '#/components/schemas/TaxLot'
+        debtSecurity:
+          $ref: '#/components/schemas/DebtSecurity'
+          description: A debt security
+        currency:
+          $ref: '#/components/schemas/Currency'
+          description: Currency information if it is different from Account entity
+        marketValue:
+          type: number
+          description: Market value at the time of data retrieved
+
+    InvestmentBalance:
+      title: Investment Balance entity
+      description: A point-in-time balance of the investment account
+      type: object
+      properties:
+        balanceName:
+          type: string
+          description: Name of the balance
+        balanceDescription:
+          type: string
+          description: Description of balance
+        balanceType:
+          $ref: '#/components/schemas/InvestmentBalanceType'
+          description: AMOUNT, PERCENTAGE
+        balanceValue:
+          type: number
+          description: Value of named balance
+        balanceDate:
+          $ref: '#/components/schemas/DateString'
+          description: Date as of this balance
+        currency:
+          $ref: '#/components/schemas/Currency'
+          description: Currency if different from that of account
+
+    LoanAccount:
+      title: Loan Account entity
+      description: A loan account type
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Account'
+        - type: object
+          properties:
+            balanceAsOf:
+              $ref: '#/components/schemas/Timestamp'
+              description: As-of date for balances
+            currentBalance:
+              type: number
+              description: Balance of funds in account
+            availableBalance:
+              type: number
+              description: Balance of funds available for use
+            principalBalance:
+              type: number
+              description: Principal balance of loan
+            escrowBalance:
+              type: number
+              description: Escrow balance of loan
+            originalPrincipal:
+              type: number
+              description: Original principal of loan
+            originatingDate:
+              $ref: '#/components/schemas/DateString'
+              description: Loan origination date
+            loanTerm:
+              type: integer
+              description: Term of loan in months
+            totalNumberOfPayments:
+              type: integer
+              description: Total number of payments
+            nextPaymentAmount:
+              type: number
+              description: Amount of next payment
+            nextPaymentDate:
+              $ref: '#/components/schemas/DateString'
+              description: Date of next payment
+            paymentFrequency:
+              $ref: '#/components/schemas/PaymentFrequency'
+              description: DAILY, WEEKLY, BIWEEKLY, SEMIMONTHLY, MONTHLY, SEMIANNUALLY, ANNUALLY
+            compoundingPeriod:
+              $ref: '#/components/schemas/CompoundingPeriod'
+              description: DAILY, WEEKLY, BIWEEKLY, SEMIMONTHLY, MONTHLY, SEMIANNUALLY, ANNUALLY
+            payOffAmount:
+              type: number
+              description: Payoff amount
+            lastPaymentAmount:
+              type: number
+              description: Last payment amount
+            lastPaymentDate:
+              $ref: '#/components/schemas/DateString'
+              description: Last payment date
+            maturityDate:
+              $ref: '#/components/schemas/DateString'
+              description: Maturity date
+            interestPaidYearToDate:
+              type: number
+              description: Interest paid year to date
+
+    LocAccount:
+      title: Line-Of-Credit Account entity
+      description: A line-of-credit account
+      type: object
+      x-fdx-csdf-account-categories: [REG_Z]
+      allOf:
+        - $ref: '#/components/schemas/Account'
+        - type: object
+          properties:
+            balanceAsOf:
+              $ref: '#/components/schemas/Timestamp'
+              description: As-of date for balances
+              x-fdx-csdf-account-categories: [REG_Z]
+            availableBalance:
+              type: number
+              description: Balance of funds available for use
+            creditLine:
+              type: number
+              description: Credit limit
+              x-fdx-csdf-account-categories: [REG_Z]
+            availableCredit:
+              type: number
+              description: Available credit
+              x-fdx-csdf-account-categories: [REG_Z]
+            nextPaymentAmount:
+              type: number
+              description: Amount of next payment
+            currentBalance:
+              type: number
+              description: Current balance of the line of credit
+              x-fdx-csdf-account-categories: [REG_Z]
+            minimumPaymentAmount:
+              type: number
+              description: Minimum payment amount
+              x-fdx-csdf-account-categories: [REG_Z]
+            lastPaymentAmount:
+              type: number
+              description: Last payment amount
+              x-fdx-csdf-account-categories: [REG_Z]
+            lastPaymentDate:
+              $ref: '#/components/schemas/DateString'
+              description: Last payment date
+              x-fdx-csdf-account-categories: [REG_Z]
+            pastDueAmount:
+              type: number
+              description: Past Due Amount
+              x-fdx-csdf-account-categories: [REG_Z]
+            lastStmtBalance:
+              type: number
+              description: Last Statement Balance
+              x-fdx-csdf-account-categories: [REG_Z]
+            lastStmtDate:
+              $ref: '#/components/schemas/DateString'
+              description: Last Statement Date
+              x-fdx-csdf-account-categories: [REG_Z]
+            purchasesApr:
+              type: number
+              description: Annual Percentage Rate for purchases
+              x-fdx-csdf-account-categories: [REG_Z]
+            advancesApr:
+              type: number
+              description: Annual Percentage Rate for cash advances
+              x-fdx-csdf-account-categories: [REG_Z]
+            transfersApr:
+              type: number
+              description: Annual Percentage Rate for balance transfers
+              x-fdx-csdf-account-categories: [REG_Z]
+            cashAdvanceLimit:
+              type: number
+              description: Cash advance limit
+              x-fdx-csdf-account-categories: [REG_Z]
+            availableCash:
+              type: number
+              description: Available cash
+              x-fdx-csdf-account-categories: [REG_Z]
+            financeCharges:
+              type: number
+              description: Finance charges
+              x-fdx-csdf-account-categories: [REG_Z]
+            cardNetwork:
+              type: string
+              description: Card network, e.g. 'VISA', 'MASTERCARD', 'AMERICAN_EXPRESS', 'DISCOVER', 'INTERLINK', 'STAR' etc.
+              x-fdx-csdf-account-categories: [REG_Z]
+            payOffAmount:
+              type: number
+              description: Payoff amount
+            maturityDate:
+              $ref: '#/components/schemas/DateString'
+              description: Maturity date
+            interestPaidYearToDate:
+              type: number
+              description: Interest paid year to date
+            originalPrincipal:
+              type: number
+              description: Original principal of loan
+            originatingDate:
+              $ref: '#/components/schemas/DateString'
+
+    Security:
+      title: Security entity
+      description: A base Security entity which defines the type of this security
+      type: object
+      properties:
+        securityCategory:
+          $ref: '#/components/schemas/SecurityCategory'
+          description: The main type of this Security
+
+    TaxLot:
+      title: Tax Lot entity
+      description: Block of securities receiving the same tax treatment
+      type: object
+      properties:
+        originalPurchaseDate:
+          $ref: '#/components/schemas/DateString'
+          description: Lot acquired date
+        quantity:
+          type: number
+          description: Lot quantity
+        purchasedPrice:
+          type: number
+          description: Original purchase price
+        costBasis:
+          type: number
+          description: >-
+            Total amount of money spent acquiring this lot including any fees or
+            commission expenses incurred
+        currentValue:
+          type: number
+          description: Lot market value
+        positionType:
+          $ref: '#/components/schemas/PositionType'
+          description: LONG, SHORT
+
+    ############################################################
+    #
+    # Core data types
+    #
+    ############################################################
+
+    AccountBillPayStatus:
+      title: Account Bill Pay Status
+      description: >-
+        Indicates bill pay capabilities for an account.
+          * `ACTIVE`: Can be used for bill payment
+          * `AVAILABLE`: Account can be requested for bill payment
+          * `NOT_AVAILABLE`: Account cannot participate in bill payment
+          * `PENDING`: Account requested for bill payment, but not available yet
+      type: string
+      x-fdx-csdf-account-categories: [REG_E]
+      enum:
+        - ACTIVE
+        - AVAILABLE
+        - NOT_AVAILABLE
+        - PENDING
+
+    AccountCategory:
+      title: Account Category type
+      description: The category of account
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - DEPOSIT_ACCOUNT
+        - INVESTMENT_ACCOUNT
+        - LOAN_ACCOUNT
+        - LOC_ACCOUNT
+
+    AccountStatus:
+      title: Account Status
+      description: The status of an account
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - CLOSED
+        - OPEN
+
+    BalanceType:
+      title: Balance Type
+      description: >-
+        Type of balance
+          * 'ASSET': Positive transaction amount increases balance
+          * 'LIABILITY': Positive transaction amount decreases balance
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - ASSET
+        - LIABILITY
+
+    CompoundingPeriod:
+      title: Compounding Period
+      description: Interest compounding Period
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - ANNUALLY
+        - BIWEEKLY
+        - DAILY
+        - MONTHLY
+        - SEMIANNUALLY
+        - SEMIMONTHLY
+        - WEEKLY
+
+    DebtClass:
+      title: Debt Class
+      description: The classification of a debt instrument
+      type: string
+      enum:
+        - CORPORATE
+        - MUNICIPAL
+        - OTHER
+        - TREASURY
+
+    DebtType:
+      title: Debt Type
+      description: The type of a debt instrument
+      type: string
+      enum:
+        - COUPON
+        - ZERO
+
+    HoldingType:
+      title: Holding Type
+      description: >-
+        The type of an investment holding
+
+          | Value | Description |
+          |-----|-----|
+          | ANNUITY | Financial product that pays out a fixed stream of payments |
+          | BOND | Debt security as a loan to a government, agency or company, repaid with interest |
+          | CD | Certificate of Deposit, a savings account with a fixed rate and term |
+          | DEBT | Any type of security that must be paid back in full along with interest |
+          | DIGITALASSET | Digital representation of an asset or right that is stored and transferred on a digital network such as the internet or a blockchain |
+          | MUTUALFUND | Pooled collection of assets invested in stocks, bonds, and other securities |
+          | OPTION | The right to buy a specific number of stock shares at a pre-set price |
+          | OTHER | Another type of holding not listed here |
+          | STOCK | A share in the ownership of a company |
+      type: string
+      enum:
+        - ANNUITY
+        - BOND
+        - CD
+        - DEBT
+        - DIGITALASSET
+        - MUTUALFUND
+        - OPTION
+        - OTHER
+        - STOCK
+
+    InvestmentBalanceType:
+      title: Investment Balance Type
+      description: The type of an investment balance
+      type: string
+      enum:
+        - AMOUNT
+        - PERCENTAGE
+
+    PaymentFrequency:
+      title: Payment Frequency
+      description: The frequency of payments.
+      type: string
+      enum:
+        - ANNUALLY
+        - BIWEEKLY
+        - DAILY
+        - MONTHLY
+        - SEMIANNUALLY
+        - SEMIMONTHLY
+        - WEEKLY
+
+    PositionType:
+      title: Position Type
+      description: The type of an investment position
+      type: string
+      enum:
+        - LONG
+        - SHORT
+
+    SecurityCategory:
+      title: Security Category
+      description: The type of security
+      type: string
+      enum:
+        - DEBT_SECURITY
+
+    ############################################################
+    #
+    # Shared data entities (usable by core and all extensions)
+    #
+    ############################################################
+
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        code:
+          type: string
+          description: >-
+            Error code defined by FDX API Specification or Data Provider
+            indicating the error situation which has occurred
+          x-fdx-csdf-technical: true
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+          x-fdx-csdf-technical: true
+
+    ############################################################
+    #
+    # Shared data types (usable by core and all extensions)
+    #
+    ############################################################
+
+    ActorType:
+      title: FDX API Actor Type
+      description: >-
+        Indicates whether a customer is present and has requested the operation (USER),
+        or if a batch job has requested the operation (BATCH)
+      type: string
+      enum:
+        - BATCH
+        - USER
+
+    AccountType:
+      title: Account Type
+      x-fdx-csdf-account-categories: [ANY]
+      description: >-
+        The type of an account.
+          | Value | Description |
+          |-----|-----|
+          | BROKERAGEPRODUCT | Investment management offered by a licensed brokerage firm that places trades on behalf of the customer, utilizing any number of investment options |
+          | CD | A certificate of deposit (CD) is a product offered by banks and credit unions that provides an interest rate premium in exchange for the customer agreeing to leave a lump-sum deposit untouched for a predetermined period of time |
+          | CHECKING | A deposit account held at a financial institution that allows withdrawals and deposits |
+          | COMMERCIALLOAN | A preset borrowing limit that can be used at any time |
+          | CREDITCARD | Allows cardholders to borrow funds with which to pay for goods and services with merchants that accept cards for payment |
+          | IRA | An individual retirement account (IRA) is a tax-advantaged account that individuals use to save and invest for retirement |
+          | LINEOFCREDIT | A credit facility extended by a bank or other financial institution to a government, business or individual customer that enables the customer to draw on the facility when the customer needs funds |
+          | MORTGAGE | A type of loan you can use to buy or refinance a home |
+          | PERSONALLOAN | A type of debt that is not protected by a guarantor, or collateralized by a lien on specific assets of the borrower |
+          | SAVINGS | An interest-bearing deposit account held at a bank or other financial institution |
+          | TRUST | A type of financial account that is opened by an individual and managed by a designated trustee for the benefit of a third party in accordance with agreed-upon terms |
+      type: string
+      enum:
+        - BROKERAGEPRODUCT
+        - CD
+        - CHECKING
+        - COMMERCIALLOAN
+        - CREDITCARD
+        - IRA
+        - LINEOFCREDIT
+        - MORTGAGE
+        - PERSONALLOAN
+        - SAVINGS
+        - TRUST
+
+    DateString:
+      title: Date String
+      description: >-
+        ISO 8601 full-date in format 'YYYY-MM-DD' according
+        to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date
+      maxLength: 10
+      example: '2021-07-15'
+      x-fdx-csdf-account-categories: [ANY]
+
+    BusinessOrConsumer:
+      title: Business or Consumer Type
+      description: Indicator if parent entity is a consumer or business
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - BUSINESS
+        - CONSUMER
+
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: >-
+        Universally unique identifier for this interaction,
+        used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    FiAttribute:
+      title: FI Attribute entity
+      description: Financial Institution provider-specific attribute
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        name:
+          type: string
+          description: Name of attribute
+          x-fdx-csdf-account-categories: [ANY]
+        value:
+          type: string
+          description: Value of attribute
+          x-fdx-csdf-account-categories: [ANY]
+
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+      x-fdx-csdf-account-categories: [ANY]
+
+    Iso4217Code:
+      title: ISO 4217 Code
+      description: >-
+        Currency, fund and precious metal codes effective from May 12, 2025 and ISO 4217 amendment 179 per
+        [ISO 4217 Currency Code Maintenance](https://www.six-group.com/en/products-services/financial-information/data-standards.html)
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - AED
+        - AFN
+        - ALL
+        - AMD
+        - ANG  # Deprecated 3-31-2025 per ISO 4217 amendment 176
+        - AOA
+        - ARS
+        - AUD
+        - AWG
+        - AZN
+        - BAM
+        - BBD
+        - BDT
+        - BGN
+        - BHD
+        - BIF
+        - BMD
+        - BND
+        - BOB
+        - BOV
+        - BRL
+        - BSD
+        - BTN
+        - BWP
+        - BYN
+        - BZD
+        - CAD
+        - CDF
+        - CHE
+        - CHF
+        - CHW
+        - CLF
+        - CLP
+        - CNY
+        - COP
+        - COU
+        - CRC
+        - CUC # Deprecated 6-30-2021 per ISO 4217 amendment 178
+        - CUP
+        - CVE
+        - CZK
+        - DJF
+        - DKK
+        - DOP
+        - DZD
+        - EGP
+        - ERN
+        - ETB
+        - EUR
+        - FJD
+        - FKP
+        - GBP
+        - GEL
+        - GHS
+        - GIP
+        - GMD
+        - GNF
+        - GTQ
+        - GYD
+        - HKD
+        - HNL
+        - HTG
+        - HUF
+        - IDR
+        - ILS
+        - INR
+        - IQD
+        - IRR
+        - ISK
+        - JMD
+        - JOD
+        - JPY
+        - KES
+        - KGS
+        - KHR
+        - KMF
+        - KPW
+        - KRW
+        - KWD
+        - KYD
+        - KZT
+        - LAK
+        - LBP
+        - LKR
+        - LRD
+        - LSL
+        - LYD
+        - MAD
+        - MDL
+        - MGA
+        - MKD
+        - MMK
+        - MNT
+        - MOP
+        - MRU
+        - MUR
+        - MVR
+        - MWK
+        - MXN
+        - MXV
+        - MYR
+        - MZN
+        - NAD
+        - NGN
+        - NIO
+        - NOK
+        - NPR
+        - NZD
+        - OMR
+        - PAB
+        - PEN
+        - PGK
+        - PHP
+        - PKR
+        - PLN
+        - PYG
+        - QAR
+        - RON
+        - RSD
+        - RUB
+        - RWF
+        - SAR
+        - SBD
+        - SCR
+        - SDG
+        - SEK
+        - SGD
+        - SHP
+        - SLE
+        - SLL
+        - SOS
+        - SRD
+        - SSP
+        - STN
+        - SVC
+        - SYP
+        - SZL
+        - THB
+        - TJS
+        - TMT
+        - TND
+        - TOP
+        - TRY
+        - TTD
+        - TWD
+        - TZS
+        - UAH
+        - UGX
+        - USD
+        - USN
+        - UYI
+        - UYU
+        - UYW
+        - UZS
+        - VED
+        - VES
+        - VND
+        - VUV
+        - WST
+        - XAD
+        - XAF
+        - XAG
+        - XAU
+        - XBA
+        - XBB
+        - XBC
+        - XBD
+        - XCD
+        - XCG
+        - XDR
+        - XOF
+        - XPD
+        - XPF
+        - XPT
+        - XSU
+        - XTS
+        - XUA
+        - XXX
+        - YER
+        - ZAR
+        - ZMW
+        - ZWG
+        - ZWL  # Deprecated 8-31-2024 per ISO 4217 amendment 177
+
+    ResultType:
+      title: Result Type
+      description: >-
+        Flag to indicate if you want a lightweight array of metadata (AccountDescriptor
+        or Tax or Operations) or full item details (Account or a Tax subclass or
+        Availability details). If set to 'lightweight', should only return the
+        fields associated with the metadata entity.
+      type: string
+      enum:
+        - lightweight
+        - details
+      default: lightweight
+
+    Timestamp:
+      title: Timestamp
+      description: >-
+        ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to
+        [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date-time
+      example: '2021-07-15T14:46:41.375Z'
+      x-fdx-csdf-account-categories: [ANY]
+
+  responses:
+    ############################################################
+    #
+    # Standard error responses
+    #
+    ############################################################
+
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: '603'
+                message: Authentication failed
+            ACCESS_TOKEN_EXPIRED:
+              value:
+                code: '603'
+                message: Authentication failed
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '603'
+                message: Authentication failed
+            ACCESSTOKEN_NOT_APPROVED:
+              value:
+                code: '603'
+                message: Authentication failed
+            INVALID_BASICAUTHENTICATION_SOURCE:
+              value:
+                code: '603'
+                message: Authentication failed
+
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '701'
+                message: URI does not represent a recognized resource
+            INVALID_ACCOUNT:
+              value:
+                code: '701'
+                message: Invalid account id
+            ACCOUNTID_NOT_FOUND:
+              value:
+                code: '701'
+                message: Account Id is required
+
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: Method Not Allowed
+
+    '409':
+      description: Business error; returned from the backend
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+    '422':
+      description: Unprocessable Entity
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCOUNT_TYPE:
+              value:
+                code: '704'
+                message: Account type not supported for Account Details
+
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
+
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: System down for maintenance
+            SUBSYSTEM_UNAVAILABLE:
+              value:
+                code: '501'
+                message: System down for maintenance
+
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server

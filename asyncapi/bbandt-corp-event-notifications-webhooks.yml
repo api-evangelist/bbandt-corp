@@ -1,0 +1,69 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/_original/retail-event-subscriptions.yaml and openapi/_original/retail-event-notifications.yaml (Truist
+  FDX V6.4.1 Event Subscription / Event Publication APIs)
+specification: API Commons Webhooks
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+asyncapi_published: false
+description: Truist ships a real event surface, built to the FDX V6.4.1 Event Subscription and Event Publication APIs,
+  but no AsyncAPI document. A data recipient registers a callbackUrl with POST /v1/notification-subscriptions and Truist
+  then POSTs notifications to it; the same shape runs in reverse, with the recipient publishing notifications to Truist
+  at POST /v1/notifications. Only consent lifecycle events are in the published enum today.
+subscription:
+  api: Personal and Small Business Event Subscriptions
+  base: https://api-secure.truist.com/retail
+  create:
+    operationId: createNotificationSubscription
+    method: POST
+    path: /v1/notification-subscriptions
+  read:
+    operationId: getNotificationSubscription
+    method: GET
+    path: /v1/notification-subscriptions/{subscriptionId}
+  delete:
+    operationId: deleteNotificationSubscription
+    method: DELETE
+    path: /v1/notification-subscriptions/{subscriptionId}
+  callback_field: callbackUrl
+  callback_note: '"Callback URL. Previous callback URL will be updated with latest." — a subscription holds exactly one
+    callback; re-creating replaces it.'
+  required_fields:
+  - type
+  - category
+  - callbackUrl
+  - subscriber
+  - subscriptionId
+  auth: HTTP Basic (client_id:client_secret) — the subscription API does not use the customer OAuth token
+publication:
+  api: Personal and Small Business Event Notifications
+  operation:
+    operationId: publishNotification
+    method: POST
+    path: /v1/notifications
+  direction: recipient -> Truist
+  auth: HTTP Basic
+events:
+- type: CONSENT_REVOKED
+  direction: both — publishable to Truist and subscribable from Truist
+  description: A customer consent grant was revoked. Declared in the NotificationType enum of both the Event Publication
+    and Event Subscription APIs.
+  payload: Notification { notificationId, type, sentOn, category, severity, priority, publisher, notificationPayload
+    }
+- type: CONSENT_UPDATED
+  direction: subscribe from Truist
+  description: A customer consent grant was updated. Declared only in the Event Subscription NotificationType enum.
+  payload: Notification
+event_count: 2
+delivery:
+  transport: HTTPS POST to the registered callbackUrl
+  signing: null
+  retries: null
+  note: No signature scheme, replay protection, retry policy or delivery-guarantee statement appears in either published
+    spec. A consumer cannot verify that an inbound notification came from Truist from anything in the contract.
+gaps:
+- No AsyncAPI document
+- No webhook signature / verification scheme published
+- No retry or delivery-guarantee policy published
+- Event catalog covers consent lifecycle only — no account, transaction or payment events

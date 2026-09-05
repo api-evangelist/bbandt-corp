@@ -1,0 +1,692 @@
+openapi: 3.1.0
+info:
+  version: '3.3.0'
+  # build: '0'
+  title: Truist Retail OAuth 2.0 API, v3
+  description: Truist Financial, Access Management - OAuth 2.0 API, v3
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+servers:
+  - url: 'https://api-sandbox.truist.com/retail/auth/oauth'
+    description: Truist Financial Retail Authorization API - Sandbox environment
+  - url: 'https://apicert.truist.com/retail/auth/oauth'
+    description: Truist Financial Retail Authorization API - Certification environment
+  - url: 'https://api.truist.com/retail/auth/oauth'
+    description: Truist Financial Retail Authorization API - Production environment
+security:
+  - BasicAuth: []
+  - OAuth: [profile, address, phone, email]
+tags:
+  - name: OAuth 2.0
+    description: OAuth 2.0 authorize and token services
+paths:
+  ############################################################
+  #
+  # Paths
+  #
+  ############################################################
+
+  /v3/authorize:
+    get:
+      operationId: authorize
+      servers:
+        - url: 'https://api-sandbox.truist.com/retail/auth/oauth'
+          description: Truist Financial Retail authorization
+      tags:
+        - OAuth 2.0
+      summary: Get authorization from the resource owner
+      description: >-
+        The `/authorize` endpoint is used to interact with the resource owner and obtain an authorization code.
+
+          Because this endpoint uses browser-based redirection to pass back the resulting authorization code,
+          it cannot be tested in the Truist Developer Center through the Swagger UI plugin's "Try It Out" feature
+          or "Send API Request" button.
+
+          The simplest way to test this API in Truist Sandbox environment will be to update and use following `cURL` sample:
+
+          1. Enter your Sandbox app's `client_id` (even for DAPs, since a DAP cannot create real DR IDs in Sandbox)
+          2. Enter your valid `redirect_uri`. A good option to use is `https://localhost`
+          3. Use the default `scope` value or update to add others like TRANSACTIONS
+          4. Use the default or any other value for the `state` parameter
+          5. Select the `Shell / cURL` option for the **Request Sample** box
+          6. Copy the contents of the cURL example and execute on the command line
+
+          The cURL command will look something like this:
+
+          ```bash
+          curl --request GET \
+            --url 'https://apidev-sandbox.truist.com/retail/auth/oauth/v3/authorize?client_id=asdfsadfsdf&response_type=code&redirect_uri=https%3A%2F%2Flocalhost&cardinality=SINGLE&accountType=CHECKING+CREDITCARD+SAVINGS+TRUST&scope=openid+offline_access+ACCOUNT_BASIC+ACCOUNT_DETAILED&state=unique_request_state_code'
+          ```
+      parameters:
+        - $ref: '#/components/parameters/client_id'
+        - $ref: '#/components/parameters/response_type'
+        - $ref: '#/components/parameters/redirect_uri'
+        - $ref: '#/components/parameters/cardinality'
+        - $ref: '#/components/parameters/accountType'
+        - $ref: '#/components/parameters/scope'
+        - $ref: '#/components/parameters/state'
+        - $ref: '#/components/parameters/nonce'
+      responses:
+        '302':
+          description: Redirect URI response
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+            Location:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/302RedirectURI'
+                  - $ref: '#/components/schemas/302MissingScope'
+                  - $ref: '#/components/schemas/302MissingResponseType'
+                  - $ref: '#/components/schemas/302UnsupportedResponseType'
+                  - $ref: '#/components/schemas/302InvalidScope'
+                  - $ref: '#/components/schemas/302MissingValidScope'
+                  - $ref: '#/components/schemas/302MissingState'
+                  - $ref: '#/components/schemas/302MissingNonce'
+                  - $ref: '#/components/schemas/302ServerError'
+                  - $ref: '#/components/schemas/302Unavailable'
+                  - $ref: '#/components/schemas/302RequestNotSupported'
+                  - $ref: '#/components/schemas/302RequestURINotSupported'
+                  - $ref: '#/components/schemas/302RegistrationNotSupported'
+                  - $ref: '#/components/schemas/302UserDenied'
+                  - $ref: '#/components/schemas/302InvalidCardinality'
+                  - $ref: '#/components/schemas/302AccountTypesNotSupported'
+        '400':
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+              examples:
+                missingClientId:
+                  summary: Missing Client ID
+                  value:
+                    error: invalid_request
+                    error_description: 'The request is missing required parameter: client_id'
+                missingRedirectURI:
+                  summary: Missing Redirect URI
+                  value:
+                    error: invalid_request
+                    error_description: 'The request is missing required parameter: redirect_uri'
+                invalidRedirectURI:
+                  summary: Invalid Redirect URI
+                  value:
+                    error: invalid_request
+                    error_description: The redirect_uri is invalid
+        '401':
+          description: Unauthorized
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+              examples:
+                unauthorized_client:
+                  summary: Unauthorized Client
+                  value:
+                    error: unauthorized_client
+                    error_description: The client is not authorized to request an authorization code using this method
+      security: []
+
+  /v3/token:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+    post:
+      operationId: token
+      servers:
+        - url: 'https://api-sandbox.truist.com/retail/auth/oauth'
+          description: Truist Financial Retail authorization
+      tags:
+        - OAuth 2.0
+      summary: Get an access token
+      description: >-
+        Use the `/token` endpoint to exchange a customer's new authorization_code or
+        their existing consent's refresh_token for a new access_token. This API uses Basic Auth
+        and for both Data Access Platforms and Direct Data Recipients requires use of the DAP/DDR
+        client_id and client_secret returned from creating the Staging or Production application in
+        Truist Developer Center. (You CANNOT use a Data Recipient's Basic Auth credentials of
+        client_id and client_secret from dynamic client registration via `POST /register` API)
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: The authorization server issues an access token and optional refresh token and/or id token
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+              example:
+                grant_id: as9d8f3219dj
+                access_token: SlAV32hkKG
+                token_type: Bearer
+                expires_in: 900
+                refresh_token: 8xLOxBtZp8
+                refresh_token_expires_in: 7775999
+                scope: ACCOUNT_BASIC TRANSACTIONS ACCOUNT_DETAILED address email openid phone profile offline_access
+                id_token: eyJhbGciOiJSUzI1NiIsImtpZCI6IjFlOWdkazcifQ.ewogImlzc
+                  yI6ICJodHRwOi8vc2VydmVyLmV4YW1wbGUuY29tIiwKICJzdWIiOiAiMjQ4Mjg5
+                  NzYxMDAxIiwKICJhdWQiOiAiczZCaGRSa3F0MyIsCiAibm9uY2UiOiAibi0wUzZ
+                  fV3pBMk1qIiwKICJleHAiOiAxMzExMjgxOTcwLAogImlhdCI6IDEzMTEyODA5Nz
+                  AKfQ.ggW8hZ1EuVLuxNuuIJKX_V8a_OMXzR0EHR9R6jgdqrOOF4daGU96Sr_P6q
+                  Jp6IcmD3HP99Obi1PRs-cwh3LO-p146waJ8IhehcwL7F09JdijmBqkvPeB2T9CJ
+                  NqeGpe-gccMg4vfKjkM8FcGvnzZUN4_KSP0aAp1tOJ1zZwgjxqGByKHiOtX7Tpd
+                  QyHE5lcMiKPXfEIQILVq0pc_E2DzL7emopWoaoZTF_m0_N0YzFC6g6EJbOEoRoS
+                  K5hoDalrcvRYLSrQAZZKflyuVCyixEoV9GfNQC3_osjzw2PAithfubEEBLuVVk4
+                  XUVrWOLrLl0nx7RkKU8NXNHq-rvKMzqg
+        '400':
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+              examples:
+                missingClientId:
+                  summary: Missing Client ID
+                  value:
+                    error: invalid_request
+                    error_description: 'The request is missing required parameter: client_id'
+                missingRedirectURI:
+                  summary: Missing Redirect URI
+                  value:
+                    error: invalid_request
+                    error_description: 'The request is missing required parameter: redirect_uri'
+                invalidRedirectURI:
+                  summary: Invalid Redirect URI
+                  value:
+                    error: invalid_request
+                    error_description: A redirect_uri is invalid
+                invalidRefreshToken:
+                  summary: Invalid Refresh Token
+                  value:
+                    error: invalid_grant
+                    error_description: The refresh token is invalid
+                revokedRefreshToken:
+                  summary: Revoked refresh token
+                  value:
+                    error: invalid_grant
+                    error_description: The refresh token is revoked.
+                expiredRefreshToken:
+                  summary: Expired refresh token
+                  value:
+                    error: invalid_grant
+                    error_description: The refresh token is expired.
+                revokedConsent:
+                  summary: Revoked consent
+                  value:
+                    error: invalid_grant
+                    error_description: This consent was revoked
+                expiredConsent:
+                  summary: Expired consent
+                  value:
+                    error: invalid_grant
+                    error_description: This consent was expired
+                invalidAuthCode:
+                  summary: Invalid AuthCode
+                  description: Missing or invalid auth code
+                  value:
+                    error: invalid_grant
+                    error_description: The auth code is invalid
+                invalidGrantType:
+                  summary: Invalid Grant Type
+                  value:
+                    error: unsupported_grant_type
+                    error_description: The given grant_type is not supported
+        '401':
+          description: Invalid Client
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+              examples:
+                invalid_client:
+                  summary: Invalid Client
+                  value:
+                    error: invalid_client
+                    error_description: Client authentication failed
+        '404':
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+              examples:
+                not_found:
+                  summary: Not Found
+                  value:
+                    error: 'not_found'
+                    error_description: URI does not represent a recognized resource
+        '405':
+          description: The request method is not supported by this resource
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIErrorResponse'
+              examples:
+                not_found:
+                  summary: Method Not Allowed
+                  value:
+                    error: 'invalid_method'
+                    error_description: The request method is not supported by this resource
+      security:
+        - BasicAuth: []
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: >-
+        This is the standard Basic Auth scheme encoded as `Base64(client_id:client_secret)`.
+        Both Data Access Platforms and Direct Data Recipients MUST use the DAP/DDR client_id and
+        client_secret returned from creating their Staging or Production application in Truist Developer
+        Center. (You CANNOT use the Basic Auth credentials for a Data Recipient returned from dynamic
+        client registration via `POST /register` API)
+
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: 'https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize'
+          tokenUrl: 'https://api-sandbox.truist.com/retail/auth/oauth/v3/token'
+          scopes:
+            profile:
+              This scope value requests access to the End-User's default profile Claims, which are:name, family_name, given_name, middle_name, zoneinfo, locale, and updated_at.
+            address:
+              This scope value requests access to the email and email_verified Claims.
+            phone:
+              This scope value requests access to the address Claim
+            email:
+              This scope value requests access to the phone_number and phone_number_verified Claims.
+
+  parameters:
+    ############################################################
+    #
+    # Request parameters
+    #
+    ############################################################
+
+    FdxApiActorTypeHeader:
+      name: FDX-API-Actor-Type
+      in: header
+      description: Identifies whether the customer is present (USER) or it is a BATCH operation
+      schema:
+        $ref: '#/components/schemas/ActorType'
+      example: BATCH
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+
+    client_id:
+      in: query
+      name: client_id
+      description: >-
+        The client_id parameter for `/authorize` endpoint must represent the
+        ultimate data recipient to which customer is consenting their data sharing.
+        For a Data Access Platform (aggregator) that will be the DR ID returned from its
+        dynamic client registration via `POST /register` API. For a Direct Data Recipient
+        that will be the client_id returned from creating the Staging or Production
+        application in Truist Developer Center
+      required: true
+      schema:
+        type: string
+      example: 'xbyFy0fCqucBKz5jwvXMUNvoBZL4QHir'
+
+    response_type:
+      in: query
+      name: response_type
+      description:
+        The client informs the authorization server of the desired grant type
+        flow using the response_type parameter
+      required: true
+      schema:
+        type: string
+        enum: [code]
+      example: code
+
+    redirect_uri:
+      in: query
+      name: redirect_uri
+      description: After completing its interaction with the resource owner,
+        the authorization server directs the resource owner's user-agent back to the client
+      required: true
+      schema:
+        type: string
+      example: https://example-app.com/callback
+
+    accountType:
+      in: query
+      name: accountType
+      description: >-
+        A space-delimited string array of the only account types which Data Recipient can support in customer consents.
+        This value is used by Truist consent creation and management UIs to filter the customer accounts presented for selection.
+        If not specified the default is that customer account list will not be filtered on behalf of Data Recipient.
+          | Value | Description |
+          |-----|-----|
+          | BROKERAGEPRODUCT | Investment management offered by a licensed brokerage firm that places trades on behalf of the customer, utilizing any number of investment options |
+          | CD | A certificate of deposit (CD) is a product offered by banks and credit unions that provides an interest rate premium in exchange for the customer agreeing to leave a lump-sum deposit untouched for a predetermined period of time |
+          | CHECKING | A deposit account held at a financial institution that allows withdrawals and deposits |
+          | COMMERCIALLOAN | A preset borrowing limit that can be used at any time |
+          | CREDITCARD | Allows cardholders to borrow funds with which to pay for goods and services with merchants that accept cards for payment |
+          | IRA | An individual retirement account (IRA) is a tax-advantaged account that individuals use to save and invest for retirement |
+          | LINEOFCREDIT | A credit facility extended by a bank or other financial institution to a government, business or individual customer that enables the customer to draw on the facility when the customer needs funds |
+          | MORTGAGE | A type of loan you can use to buy or refinance a home |
+          | PERSONALLOAN | A type of debt that is not protected by a guarantor, or collateralized by a lien on specific assets of the borrower |
+          | SAVINGS | An interest-bearing deposit account held at a bank or other financial institution |
+          | TRUST | A type of financial account that is opened by an individual and managed by a designated trustee for the benefit of a third party in accordance with agreed-upon terms |
+      required: false
+      schema:
+        type: string
+      example: CHECKING CREDITCARD SAVINGS TRUST
+
+    cardinality:
+      in: query
+      name: cardinality
+      description: >-
+        Specifies whether the Data Recipient can support only one or more than one account in customer consents.
+        SINGLE: Data Recipient can only support exactly one account.
+        MULTIPLE: Data Recipient can support any number of accounts. This is the default if neither is specified.
+        This value is used by Truist consent creation and management UIs to display the corresponding account selection requirement to customers.
+      required: false
+      schema:
+        type: string
+        enum:
+          - SINGLE
+          - MULTIPLE
+      example: SINGLE
+
+    scope:
+      in: query
+      name: scope
+      description: The space-delimited string array of scopes requested.
+        For OpenID Connect, scopes can be used to request that specific
+        sets of information be made available as Claim Values.
+        Scope 'offline_access' must be included to get back refresh_tokens
+      required: true
+      schema:
+        description: >-
+          A space-delimited string containing values from the
+          enumerated list in $ref: '#/components/schemas/Scope'
+        type: string
+      example: openid offline_access ACCOUNT_BASIC ACCOUNT_DETAILED
+
+    state:
+      in: query
+      name: state
+      description: An opaque value used by the client to maintain state between the request and callback
+      required: true
+      schema:
+        type: string
+      example: unique_request_state_code
+
+    nonce:
+      in: query
+      name: nonce
+      description:
+        nonce is an optional String value used to associate a Client session with
+        an ID Token, and to mitigate replay attacks. It MUST be present if authorization server
+        issues an ID Token in the Token response (openid scope included in request).
+      required: false
+      schema:
+        type: string
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+
+  schemas:
+    ############################################################
+    #
+    # Data entities
+    #
+    ############################################################
+
+    ActorType:
+      title: FDX API Actor Type
+      description: >-
+        Indicates whether a customer is present and has requested the operation (USER),
+        or if a batch job has requested the operation (BATCH)
+      type: string
+      enum:
+        - BATCH
+        - USER
+
+    APIErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Enumerated value of error type
+        error_description:
+          type: string
+          description: Description of the error
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Error code defined by FDX API Specification or Data Provider
+            indicating the error situation which has occurred
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+      required:
+        - code
+        - message
+
+    TokenRequest:
+      type: object
+      properties:
+        client_id:
+          description: REQUIRED, or OMIT if Authorization header is passed
+          type: string
+        client_secret:
+          description: REQUIRED, or OMIT if Authorization header is passed
+          type: string
+        grant_type:
+          description: Grant type used to specify request for auth code or refresh token
+          type: string
+          enum:
+            - authorization_code
+            - refresh_token
+        code:
+          description:
+            REQUIRED for grant_type 'authorization_code', OMIT for 'refresh_token'.
+            The authorization_code received from the authorization server (Authorization Code Flow)
+          type: string
+        redirect_uri:
+          description:
+            REQUIRED. MUST match the 'redirect_uri' parameter included in the
+            authorization request (Authorization Code Flow)
+          type: string
+          format: uri
+        refresh_token:
+          description:
+            REQUIRED for grant_type 'refresh_token', OMIT for 'authorization_code'.
+            The refresh_token issued to the client (Refresh Token Flow)
+          type: string
+      required:
+        - grant_type
+        - code
+        - redirect_uri
+
+    TokenResponse:
+      type: object
+      properties:
+        grant_id:
+          type: string
+          description: The consent id that can be used by data recipient to view the Consent grant
+        access_token:
+          type: string
+          description: The access token issued by the authorization server
+        token_type:
+          type: string
+          description: The type of the token issued (default Bearer)
+        expires_in:
+          type: integer
+          description: The lifetime in seconds of the access token.
+            The value "900" denotes that the access token will expire in 15 minutes from the time the response was generated.
+            If omitted, the authorization server SHOULD provide the expiration time via other means or document the default value.
+        refresh_token:
+          type: string
+          description: OPTIONAL. The refresh token, which can be used to obtain new access tokens using the same authorization grant
+        refresh_token_expires_in:
+          type: integer
+          description: The lifetime in seconds of the refresh token.
+            The value "7775999" denotes that the refresh token will expire in ninety days from the time the response was generated.
+            If omitted, the authorization server SHOULD provide the expiration time via other means or document the default value.
+        scope:
+          type: string
+          description: A space-delimited array of '#/components/schemas/Scope' enum values.
+            Scope offline_access must be included to get back refresh_tokens
+        id_token:
+          type: string
+          description: OPTIONAL, OpenID Connect ID Token
+
+    Scope:
+      title: Scope
+      description: The enum values of defined scopes.
+        Scope offline_access must be included to get back refresh_tokens
+      type: string
+      enum:
+        - openid
+        - profile
+        - email
+        - address
+        - phone
+        - offline_access
+        - ACCOUNT_DETAILED
+        - ACCOUNT_BASIC
+        - CUSTOMER_CONTACT
+        - PAYMENT_SUPPORT
+        - TRANSACTIONS
+
+    302RedirectURI:
+      type: string
+      description: Success Response
+      example: 'https://example-app.com/callback?code=fogeqqbz2xi23hvgvlu4ka2kq&state=123abc'
+
+    302MissingState:
+      type: string
+      description: 'The request is missing a required parameter: state'
+      example: 'https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%state'
+
+    302MissingResponseType:
+      type: string
+      description: Missing response type
+      example: 'https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%20response_type&state=12345'
+
+    302UnsupportedResponseType:
+      type: string
+      description: The authorization server does not support obtaining an authorization code using this method
+      example: 'https://example-app.com/callback?error=unsupported_response_type&error_description=The%20authorization%20server%20does%20not%20support%20obtaining%20an%20authorization%20code%20using%20this%20method&state=12345'
+
+    302MissingScope:
+      type: string
+      description: 'The request is missing a required parameter: scope'
+      example: 'https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%scope&state=12345'
+
+    302InvalidScope:
+      type: string
+      description: The requested scope is invalid, unknown, or malformed
+      example: 'https://example-app.com/callback?error=invalid_scope&error_description=The%20requested%20scope%20is%20invalid%2C%20unknown%2C%20or%20malformed&state=12345'
+
+    302MissingValidScope:
+      type: string
+      description: The requested scopes are not valid for data recipient
+      example: 'https://example-app.com/callback?error=invalid_scope&error_description=The%20requested%20scopes%20are%20not%20valid%20for%20data%20recipient&state=12345'
+
+    302MissingNonce:
+      type: string
+      description: 'The request is missing a required parameter: nonce'
+      example: 'https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%nonce&state=1234'
+
+    302ServerError:
+      type: string
+      description: The authorization server encountered an unexpected condition that prevented it from fulfilling the request
+      example: 'https://example-app.com/callback?error=server_error&error_description=The%20authorization%20server%20encountered%20an%20unexpected%20condition%20that%20prevented%20it%20from%20fulfilling%20the%20request&state=12345'
+
+    302Unavailable:
+      type: string
+      description: The authorization server is currently unable to handle the request
+      example: 'https://example-app.com/callback?error=temporarily_unavailable&error_description=The%20authorization%20server%20is%20currently%20unable%20to%20handle%20the%20request&state=12345'
+
+    302RequestNotSupported:
+      type: string
+      description: The request parameter is not supported
+      example: 'https://example-app.com/callback?error=request_not_supported&error_description=The%20request%20parameter%20is%20not%20supported&state=12345'
+
+    302RequestURINotSupported:
+      type: string
+      description: The request_uri parameter is not supported
+      example: 'https://example-app.com/callback?error=request_uri_not_supported&error_description=The%20request_uri%20parameter%20is%20not%20supported&state=1234'
+
+    302RegistrationNotSupported:
+      type: string
+      description: The registration parameter is not supported
+      example: 'https://example-app.com/callback?error=registration_not_supported&error_description=The%20registration%20parameter%20is%20not%20supported&state=12345'
+
+    302UserDenied:
+      type: string
+      description: The user denied the request
+      example: 'https://example-app.com/callback?error=user_denied&error_description=The%20user%20denied%20the%20request&state=12345'
+
+    302InvalidCardinality:
+      type: string
+      description: The requested cardinality is unknown, use SINGLE or MULTIPLE
+      example: 'https://example-app.com/callback?error=invalid_request&error_description=The%20requested%20cardinality%20is%20unknown%2C%20use%20SINGLE%20or%20MULTIPLE'
+
+    302AccountTypesNotSupported:
+      type: string
+      description: None of the requested accountTypes are supported
+      example: 'https://example-app.com/callback?error=invalid_request&error_description=None%20of%20the%20requested%20accountTypes%20are%20supported'

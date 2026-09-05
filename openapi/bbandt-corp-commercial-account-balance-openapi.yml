@@ -1,0 +1,480 @@
+openapi: 3.0.1
+info:
+  version: "3.6.0"
+  # build: '0'
+  title: Commercial Account Balance
+  description: "Get balance information for the current or previous day"
+  contact:
+    name: Truist API Support
+    url: "https://developer.truist.com/contact-us"
+servers:
+  - url: "https://api-sandbox.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Sandbox environment
+  - url: "https://apicert.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Certification environment
+  - url: "https://api.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Production environment
+
+security:
+  - OAuth: ["read:accounts"]
+tags:
+  - name: Commercial Account Balance
+    description: Returns account balances for a specific account
+paths:
+  /v3/accounts/{accountId}:
+    get:
+      tags:
+        - Commercial Account Balance
+      summary: Get account balance
+      description: Returns account balances for a specific account
+      operationId: getAccountInfo
+      parameters:
+        - $ref: "#/components/parameters/FapiInteractionIdHeader"
+        - name: accountId
+          in: path
+          description: Unique identifier for account, a surrogate account key in lieu of the actual account number
+          schema:
+            type: string
+          example: ZZZmrmm3C3JjK
+          required: true
+        - name: asOfDate
+          in: query
+          description: Balances returned as posted on this date.
+          schema:
+            type: string
+        - name: previousDateIndicator
+          in: query
+          description: Prior Day or Current Day balances
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountDetail"
+              examples:
+                DEPOSIT_ACCOUNT:
+                  value:
+                    depositAccount:
+                      balanceType: "ASSET"
+                      lineOfBusiness: "Commercial"
+                      balanceAsOf: "2023-10-12"
+                      currentAvailableBalance:
+                        baiCode: "060"
+                        value: 20.4
+                        asofDate: "2023-10-12"
+                      openingAvailableBalance:
+                        baiCode: "040"
+                        value: 10.01
+                        asofDate: "2023-10-12"
+                      currentLedgerBalance:
+                        baiCode: "030"
+                        value: 10.01
+                        asofDate: "2023-10-11"
+                      openingLedgerBalance:
+                        baiCode: "010"
+                        value: 20
+                        asofDate: "2023-10-12"
+                      closingLedgerBalance:
+                        baiCode: "015"
+                        value: 10
+                        asofDate: "2023-10-11"
+                      closingAvailableBalance:
+                        baiCode: "045"
+                        value: 10
+                        asofDate: "2023-10-11"
+                      totalCredits:
+                        baiCode: "100"
+                        value: 12
+                        asofDate: "2023-10-12"
+                      totalDebits:
+                        baiCode: "400"
+                        value: 40
+                        asofDate: "2023-10-12"
+                      oneDayFloat:
+                        baiCode: "072"
+                        value: 12.01
+                        asofDate: "2023-10-12"
+                      twoOrMoreDaysFloat:
+                        baiCode: "074"
+                        value: 12
+                        asofDate: "2023-10-12"
+                      collectedBalance: 42.5
+                      totalCollectedBalance: 42.39
+                      pendingCredit: 12
+                      pendingDebit: 40.1
+                CREDIT_CARD_ACCOUNT:
+                  value:
+                    creditCardAccount:
+                      balanceType: "LIABILITY"
+                      lineOfBusiness: "Commercial"
+                      paymentDueAmount: 2500
+                      currentBalance: 5100
+                      paymentDueDate: "2023-10-20"
+                      availableCredit: 44900
+                      creditLimit: 50000
+                      nextPayment: 100
+                      pastDueAmount: 0
+                LOAN_ACCOUNT:
+                  value:
+                    loanAccount:
+                      balanceType: "LIABILITY"
+                      lineOfBusiness: "Commercial"
+                      loanAmount: 100000
+                      nextPaymentDueAmount: 1200
+                      nextPaymentDueDate: "2023-10-20"
+                      principalBalance: 44900
+                      lastPaymentAmount: 1200
+                      interestRate: 4.1
+                      lastYearInterestPaid: 3.9
+                      interestPaidYTD: 3.9
+                      maturityDate: "2030-10-20"
+                      originationDate: "2021-10-20"
+                LINE_OF_CREDIT_ACCOUNT:
+                  value:
+                    lineOfCreditAccount:
+                      balanceType: "LIABILITY"
+                      lineOfBusiness: "Commercial"
+                      originalLineAmount: 1000000
+                      outstandingBalance: 100000
+                      availableBalance: 900000
+        "401":
+          description: Unauthorized
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INVALID_ACCESS_TOKEN:
+                  value:
+                    code: "401"
+                    message: "The access token is invalid"
+                ACCESS_TOKEN_EXPIRED:
+                  value:
+                    code: "401"
+                    message: "The access token expired"
+
+        "403":
+          description: Forbidden
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                NO_ENTITLEMENT:
+                  value:
+                    code: "403"
+                    message: "Account Id not entitled for Balance Inquiry"
+
+        "404":
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "404"
+                    message: "Resource Not Found"
+                ACCOUNTINFO_NOT_FOUND:
+                  value:
+                    code: "404"
+                    message: "Account details information is not available for the account id"
+
+        "405":
+          description: Method Not Allowed
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "405"
+                    message: "Requested Method is not found"
+        "500":
+          description: Internal Server Error
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                SYSTEM_DOWN_MAINTENANCE:
+                  value:
+                    code: "500"
+                    message: "System Down for maintenance"
+      security:
+        - OAuth: ["read:accounts"]
+
+components:
+  parameters:
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      required: false
+      schema:
+        type: string
+      example: rrt-9705854100-bgce-821-23397-1
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+          tokenUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/token
+          scopes:
+            read:accounts: Scope is requied to access account balance data
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier
+      required: true
+      schema:
+        type: string
+      example: "rrt-970585410023330903-b-gce-821-23397-1"
+  schemas:
+    Account:
+      title: Base Account
+      description: Account attributes shared across all account types
+      type: object
+      properties:
+        balanceType:
+          $ref: "#/components/schemas/BalanceType"
+        lineOfBusiness:
+          $ref: "#/components/schemas/LineOfBusiness"
+
+    LineOfBusiness:
+      type: string
+      description: Truist Line of Business to which the account maps("Commercial, "Retail")
+      enum:
+        - Commercial
+        - Retail
+
+    BalanceType:
+      type: string
+      description: Type of balances on account("ASSET", "LIABILITY")
+      enum:
+        - ASSET
+        - LIABILITY
+
+    AccountDetail:
+      title: Commercial account eligible account list
+      description: Accounts returned by API upon successful search
+      type: object
+      properties:
+        depositAccount:
+          $ref: "#/components/schemas/DepositAccount"
+        loanAccount:
+          $ref: "#/components/schemas/LoanAccount"
+        lineOfCreditAccount:
+          $ref: "#/components/schemas/LineOfCreditAccount"
+        creditCardAccount:
+          $ref: "#/components/schemas/CreditCardAccount"
+
+    LineOfCreditAccount:
+      title: schema definition for commercial LineOfCreditAccount details
+      description: Line of credit Account details
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/Account"
+        - type: object
+          properties:
+            originalLineAmount:
+              description: Amount committed for the Line.
+              type: number
+            outstandingBalance:
+              description: Amount already used for this line account.
+              type: number
+            availableBalance:
+              description: Amount available to be used for this line account.
+              type: number
+
+    LoanAccount:
+      title: Schema definition for commercial LoanAccount details
+      description: Loan account details.
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/Account"
+        - type: object
+          properties:
+            loanAmount:
+              description: Original loan amount
+              type: number
+            nextPaymentDueAmount:
+              description: Due payment amount.
+              type: number
+            nextPaymentDueDate:
+              description: Due date for the nextPaymentDueAmount.
+              type: string
+              format: date
+            principalBalance:
+              description: Principal balance amount - Available balance
+              type: number
+            maturityDate:
+              description: Maturity date of the loan
+              type: string
+              format: date
+            originationDate:
+              description: Origination date of the loan
+              type: string
+              format: date
+            lastPaymentAmount:
+              description: Amount of last payment
+              type: number
+            interestRate:
+              description: Rate of interest
+              type: number
+            lastYearInterestPaid:
+              description: Last year interest paid
+              type: number
+            interestPaidYTD:
+              description: Interest paid year to date
+              type: number
+
+    CreditCardAccount:
+      title: schema definition for commercial CreditCardAccount details.
+      description: Credit card account details
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/Account"
+        - type: object
+          properties:
+            paymentDueAmount:
+              description: Entire statement balance for the last month.
+              type: number
+            currentBalance:
+              description: Current balance of the card.
+              type: number
+            paymentDueDate:
+              description: Due date for the paymentDueAmount.
+              type: string
+              format: date
+              example: "2019-05-20"
+            availableCredit:
+              description: Credit amount available.
+              type: number
+            creditLimit:
+              description: Credit limit for the commercial credit card
+              type: number
+            nextPayment:
+              description: Minimum due amount for the credit card account.
+              type: number
+            pastDueAmount:
+              description: Amount due from past month.
+              type: number
+
+    DepositAccount:
+      title: schema definition for commercial DepositAccount details.
+      description: "Deposit account details"
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/Account"
+        - type: object
+          properties:
+            balanceAsOf:
+              description: Business Date associated with the following balances.
+              type: string
+            currentAvailableBalance:
+              description: Current available balance
+              $ref: "#/components/schemas/BalanceDetails"
+            openingAvailableBalance:
+              description: Opening available balances
+              $ref: "#/components/schemas/BalanceDetails"
+            currentLedgerBalance:
+              description: Current ledger balance
+              $ref: "#/components/schemas/BalanceDetails"
+            openingLedgerBalance:
+              description: Opening ledger balances
+              $ref: "#/components/schemas/BalanceDetails"
+            closingLedgerBalance:
+              description: Closing ledger balances
+              $ref: "#/components/schemas/BalanceDetails"
+            closingAvailableBalance:
+              description: Closing available balances
+              $ref: "#/components/schemas/BalanceDetails"
+            totalCredits:
+              description: Total amount of all posted credits.
+              type: number
+              $ref: "#/components/schemas/BalanceDetails"
+            totalDebits:
+              description: Total amount of all posted debits.
+              $ref: "#/components/schemas/BalanceDetails"
+            oneDayFloat:
+              description:
+                Amount of the account ledger balance that is not available,
+                for the account holder to draw for one business day.
+              type: number
+              $ref: "#/components/schemas/BalanceDetails"
+            twoOrMoreDaysFloat:
+              description:
+                Amount of the account ledger balance that is not available,
+                for the account holder to draw for two or more days
+              $ref: "#/components/schemas/BalanceDetails"
+            collectedBalance:
+              description: Collected available balances. Your current balance minus the amount of check deposits that are still processing
+              type: number
+            totalCollectedBalance:
+              description:
+                Total balances available for disbursement. Total Collected Balance for account computed by Total Available
+                Balance plus NSF Float minus 2+ days Float. (Current Day)
+              type: number
+            pendingCredit:
+              description: Total of all of the pending credits to your account
+              type: number
+            pendingDebit:
+              description:
+                A total of all of the pending debits to your account that have not yet posted,
+                but are reflected in your available balance.
+              type: number
+
+    BalanceDetails:
+      description: Balance details
+      type: object
+      properties:
+        baiCode:
+          description: Bank administration code (BAI Code) for the balance
+          type: string
+        value:
+          description: Balance value in USD
+          type: number
+        asofDate:
+          description: Business Date associated with the balance.
+          type: string
+
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: Defined error type codes
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error

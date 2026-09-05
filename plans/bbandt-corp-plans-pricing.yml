@@ -4,68 +4,36 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: BB&T Corp (Truist)
 providerId: bbandt-corp
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-05'
-reconciled: false
-tags:
-  - Banking
-  - Financial Services
-  - Open Banking
-  - Truist
-  - BB&T
-description: BB&T Corporation merged with SunTrust in December 2019 to form Truist Financial Corporation;
-  the developer portal at developer.truist.com hosts open-banking APIs (accounts, transactions, association
-  services). Access is gated behind a Truist developer agreement and is not self-serve. There is no public
-  rate card; commercial terms are negotiated under a partner / open-banking program agreement.
-notes: No public API pricing. Reconcile with the executed Truist developer / open-banking partner agreement
-  once available. The 'BB&T' brand has been retired; live integrations target Truist endpoints.
+modified: '2026-09-04'
+generated: '2026-09-04'
+method: searched
+source: https://developer.truist.com/ ; https://content.truist.com/caas/open-banking/prod/truist-developer-center/apis/get-started.model.json
+  ; https://content.truist.com/caas/open-banking/prod/truist-developer-center/terms.model.json — all probed 2026-09-04
 sources:
-  - https://developer.truist.com/
-plans:
-  - id: bbandt-corp-truist-developer
-    name: Truist Developer Program
-    type: enterprise
-    description: Partner / fintech access to Truist's open-banking APIs covering personal, small-business,
-      commercial accounts and transactions, plus association services. Access requires a developer agreement.
-    entries:
-      - label: Developer Program Access
-        description: Sandbox and production access provisioned through the Truist developer portal under
-          an executed developer / partner agreement
-        name: developer_program
-        type: subscription
-        metric: month
-        limit: -1
-        timeFrame: month
-        geo: US
-        domains:
-          - https://developer.truist.com
-        unit: 1
-        price: contact Truist Open Banking
-        userMultiplied: false
-      - label: Banking Fees Pass-Through
-        description: Underlying account, payment, and statement fees follow the customer's Truist banking
-          relationship — not the API itself
-        name: banking_fees
-        type: metered
-        metric: transaction
-        limit: -1
-        timeFrame: usage
-        geo: US
-        domains:
-          - https://developer.truist.com
-        unit: 1
-        price: see Truist account agreement
-        userMultiplied: false
-    elements:
-      - name: Truist Personal and Small Business Accounts API
-      - name: Truist Personal and Small Business Transactions API
-      - name: Truist Commercial Accounts API
-      - name: Truist Commercial Account Transactions API
-      - name: Truist Association Services API
-      - name: Sandbox Environment
-      - name: Open Banking / FDX Alignment
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- https://developer.truist.com/
+- https://content.truist.com/caas/open-banking/prod/truist-developer-center/terms.model.json
+reconciled: true
+tags:
+- Banking
+- Financial Services
+- Open Banking
+- Truist
+- BB&T
+plan_count: 0
+pricing_published: false
+description: 'Truist publishes no plans, tiers or rate card for its open-banking APIs. There is no pricing page on the
+  Truist Developer Center, and no price appears in the product catalog, the get-started content or the terms model —
+  all three of which are served anonymously and were read in full on 2026-09-04. Access runs through a single un-priced
+  route: register, create an application against the sandbox, then request promotion to production, at which point a
+  Truist engagement team works the commercial terms under an executed developer / open-banking agreement (a pre-production
+  API license agreement PDF is published at https://content.truist.com/content/dam/caas/open-banking/prod/ob-terms-conditions/pre-production-api-license-agreement.pdf).'
+plans: []
+access_route:
+  self_serve_signup: true
+  self_serve_production: false
+  sandbox_free: true
+  production_gate: Manual approval — "Promote to production" is reviewed by a Truist engagement team, which then issues
+    production credentials.
+  agreement: Truist developer / open-banking partner agreement; pre-production API license agreement published as a PDF.
+notes: plan_count is 0 because Truist publishes no priced tier, not because pricing was not looked for. Reconcile against
+  the executed agreement if one is ever available.

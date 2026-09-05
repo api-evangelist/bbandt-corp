@@ -1,0 +1,1000 @@
+openapi: 3.0.1
+info:
+  version: '1.2.0'
+  # build: '1'
+  title: Branches/ATMs V1.0 API
+  description: Branch/ATM Locations API
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+servers:
+  - url: 'https://api-sandbox.truist.com/retail'
+    description: Truist Financial Retail Locations
+security:
+  - BasicAuth: []
+tags:
+  - name: Location Information
+    description: Get ATM and branch location info - latitude, longitude, address, phone and fax
+
+paths:
+  ############################################################
+  #
+  # Locater paths
+  #
+  ############################################################
+  /v1/open-banking/locator:
+    get:
+      operationId: searchForAll
+      tags:
+        - Location Information
+      summary: Search for All Locations
+      description: Query ATMs and Branches for address provided in the payload
+      parameters:
+        - $ref: '#/components/parameters/Address1Query'
+        - $ref: '#/components/parameters/Address2Query'
+        - $ref: '#/components/parameters/CityQuery'
+        - $ref: '#/components/parameters/StateQuery'
+        - $ref: '#/components/parameters/ZipQuery'
+        - $ref: '#/components/parameters/LatitudeQuery'
+        - $ref: '#/components/parameters/LongitudeQuery'
+        - $ref: '#/components/parameters/SearchRadiusQuery'
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/LocationType'
+      responses:
+        '200':
+          description: Array
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Locations'
+              examples:
+                All Locations:
+                  value:
+                    locations:
+                      - locationName: ATM location 1
+                        distance: 1.0
+                        locationType: ATM
+                        phone: (123) 456-7899
+                        fax: (123) 456-7899
+                        address:
+                          address1: 123 example RD
+                          address2: ''
+                          city: Raleigh
+                          state: NC
+                          zip: 12345-6789
+                          latitude: 35.772
+                          longitude: -78.782
+                        locationServices:
+                          - DEPOSIT TRANSACTIONS
+                          - DIRECT RETAIL LOANS
+                          - CREDIT CARDS/CONSTANT CRD
+                          - SAFE DEPOSIT BOXES
+                          - NIGHT DEPOSITORY SERVICE
+                          - DRIVE-UP WINDOW
+                          - MORTGAGE LOANS
+                          - INVESTMENT SERVICES
+                          - TRUST SERVICES BY APPT
+                          - INTERNATIONAL/RETAIL & WIRE
+                          - BUSINESS LOANS BY APPT
+                          - MULTICULTURAL CENTER
+                        lobbyHours: []
+                        driveupWindowHours: []
+                      - locationName: Branch location 1
+                        distance: 2.0
+                        locationType: Branch
+                        phone: (123) 456-7899
+                        fax: (123) 456-7899
+                        address:
+                          address1: 123 example RD
+                          address2: ''
+                          city: Raleigh
+                          state: NC
+                          zip: 12345-6789
+                          latitude: 35.772
+                          longitude: -78.782
+                        locationServices:
+                          - DEPOSIT TRANSACTIONS
+                          - DIRECT RETAIL LOANS
+                          - CREDIT CARDS/CONSTANT CRD
+                          - SAFE DEPOSIT BOXES
+                          - NIGHT DEPOSITORY SERVICE
+                          - DRIVE-UP WINDOW
+                          - MORTGAGE LOANS
+                          - INVESTMENT SERVICES
+                          - TRUST SERVICES BY APPT
+                          - INTERNATIONAL/RETAIL & WIRE
+                          - BUSINESS LOANS BY APPT
+                          - MULTICULTURAL CENTER
+                        lobbyHours:
+                          - 'Mon: 09:00-05:00'
+                          - 'Tue: 09:00-05:00'
+                        driveupWindowHours:
+                          - 'Mon: 09:00-05:00'
+                          - 'Tue: 09:00-05:00'
+        '400':
+          description: Bad Request
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_ZIP_CODE:
+                  value:
+                    code: '401'
+                    message: Invalid Input
+                INVALID_Lat_Lng:
+                  value:
+                    code: '401'
+                    message: If either Lat or Lng is specified, the other must also be sent
+                INVALID_CITY_STATE:
+                  value:
+                    code: '401'
+                    message: Requested City was not found, please add State or Zip
+        '401':
+          description: Unauthorized
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                AUTHENTICATION_FAILED:
+                  value:
+                    code: '603'
+                    message: Authentication failed
+        '404':
+          description: Not Found
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: '404'
+                    message: URI does not represent a recognized resource
+        '405':
+          description: Client called an unimplemented REST method
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_METHOD:
+                  value:
+                    code: '1206'
+                    message: Method Not Allowed
+        '429':
+          description: Too Many Requests
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SPIKE_ARREST_VIOLATION:
+                  value:
+                    code: '1207'
+                    message: Traffic spike, too many requests
+                QUOTA_VIOLATION:
+                  value:
+                    code: '1207'
+                    message: Quota violation, too many requests
+        '500':
+          description: Internal Server Error
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INTERNAL_SERVER_ERROR:
+                  value:
+                    code: '500'
+                    message: System down for maintenance
+        '503':
+          description: Service unavailable / system down for maintenance
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SERVICE_UNAVAILABLE:
+                  value:
+                    code: '503'
+                    message: Scheduled Maintenance
+        '504':
+          description: Service Timed out
+          headers:
+            x-RqUID:
+              description: Unique request identifier
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GATEWAY_TIMEOUT:
+                  value:
+                    code: '504'
+                    message: A time-out occurred connecting to an upstream server
+      security:
+        - BasicAuth: []
+
+  /v1/open-banking/locator/branches:
+    get:
+      operationId: searchForBranches
+      tags:
+        - Location Information
+      summary: Search for Branches
+      description: Query Branches for address provided in the payload
+      parameters:
+        - $ref: '#/components/parameters/Address1Query'
+        - $ref: '#/components/parameters/Address2Query'
+        - $ref: '#/components/parameters/CityQuery'
+        - $ref: '#/components/parameters/StateQuery'
+        - $ref: '#/components/parameters/ZipQuery'
+        - $ref: '#/components/parameters/LatitudeQuery'
+        - $ref: '#/components/parameters/LongitudeQuery'
+        - $ref: '#/components/parameters/SearchRadiusQuery'
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/DriveThroughWindowBranches'
+        - $ref: '#/components/parameters/SaturdayHoursBranches'
+        - $ref: '#/components/parameters/NightDepositsBranches'
+        - $ref: '#/components/parameters/SpanishSpeakingBranches'
+      responses:
+        '200':
+          description: Array of branches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Branches'
+              examples:
+                Branch Locations:
+                  value:
+                    branchLocations:
+                      - locationName: Branch location 1
+                        distance: 1
+                        locationType: Branch
+                        phone: (123) 456-7899
+                        fax: (123) 456-7899
+                        address:
+                          address1: 123 example RD
+                          address2: ''
+                          city: Raleigh
+                          state: NC
+                          zip: 12345-6789
+                          latitude: 35.772
+                          longitude: -78.782
+                        locationServices:
+                          - DEPOSIT TRANSACTIONS
+                          - DIRECT RETAIL LOANS
+                          - CREDIT CARDS/CONSTANT CRD
+                          - SAFE DEPOSIT BOXES
+                          - NIGHT DEPOSITORY SERVICE
+                          - DRIVE-UP WINDOW
+                          - MORTGAGE LOANS
+                          - INVESTMENT SERVICES
+                          - TRUST SERVICES BY APPT
+                          - INTERNATIONAL/RETAIL & WIRE
+                          - BUSINESS LOANS BY APPT
+                          - MULTICULTURAL CENTER
+                        lobbyHours:
+                          - 'Mon: 9:00 - 5:00'
+                          - 'Tue: 9:00 - 5:00'
+                          - 'Wed: 9:00 - 5:00'
+                          - 'Thu: 9:00 - 5:00'
+                          - 'Fri: 9:00 - 6:00'
+                          - 'Sat: CLOSED'
+                          - 'Sun: CLOSED'
+                        driveupWindowHours:
+                          - 'Mon: 9:00 - 5:00'
+                          - 'Tue: 9:00 - 5:00'
+                          - 'Wed: 9:00 - 5:00'
+                          - 'Thu: 9:00 - 5:00'
+                          - 'Fri: 9:00 - 6:00'
+                          - 'Sat: CLOSED'
+                          - 'Sun: CLOSED'
+                      - locationName: Branch location 2
+                        distance: 1
+                        locationType: Branch
+                        phone: (123) 456-7899
+                        fax: (123) 456-7899
+                        address:
+                          address1: 123 example RD
+                          address2: ''
+                          city: Raleigh
+                          state: NC
+                          zip: 12345-6789
+                          latitude: 35.772
+                          longitude: -78.782
+                        locationServices:
+                          - DEPOSIT TRANSACTIONS
+                          - DIRECT RETAIL LOANS
+                          - CREDIT CARDS/CONSTANT CRD
+                          - SAFE DEPOSIT BOXES
+                          - NIGHT DEPOSITORY SERVICE
+                          - DRIVE-UP WINDOW
+                          - MORTGAGE LOANS
+                          - INVESTMENT SERVICES
+                          - TRUST SERVICES BY APPT
+                          - INTERNATIONAL/RETAIL & WIRE
+                          - BUSINESS LOANS BY APPT
+                          - MULTICULTURAL CENTER
+                        lobbyHours:
+                          - 'Mon: 9:00 - 5:00'
+                          - 'Tue: 9:00 - 5:00'
+                          - 'Wed: 9:00 - 5:00'
+                          - 'Thu: 9:00 - 5:00'
+                          - 'Fri: 9:00 - 6:00'
+                          - 'Sat: CLOSED'
+                          - 'Sun: CLOSED'
+                        driveupWindowHours:
+                          - 'Mon: 9:00 - 5:00'
+                          - 'Tue: 9:00 - 5:00'
+                          - 'Wed: 9:00 - 5:00'
+                          - 'Thu: 9:00 - 5:00'
+                          - 'Fri: 9:00 - 6:00'
+                          - 'Sat: CLOSED'
+                          - 'Sun: CLOSED'
+        '400':
+          description: Bad Request
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_ZIP_CODE:
+                  value:
+                    code: '401'
+                    message: Invalid Input
+                INVALID_Lat_Lng:
+                  value:
+                    code: '401'
+                    message: If either Lat or Lng is specified, the other must also be sent
+                INVALID_CITY_STATE:
+                  value:
+                    code: '401'
+                    message: Requested City was not found, please add State or Zip
+        '401':
+          description: Unauthorized
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                AUTHENTICATION_FAILED:
+                  value:
+                    code: '603'
+                    message: Authentication failed
+        '404':
+          description: Not Found
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: '404'
+                    message: URI does not represent a recognized resource
+        '405':
+          description: Client called an unimplemented REST method
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_METHOD:
+                  value:
+                    code: '1206'
+                    message: Method Not Allowed
+        '429':
+          description: Too Many Requests
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SPIKE_ARREST_VIOLATION:
+                  value:
+                    code: '1207'
+                    message: Traffic spike, too many requests
+                QUOTA_VIOLATION:
+                  value:
+                    code: '1207'
+                    message: Quota violation, too many requests
+        '500':
+          description: Internal Server Error
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INTERNAL_SERVER_ERROR:
+                  value:
+                    code: '500'
+                    message: System down for maintenance
+        '503':
+          description: Service unavailable / system down for maintenance
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SERVICE_UNAVAILABLE:
+                  value:
+                    code: '503'
+                    message: Scheduled Maintenance
+        '504':
+          description: Service Timed out
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GATEWAY_TIMEOUT:
+                  value:
+                    code: '504'
+                    message: A time-out occurred connecting to an upstream server
+      security:
+        - BasicAuth: []
+
+  /v1/open-banking/locator/atms:
+    get:
+      operationId: searchForATMs
+      tags:
+        - Location Information
+      summary: Search for ATMs
+      description: Query ATMs for address provided in the payload
+      parameters:
+        - $ref: '#/components/parameters/Address1Query'
+        - $ref: '#/components/parameters/Address2Query'
+        - $ref: '#/components/parameters/CityQuery'
+        - $ref: '#/components/parameters/StateQuery'
+        - $ref: '#/components/parameters/ZipQuery'
+        - $ref: '#/components/parameters/LatitudeQuery'
+        - $ref: '#/components/parameters/LongitudeQuery'
+        - $ref: '#/components/parameters/SearchRadiusQuery'
+        - $ref: '#/components/parameters/LimitQuery'
+        - $ref: '#/components/parameters/SpanishATMs'
+      responses:
+        '200':
+          description: Array of ATMs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ATMs'
+              examples:
+                ATMs:
+                  value:
+                    atmLocations:
+                      - locationName: ATM location 1
+                        distance: 1
+                        locationType: ATM
+                        phone: (123) 456-7899
+                        fax: (123) 456-7899
+                        address:
+                          address1: 123 example RD
+                          address2: ''
+                          city: Raleigh
+                          state: NC
+                          zip: 12345-6789
+                          latitude: 35.772
+                          longitude: -78.782
+                        locationServices:
+                          - DEPOSIT TRANSACTIONS
+                          - DIRECT RETAIL LOANS
+                          - CREDIT CARDS/CONSTANT CRD
+                          - SAFE DEPOSIT BOXES
+                          - NIGHT DEPOSITORY SERVICE
+                          - DRIVE-UP WINDOW
+                          - MORTGAGE LOANS
+                          - INVESTMENT SERVICES
+                          - TRUST SERVICES BY APPT
+                          - INTERNATIONAL/RETAIL & WIRE
+                          - BUSINESS LOANS BY APPT
+                          - MULTICULTURAL CENTER
+                        lobbyHours: []
+                        driveupWindowHours: []
+                      - locationName: ATM location 2
+                        distance: 1
+                        locationType: ATM
+                        phone: (123) 456-7899
+                        fax: (123) 456-7899
+                        address:
+                          address1: 123 example RD
+                          address2: ''
+                          city: Raleigh
+                          state: NC
+                          zip: 12345-6789
+                          latitude: 35.772
+                          longitude: -78.782
+                        locationServices:
+                          - DEPOSIT TRANSACTIONS
+                          - DIRECT RETAIL LOANS
+                          - CREDIT CARDS/CONSTANT CRD
+                          - SAFE DEPOSIT BOXES
+                          - NIGHT DEPOSITORY SERVICE
+                          - DRIVE-UP WINDOW
+                          - MORTGAGE LOANS
+                          - INVESTMENT SERVICES
+                          - TRUST SERVICES BY APPT
+                          - INTERNATIONAL/RETAIL & WIRE
+                          - BUSINESS LOANS BY APPT
+                          - MULTICULTURAL CENTER
+                        lobbyHours: []
+                        driveupWindowHours: []
+        '400':
+          description: Bad Request
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_ZIP_CODE:
+                  value:
+                    code: '401'
+                    message: Invalid Input
+                INVALID_Lat_Lng:
+                  value:
+                    code: '401'
+                    message: If either Lat or Lng is specified, the other must also be sent
+                INVALID_CITY_STATE:
+                  value:
+                    code: '401'
+                    message: Requested City was not found, please add State or Zip
+        '401':
+          description: Unauthorized
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                AUTHENTICATION_FAILED:
+                  value:
+                    code: '603'
+                    message: Authentication failed
+        '404':
+          description: Not Found
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: '404'
+                    message: URI does not represent a recognized resource
+        '405':
+          description: Client called an unimplemented REST method
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INVALID_METHOD:
+                  value:
+                    code: '1206'
+                    message: Method Not Allowed
+        '429':
+          description: Too Many Requests
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SPIKE_ARREST_VIOLATION:
+                  value:
+                    code: '1207'
+                    message: Traffic spike, too many requests
+                QUOTA_VIOLATION:
+                  value:
+                    code: '1207'
+                    message: Quota violation, too many requests
+        '500':
+          description: Internal Server Error
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INTERNAL_SERVER_ERROR:
+                  value:
+                    code: '500'
+                    message: System down for maintenance
+        '503':
+          description: Service unavailable / system down for maintenance
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                SERVICE_UNAVAILABLE:
+                  value:
+                    code: '503'
+                    message: Scheduled Maintenance
+        '504':
+          description: Service Timed out
+          headers:
+            x-RqUID:
+              description: Unique request identifier.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                GATEWAY_TIMEOUT:
+                  value:
+                    code: '504'
+                    message: A time-out occurred connecting to an upstream server
+      security:
+        - BasicAuth: []
+
+components:
+  parameters:
+    ############################################################
+    #
+    # Shared request parameters (used by all endpoints)
+    #
+    ############################################################
+    Address1Query:
+      name: Address1
+      in: query
+      required: false
+      description: Lookup address.
+      schema:
+        type: string
+        maxLength: 126
+
+    Address2Query:
+      name: Address2
+      in: query
+      required: false
+      description: Lookup address continued.
+      schema:
+        type: string
+        maxLength: 126
+
+    CityQuery:
+      name: City
+      in: query
+      required: false
+      description: Lookup address city.
+      schema:
+        type: string
+        maxLength: 20
+
+    StateQuery:
+      name: State
+      in: query
+      required: false
+      description: Lookup State.
+      schema:
+        type: string
+        maxLength: 2
+
+    ZipQuery:
+      name: ZIP
+      in: query
+      required: false
+      description: Lookup ZIP.
+      schema:
+        type: string
+        maxLength: 10
+      example: "27604"
+
+    LatitudeQuery:
+      name: Lat
+      in: query
+      required: false
+      description: Lookup Latitude.
+      schema:
+        type: number
+        minimum: -90
+        maximum: 90
+
+    LongitudeQuery:
+      name: Lng
+      in: query
+      required: false
+      description: Lookup Longitude.
+      schema:
+        type: number
+        minimum: -180
+        maximum: 180
+
+    SearchRadiusQuery:
+      name: SearchRadius
+      in: query
+      required: false
+      description: Radius in miles.
+      schema:
+        type: integer
+        maximum: 99
+
+    LimitQuery:
+      name: limit
+      in: query
+      required: false
+      description: Number of elements that the consumer wishes to receive
+      schema:
+        type: integer
+        maxLength: 2
+        maximum: 99
+
+    SpanishATMs:
+      in: query
+      name: SpanishATMs
+      required: false
+      description: 'BB&T Spanish ATMs?'
+      schema:
+        $ref: '#/components/schemas/Option'
+
+    LocationType:
+      name: LocationType
+      in: query
+      required: false
+      description: Branch or ATM
+      schema:
+        type: integer
+        maxLength: 126
+
+    DriveThroughWindowBranches:
+      name: DriveThroughWindowBranches
+      in: query
+      required: false
+      description: 'Drive through window branches?'
+      schema:
+        $ref: '#/components/schemas/Option'
+
+    SaturdayHoursBranches:
+      name: SaturdayHoursBranches
+      in: query
+      required: false
+      description: 'Saturday hours branches?'
+      schema:
+        $ref: '#/components/schemas/Option'
+
+    NightDepositsBranches:
+      name: NightDepositsBranches
+      in: query
+      required: false
+      description: 'Night deposits branches'
+      schema:
+        $ref: '#/components/schemas/Option'
+
+    SpanishSpeakingBranches:
+      name: SpanishSpeakingBranches
+      in: query
+      required: false
+      description: 'Spanish-speaking branches?'
+      schema:
+        $ref: '#/components/schemas/Option'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: standard REST HTTP status codes
+        message:
+          type: string
+          description: path of the failing element
+
+    Location:
+      type: object
+      description: A base ATM or branch location
+      properties:
+        locationName:
+          type: string
+          description: Name of ATM or branch location
+        distance:
+          type: integer
+          description: Distance from address provided
+        locationType:
+          type: string
+          description: "Type of the Location"
+        phone:
+          type: string
+          description: Phone number
+        fax:
+          type: string
+          description: Fax number
+        address:
+          $ref: '#/components/schemas/Address'
+        locationServices:
+          type: array
+          items:
+            type: string
+        lobbyHours:
+          type: array
+          items:
+            type: string
+        driveupWindowHours:
+          type: array
+          items:
+            type: string
+    Address:
+      type: object
+      description: "Location of the branch"
+      properties:
+        address1:
+          type: string
+          description: "Address line 1"
+        address2:
+          type: string
+          description: "Address line 2"
+        city:
+          type: string
+          description: "City of branch location"
+        state:
+          type: string
+          description: "State of branch location"
+        zip:
+          type: string
+          description: "Zip code of branch location"
+        searchRadius:
+          type: string
+          description: "Radius in miles of branch location"
+        latitude:
+          type: number
+          format: double
+          description: Latitude of the location
+        longitude:
+          type: number
+          format: double
+          description: Longitude of the location
+    Branches:
+      title: Branches Entity
+      description: List of Branch Locations
+      type: object
+      properties:
+        branchLocations:
+          description: List of Branch Locations
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    ATMs:
+      title: ATMs Entity
+      description: searchForATMs
+      type: object
+      properties:
+        atmLocations:
+          description: List of All ATM Locations
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    Locations:
+      title: All or ATM Locations
+      description: List of All or just ATM Locations
+      type: object
+      properties:
+        locations:
+          description: List of All or just ATM Locations
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    Option:
+      title: Option
+      description: Yes ot No
+      type: string
+      enum:
+        - Y
+        - N
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Base64(client_id:client_secret)

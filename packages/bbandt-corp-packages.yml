@@ -1,0 +1,26 @@
+generated: '2026-09-04'
+method: searched
+source: npm registry search, PyPI, GitHub org lookup, and the Truist Developer Center product catalog + FAQs — all probed
+  2026-09-04
+specification: API Commons Packages
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+package_count: 0
+official_count: 0
+packages: []
+description: Truist publishes no first-party client libraries or SDKs for its open-banking APIs in any package registry,
+  and operates no GitHub organization.
+evidence:
+- url: https://registry.npmjs.org/-/v1/search?text=truist
+  status: 200
+  result: 2 packages, neither published by Truist (an unrelated sports site and a third-party bank-statement parser)
+- url: https://api.github.com/orgs/truist/repos
+  status: 404
+  result: No Truist GitHub organization exists; github.com/truist is an unrelated personal account
+- url: https://developer.truist.com/dptl-product-ms-unauth/apiCloud/v1/products
+  status: 200
+  result: 15 API products, no SDK or client-library product
+note: 'Integration is spec-first: consumers generate their own client from the published OpenAPI contracts in openapi/.
+  Because no package exists, there is no release cadence to read as a decay signal — version: null everywhere is a genuine
+  absence, not an unchecked field.'

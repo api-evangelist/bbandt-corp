@@ -1,0 +1,151 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/_original/*.yaml (15 specs, 31 operations) ; https://content.truist.com/caas/open-banking/prod/truist-developer-center/apis/get-started.model.json
+specification: API Commons Conventions
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+description: Cross-cutting runtime semantics for the Truist open-banking estate, derived from the 15 OpenAPI contracts
+  Truist publishes on the Truist Developer Center.
+auth:
+  style: OAuth 2.0 authorization_code with customer consent, plus HTTP Basic for the client-credential and management
+    surfaces
+  token_endpoint: https://api.truist.com/retail/auth/oauth/v3/token (retail) and https://api-sandbox.truist.com/commercial/auth/v1/oauth/token
+    (commercial sandbox; the production commercial authorization URL is issued at onboarding)
+  scopes: See scopes/bbandt-corp-scopes.yml — FDX-style resource scopes (ACCOUNT_BASIC, ACCOUNT_DETAILED, TRANSACTIONS,
+    CUSTOMER_CONTACT, PAYMENT_SUPPORT) on retail; read:accounts / read:payments / write:payments on commercial
+  cross_link: authentication/bbandt-corp-authentication.yml
+request_id_tracing:
+  header: x-fapi-interaction-id
+  required: true
+  direction: sent by the client on the request and echoed by Truist on every response, including every error response
+  format: UUID (example c770aef3-6784-41f7-8e0e-ff5f97bddb3a)
+  alternate: The Branch/ATM Locator API returns x-RqUID ("Unique request identifier") instead of x-fapi-interaction-id.
+  note: This is the FAPI correlation identifier. It is the value to quote to Truist support for a failed call.
+idempotency:
+  supported: false
+  coverage: none
+  mechanism: null
+  header: null
+  note: 'No Idempotency-Key header, retention window or replay semantics appear in any of the 15 published specs, and
+    the developer portal documents none. The mutating surface is 8 operations (createRtpCreditTransfer, updatePaymentStatus,
+    createRtpCreditTransferApprove, createRtpPaymentAcknowledgment, revokeConsentGrant, createRecipient/updateRecipient/deleteRecipient,
+    publishNotification, createNotificationSubscription, deleteNotificationSubscription) and none of them is replay-safe
+    by contract. Credit Transfers rejects a repeat submission server-side with HTTP 409, code 908 DUPLICATE_PAYMENT_REQUEST
+    — that is duplicate detection, not idempotency: the caller cannot safely retry a timed-out POST and receive the original
+    result.'
+  evidence: openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml#/paths/~1v2~1payments~1rtp~1credit-transfers/post/responses/409
+reversibility:
+  grade: documented
+  applicable: true
+  note: Truist publishes real reversal operations for its highest-consequence writes, but states no window for any of
+    them. Grade is documented (reversal path present) rather than verified (path plus a stated window).
+  surfaces:
+  - write: createRtpCreditTransfer
+    write_operation: POST /v2/payments/rtp/credit-transfers
+    reversal: updatePaymentStatus
+    reversal_operation: PUT /v2/payments/rtp/credit-transfers
+    mechanism: Submit {"status":"CANCEL","payments":[paymentId]} (schemas CancelPaymentRequest / CancelStatus). The spec
+      summary is literally "Credit transfers cancel".
+    window: null
+    window_note: No window is published. The RtpStatus enum (needsApproval, scheduled, processing, completed, canceled,
+      expired) implies cancellation is only meaningful before settlement, but Truist does not state the boundary, and
+      RTP settlement on the network is irrevocable. Do not assume a cancel will succeed on a completed payment.
+    docs: https://developer.truist.com/api/credit-transfers/documentation
+  - write: createRtpCreditTransferApprove
+    write_operation: POST /v2/payments/rtp/credit-transfers/approvals
+    reversal: createRtpCreditTransferApprove with status REJECT
+    reversal_operation: POST /v2/payments/rtp/credit-transfers/approvals
+    mechanism: The UpdateStatus enum is APPROVE | REJECT, so a pending payment can be rejected instead of approved from
+      the same operation.
+    window: null
+    window_note: Applies only while the payment is in needsApproval status; no time bound is published.
+    docs: https://developer.truist.com/api/credit-transfers/documentation
+  - write: consent grant (issued through the OAuth authorization_code flow)
+    write_operation: GET /v3/authorize + POST /v3/token
+    reversal: revokeConsentGrant
+    reversal_operation: PUT /v1/consents/{consentId}/revocation
+    mechanism: Revokes an existing customer consent grant; a CONSENT_REVOKED event is then published to subscribers.
+    window: null
+    window_note: No window published — revocation appears to be available for the life of the consent, but Truist does
+      not say so in the contract.
+    docs: https://developer.truist.com/api/user-consent/documentation
+  - write: createRecipient
+    write_operation: POST /v1/register
+    reversal: deleteRecipient
+    reversal_operation: DELETE /v1/register/{clientId}
+    mechanism: RFC 7591 dynamic client registration is fully reversible by deleting the registered client.
+    window: null
+    window_note: No window published.
+    docs: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - write: createNotificationSubscription
+    write_operation: POST /v1/notification-subscriptions
+    reversal: deleteNotificationSubscription
+    reversal_operation: DELETE /v1/notification-subscriptions/{subscriptionId}
+    mechanism: Subscriptions are deletable by id.
+    window: null
+    window_note: No window published.
+    docs: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  irreversible:
+  - publishNotification (POST /v1/notifications) — a published event cannot be recalled
+  - createRtpPaymentAcknowledgment (POST /v2/payments/rtp/credit-transfers/{paymentId}/acknowledgements) — no un-acknowledge
+    operation is published
+dry_run_mode:
+  supported: false
+  note: 'No dry-run, preview, simulate or validate-only mode is declared in any spec. The sandbox environment (api-sandbox.truist.com)
+    is the rehearsal surface: it returns mock responses and uses sandbox-only credentials.'
+pagination:
+  style: offset/limit, on the Credit Transfers API only
+  params:
+  - name: offset
+    in: query
+    description: The row number to begin the next response page. Defaults to 1.
+  - name: limit
+    in: query
+  response_fields:
+  - PageMetadata
+  note: The FDX retail collections (GET /v2/accounts, GET /v2/accounts/{accountId}/transactions) declare no paging parameters
+    in the published specs.
+field_selection:
+  mechanism: resultType query parameter
+  values:
+  - lightweight
+  - details
+  description: 'FDX ResultType: lightweight returns the metadata entity (AccountDescriptor) and details returns the full
+    Account. Defaults to lightweight.'
+versioning:
+  style: URI path major version (/v1, /v2, /v3) plus semver info.version
+  cross_link: lifecycle/bbandt-corp-lifecycle.yml
+error_envelope:
+  shape: '{ code: string, message: string } — the FDX Error entity'
+  rfc9457: false
+  cross_link: errors/bbandt-corp-problem-types.yml
+rate_limit_signaling:
+  headers_documented: false
+  status_on_exhaustion: 429
+  codes:
+  - code: '1207'
+    name: SPIKE_ARREST_VIOLATION
+    meaning: Traffic spike, too many requests
+  - code: 1207 / 1208
+    name: QUOTA_VIOLATION
+    meaning: Quota violation, too many requests
+  note: Two distinct throttles are visible in the contracts — an Apigee spike arrest and a quota — but no RateLimit-*,
+    X-RateLimit-* or Retry-After header is declared on any 429 response, so a client learns only that it was throttled,
+    never how much budget remains.
+  cross_link: rate-limits/bbandt-corp-rate-limits.yml
+metadata:
+  supported: false
+  note: No customer-defined metadata field is exposed on any resource.
+content_types:
+- application/json
+- text/plain (OAuth token endpoint error variants)
+required_headers:
+- name: x-fapi-interaction-id
+  required: true
+- name: FDX-API-Actor-Type
+  required: false
+  values:
+  - USER
+  - BATCH
+  description: Identifies whether the customer is present (USER) or the call is a BATCH operation

@@ -1,0 +1,999 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/_original/*.yaml (15 Truist Developer Center OpenAPI specs, harvested 2026-09-04 from https://developer.truist.com/assets/data/swagger-prod/)
+specification: API Commons Error Catalog
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+format: vendor
+rfc9457: false
+description: 'Truist open-banking APIs return a flat vendor error envelope, not RFC 9457 problem+json. Every error
+  body is the FDX `Error` entity: an object with a string `code` (an FDX or Truist-assigned code) and a human-readable
+  `message`. The OAuth API uses a separate `APIErrorResponse` envelope. Every error response also carries the `x-fapi-interaction-id`
+  correlation header (the retail Branch/ATM Locator returns `x-RqUID` instead), which is the value to quote to Truist
+  support.'
+envelope:
+  media_type: application/json
+  schema: '#/components/schemas/Error'
+  fields:
+  - name: code
+    type: string
+    description: Error code defined by the FDX API Specification or by Truist as data provider
+  - name: message
+    type: string
+    description: End-user displayable information which might help the customer diagnose the error
+  correlation_headers:
+  - x-fapi-interaction-id
+  - x-RqUID
+status_codes:
+- status: 400
+  meaning: Bad request — schema, parameter or business validation failed
+- status: 401
+  meaning: Unauthorized — access token missing, invalid, expired or not approved
+- status: 403
+  meaning: Forbidden — account not entitled, or the consent/token lacks the required scope
+- status: 404
+  meaning: Not found — unrecognized URI, account, or no data for the request
+- status: 405
+  meaning: Method not allowed for this resource
+- status: 409
+  meaning: Conflict — duplicate payment request (Credit Transfers)
+- status: 422
+  meaning: Unprocessable entity
+- status: 429
+  meaning: Too many requests — Apigee spike-arrest (1207) or quota (1208) violation
+- status: 500
+  meaning: Internal server error / system down for maintenance
+- status: 503
+  meaning: Service unavailable — an upstream server is unavailable
+- status: 504
+  meaning: Gateway timeout connecting to an upstream server
+error_count: 119
+errors:
+- name: INVALID_ACCESS_TOKEN
+  code: '401'
+  status: 401
+  message: The access token is invalid
+  meaning: Unauthorized
+  apis:
+  - Commercial Account Balance
+  - Commercial Accounts
+- name: ACCESS_TOKEN_EXPIRED
+  code: '401'
+  status: 401
+  message: The access token expired
+  meaning: Unauthorized
+  apis:
+  - Commercial Account Balance
+  - Commercial Accounts
+- name: NO_ENTITLEMENT
+  code: '403'
+  status: 403
+  message: Account Id not entitled for Balance Inquiry
+  meaning: Forbidden
+  apis:
+  - Commercial Account Balance
+- name: RESOURCE_NOT_FOUND
+  code: '404'
+  status: 404
+  message: Resource Not Found
+  meaning: Not Found
+  apis:
+  - Commercial Account Balance
+  - Commercial Account Transactions
+  - Commercial Accounts
+  - Branch/ATM Locator
+- name: ACCOUNTINFO_NOT_FOUND
+  code: '404'
+  status: 404
+  message: Account details information is not available for the account id
+  meaning: Not Found
+  apis:
+  - Commercial Account Balance
+- name: RESOURCE_NOT_FOUND
+  code: '405'
+  status: 405
+  message: Requested Method is not found
+  meaning: Method Not Allowed
+  apis:
+  - Commercial Account Balance
+- name: SYSTEM_DOWN_MAINTENANCE
+  code: '500'
+  status: 500
+  message: System Down for maintenance
+  meaning: Internal Server Error
+  apis:
+  - Commercial Account Balance
+- name: PREVCURR_MISSING
+  code: '400'
+  status: 400
+  message: Bad request. previousDateIndicator can be C or P
+  meaning: Bad Request
+  apis:
+  - Commercial Account Transactions
+- name: TRANSDATE_MISSING
+  code: '400'
+  status: 400
+  message: Bad request. transactionDate should be passed as a mandatory field
+  meaning: Bad Request
+  apis:
+  - Commercial Account Transactions
+- name: INVALID_DATE
+  code: '400'
+  status: 400
+  message: Bad request. The date does not match ISO 8601
+  meaning: Bad Request
+  apis:
+  - Commercial Account Transactions
+- name: NO_ENTITLMENT
+  code: '403'
+  status: 403
+  message: Account is not entitled for transactions
+  meaning: Forbidden
+  apis:
+  - Commercial Account Transactions
+- name: ACCOUNT_NOT_FOUND
+  code: '404'
+  status: 404
+  message: Account Number not found
+  meaning: Not Found
+  apis:
+  - Commercial Account Transactions
+- name: NO_TRANSACTIONS
+  code: '404'
+  status: 404
+  message: No Transactions available for the given input
+  meaning: Not Found
+  apis:
+  - Commercial Account Transactions
+- name: METHOD_NOT_ALLOWED
+  code: '405'
+  status: 405
+  message: The request method is not supported by this resource
+  meaning: Method Not Allowed
+  apis:
+  - Commercial Account Transactions
+  - Commercial Accounts
+- name: SYSTEM_DOWN
+  code: '500'
+  status: 500
+  message: System Down for maintenance
+  meaning: Internal Server Error
+  apis:
+  - Commercial Account Transactions
+  - Commercial Accounts
+- name: INVALID_ACCOUNTTYPE
+  code: '400'
+  status: 400
+  message: Bad Request. Invalid accountType
+  meaning: Bad Request
+  apis:
+  - Commercial Accounts
+- name: ACCOUNT_NOT_AVAILABLE
+  code: '404'
+  status: 404
+  message: Accounts not available for the given onlineId
+  meaning: Not Found
+  apis:
+  - Commercial Accounts
+- name: DATA_NOT_AVAILABLE
+  code: '404'
+  status: 404
+  message: Data Not Found for the OnlineId
+  meaning: Not Found
+  apis:
+  - Commercial Accounts
+- name: SYSTEM_UNAVAILABLE
+  code: '500'
+  status: 500
+  message: System unavailable
+  meaning: Internal Server Error
+  apis:
+  - Commercial Accounts
+- name: INVALID_INPUT_OAS
+  code: '7021'
+  status: 400
+  message: Specify OAS validation error
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_ACCESS_TOKEN
+  code: '603'
+  status: 401
+  message: Authentication failed
+  meaning: Unauthorized
+  apis:
+  - Credit Transfers
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+- name: ENTITLEMENT_ERROR
+  code: '602'
+  status: 403
+  message: Account not entitled
+  meaning: Forbidden
+  apis:
+  - Credit Transfers
+- name: INSUFFICIENT_SCOPE
+  code: '403'
+  status: 403
+  message: Invalid scope
+  meaning: Forbidden
+  apis:
+  - Credit Transfers
+- name: RESOURCE_NOT_FOUND
+  code: '1101'
+  status: 404
+  message: URI does not represent a recognized resource
+  meaning: Not Found
+  apis:
+  - Credit Transfers
+- name: INVALID_ACCOUNTID
+  code: '7059'
+  status: 404
+  message: Account not found
+  meaning: Not Found
+  apis:
+  - Credit Transfers
+- name: METHOD_NOT_ALLOWED
+  code: '1206'
+  status: 405
+  message: Method Not Allowed
+  meaning: Method Not Allowed
+  apis:
+  - Credit Transfers
+- name: DUPLICATE_PAYMENT_REQUEST
+  code: '908'
+  status: 409
+  message: Duplicate payment request
+  meaning: Conflict
+  apis:
+  - Credit Transfers
+- name: SPIKE_ARREST_VIOLATION
+  code: '1207'
+  status: 429
+  message: Too Many Requests
+  meaning: Too Many Requests
+  apis:
+  - Credit Transfers
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+  - User Consent
+  - Personal and Small Business Client Contact
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Branch/ATM Locator
+  - Personal and Small Business Account Payment Networks
+  - Retail Dynamic Client Registration
+- name: QUOTA_VIOLATION
+  code: '1208'
+  status: 429
+  message: Quota Violation
+  meaning: Too Many Requests
+  apis:
+  - Credit Transfers
+- name: INTERNAL_SERVER_ERROR
+  code: '500'
+  status: 500
+  message: We are currently unable to process your request due to a system issue
+  meaning: Internal Server Error
+  apis:
+  - Credit Transfers
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+  - User Consent
+  - Personal and Small Business Client Contact
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Branch/ATM Locator
+  - Personal and Small Business Account Payment Networks
+  - Retail Dynamic Client Registration
+- name: UNEXPECTED_ERROR
+  code: '500'
+  status: 500
+  message: An unexpected error occurred while processing your request
+  meaning: Internal Server Error
+  apis:
+  - Credit Transfers
+- name: SERVICE_UNAVAILABLE
+  code: '503'
+  status: 503
+  message: We are currently unable to process your request due to a system issue
+  meaning: Service unavailable / system down for maintenance
+  apis:
+  - Credit Transfers
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+  - User Consent
+  - Personal and Small Business Client Contact
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Branch/ATM Locator
+  - Personal and Small Business Account Payment Networks
+  - Retail Dynamic Client Registration
+- name: GATEWAY_TIMEOUT
+  code: '504'
+  status: 504
+  message: An unexpected error occurred while processing your request
+  meaning: Service Timed out
+  apis:
+  - Credit Transfers
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+  - User Consent
+  - Personal and Small Business Client Contact
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Branch/ATM Locator
+  - Personal and Small Business Account Payment Networks
+  - Retail Dynamic Client Registration
+- name: MISSING_AMOUNT
+  code: '7000'
+  status: 400
+  message: Bad request, amount is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_AMOUNT
+  code: '8001'
+  status: 400
+  message: Bad request, amount is invalid
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_FROMACCID
+  code: '7001'
+  status: 400
+  message: Bad request, fromAccountId is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_PAYMENTDATE
+  code: '7002'
+  status: 400
+  message: Bad request, paymentDate is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_CORRELATIONID
+  code: '7003'
+  status: 400
+  message: Bad request, correlationId is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_CREDITOR
+  code: '7004'
+  status: 400
+  message: Bad request, creditor is missing
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_CREDITOR_ACCOUNTNUMBER
+  code: '7005'
+  status: 400
+  message: Bad request, creditor account number is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_CREDITOR_ROUTINGNUMBER
+  code: '7006'
+  status: 400
+  message: Bad request, creditor routing number is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_CREDITOR_ADDRESS_LINE
+  code: '7008'
+  status: 400
+  message: Bad request, creditor address line is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_CREDITOR_ADDRESS_STATE
+  code: '7009'
+  status: 400
+  message: Bad request, creditor address's state is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_CREDITOR_ADDRESS_CITY
+  code: '7010'
+  status: 400
+  message: Bad request, creditor address's city is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_CREDITOR_ZIPCODE
+  code: '7011'
+  status: 400
+  message: Bad request, creditor address's zipcode is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_CORRELATIONID
+  code: '7024'
+  status: 400
+  message: Bad request, correlationId is invalid
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: AMOUNT_MORE_THAN_10MILLION
+  code: '8002'
+  status: 400
+  message: Amount shouldn't be more than 10 million
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_FULL_AMOUNT
+  code: '8023'
+  status: 400
+  message: Bad request, full amount is amount + discount amount
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: TRANSACTION_LIMIT_EXCEEDED
+  code: '8027'
+  status: 400
+  message: Transaction limit is exceeded
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: DAILY_LIMIT_EXCEEDED
+  code: '8026'
+  status: 400
+  message: Daily limit is exceeded
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: USER_DAILY_LIMIT_EXCEEDED
+  code: '8029'
+  status: 400
+  message: Exceeded user's daily limit
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: ROUTING_NUMBER_SERVICE_UNAVAILABLE
+  code: '8031'
+  status: 400
+  message: Routing number service is unavailable
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: CLOSED_ACCOUNT
+  code: '8037'
+  status: 400
+  message: Payment initiation is not allowed on closed account
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_MANDOTORY_PARAMS
+  code: '7027'
+  status: 400
+  message: Bad request, mandatory query param is missing. PaymentId, correlationId or accountId and paymentAction
+    should be present
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_LIMIT
+  code: '7013'
+  status: 400
+  message: Bad request, limit has invalid values
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_INPUT_PARAM_CORRELATIONID
+  code: '7023'
+  status: 400
+  message: Bad request, either correlationId or paymentId should be present. Invalid search parameters"
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_OFFSET
+  code: '7014'
+  status: 400
+  message: Bad request, offset has invalid values
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_PAYMENTFROMDATE
+  code: '7015'
+  status: 400
+  message: Bad request, paymentFromDate is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_PAYMENTFROMDATE
+  code: '7016'
+  status: 400
+  message: Bad request, paymentFromDate is invalid
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_FROMAMOUNT
+  code: '7017'
+  status: 400
+  message: Bad request, fromAmount is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_FROMAMOUNT
+  code: '7018'
+  status: 400
+  message: Bad request, fromAmount is invalid
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_TOAMOUNT
+  code: '7019'
+  status: 400
+  message: Bad request, toAmount is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_TOAMOUNT
+  code: '7020'
+  status: 400
+  message: Bad request, toAmount is invalid
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: DATA_NOT_FOUND
+  code: '1107'
+  status: 404
+  message: Data not found for request parameters
+  meaning: Not Found
+  apis:
+  - Credit Transfers
+- name: ACCOUNT_NOT_AVAILABLE
+  code: '8000'
+  status: 404
+  message: Accounts not available for the given OnlineId
+  meaning: Not Found
+  apis:
+  - Credit Transfers
+- name: INVALID_STATUS
+  code: '7167'
+  status: 400
+  message: Bad request, status is invalid
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: MISSING_PAYMENTTODATE
+  code: '7029'
+  status: 400
+  message: Bad request, paymentToDate is missing, null or blank
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: INVALID_PAYMENTTODATE
+  code: '7030'
+  status: 400
+  message: Bad request, paymentToDate is invalid
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: GREATER_PAYMENTTODATE
+  code: '7164'
+  status: 400
+  message: Bad request, paymentToDate should be greater than paymentFromDate
+  meaning: Bad Request
+  apis:
+  - Credit Transfers
+- name: ACCESS_TOKEN_EXPIRED
+  code: '603'
+  status: 401
+  message: Authentication failed
+  meaning: Unauthorized
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+- name: ACCESSTOKEN_NOT_APPROVED
+  code: '603'
+  status: 401
+  message: Authentication failed
+  meaning: Unauthorized
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+- name: NO_APIPRODUCT_MATCHFOUND
+  code: 603-403
+  status: 401
+  message: Data recipient connection does not include CUSTOMER_CONTACT
+  meaning: Unauthorized
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Personal and Small Business Account Payment Networks
+- name: INVALID_SCOPE
+  code: '602'
+  status: 403
+  message: Customer connection does not authorize account contact
+  meaning: Forbidden
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+- name: RESOURCE_NOT_FOUND
+  code: 701-1206
+  status: 404
+  message: URI does not represent a recognized resource
+  meaning: Not Found
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+- name: INVALID_ACCOUNT
+  code: '701'
+  status: 404
+  message: Invalid account id
+  meaning: Not Found
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+  - Personal and Small Business Account Payment Networks
+- name: INVALID_METHOD
+  code: '1206'
+  status: 405
+  message: The request method is not supported by this resource
+  meaning: Client called an unimplemented REST method
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+  - User Consent
+  - Personal and Small Business Client Contact
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Branch/ATM Locator
+  - Personal and Small Business Account Payment Networks
+  - Retail Dynamic Client Registration
+- name: QUOTA_VIOLATION
+  code: '1207'
+  status: 429
+  message: Quota violation, too many requests
+  meaning: Too Many Requests
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+  - User Consent
+  - Personal and Small Business Client Contact
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Branch/ATM Locator
+  - Personal and Small Business Account Payment Networks
+  - Retail Dynamic Client Registration
+- name: SUBSYSTEM_UNAVAILABLE_ERROR
+  code: '501'
+  status: 500
+  message: Subsystem unavailable
+  meaning: Internal Server Error
+  apis:
+  - Account Address
+  - Personal and Small Business Transactions
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+- name: INVALID_DATE_RANGE
+  code: '703'
+  status: 400
+  message: Invalid date range
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Transactions
+- name: INVALID_START_OR_END_DATE
+  code: '702'
+  status: 400
+  message: Invalid start or end date
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Transactions
+- name: START_TIME_MISSING
+  code: '401'
+  status: 400
+  message: Bad request. startTime is required
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Transactions
+- name: INVALID_ACCOUNT_TYPE
+  code: '704'
+  status: 422
+  message: Account type not supported for Transactions
+  meaning: Unprocessable Entity
+  apis:
+  - Personal and Small Business Transactions
+  - Personal and Small Business Accounts
+  - Personal and Small Business Account Payment Networks
+- name: NO_APIPRODUCT_MATCHFOUND
+  code: '603'
+  status: 401
+  message: Authentication failed
+  meaning: Unauthorized
+  apis:
+  - Personal and Small Business Accounts
+  - User Consent
+- name: INVALID_BASICAUTHENTICATION_SOURCE
+  code: '603'
+  status: 401
+  message: Authentication failed
+  meaning: Unauthorized
+  apis:
+  - Personal and Small Business Accounts
+  - User Consent
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Retail Dynamic Client Registration
+- name: RESOURCE_NOT_FOUND
+  code: '701'
+  status: 404
+  message: URI does not represent a recognized resource
+  meaning: Not Found
+  apis:
+  - Personal and Small Business Accounts
+- name: ACCOUNTID_NOT_FOUND
+  code: '701'
+  status: 404
+  message: Account Id is required
+  meaning: Not Found
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Account Payment Networks
+- name: SUBSYSTEM_UNAVAILABLE
+  code: '501'
+  status: 500
+  message: System down for maintenance
+  meaning: Internal Server Error
+  apis:
+  - Personal and Small Business Accounts
+- name: INVALID_RESULTTYPE
+  code: '401'
+  status: 400
+  message: Bad request. resultType must either be lightweight or details
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Accounts
+- name: INVALID_SCOPE
+  code: '401'
+  status: 400
+  message: missing or invalid scope
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Accounts
+- name: INVALID_JSON
+  code: '401'
+  status: 400
+  message: The request payload is not in a valid JSON format
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Accounts
+  - User Consent
+- name: INVALID_COUNTRY_ID
+  code: '403'
+  status: 403
+  message: Service is not whitelisted for this country
+  meaning: Forbidden
+  apis:
+  - Personal and Small Business Accounts
+- name: INVALID_ORIGIN
+  code: '403'
+  status: 403
+  message: Invalid origin
+  meaning: Forbidden
+  apis:
+  - Personal and Small Business Accounts
+- name: INVALID_IP
+  code: '403'
+  status: 403
+  message: Invalid IP
+  meaning: Forbidden
+  apis:
+  - Personal and Small Business Accounts
+- name: NO_APIPRODUCT_MATCHFOUND
+  code: '403'
+  status: 403
+  message: Data recipient connection does not include account basic or account details
+  meaning: Forbidden
+  apis:
+  - Personal and Small Business Accounts
+  - Personal and Small Business Client Contact
+  - Retail Dynamic Client Registration
+- name: ACCOUNT_NOT_FOUND
+  code: '701'
+  status: 404
+  message: Account not found
+  meaning: Not Found
+  apis:
+  - Personal and Small Business Accounts
+- name: CUSTOMER_NOT_FOUND
+  code: '601'
+  status: 404
+  message: Customer not found
+  meaning: Not Found
+  apis:
+  - Personal and Small Business Accounts
+- name: INVALID_PATH_PARAMETER
+  code: '401'
+  status: 400
+  message: Invalid consentId
+  meaning: Bad Request
+  apis:
+  - User Consent
+- name: RESOURCE_NOT_FOUND
+  code: '1107'
+  status: 404
+  message: URI does not represent a recognized resource
+  meaning: Not Found
+  apis:
+  - User Consent
+  - Personal and Small Business Client Contact
+  - Personal and Small Business Account Payment Networks
+- name: AUTHENTICATION_FAILED
+  code: '603'
+  status: 401
+  message: Authentication failed
+  meaning: Unauthorized
+  apis:
+  - Personal and Small Business Client Contact
+  - Branch/ATM Locator
+  - Personal and Small Business Account Payment Networks
+- name: INSUFFICIENT_SCOPE
+  code: '602'
+  status: 403
+  message: Customer connection does not authorize customer data
+  meaning: Forbidden
+  apis:
+  - Personal and Small Business Client Contact
+  - Personal and Small Business Account Payment Networks
+- name: RESOURCE_NOT_FOUND
+  code: 1107-1206
+  status: 404
+  message: URI does not represent a recognized resource
+  meaning: Not Found
+  apis:
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Retail Dynamic Client Registration
+- name: MISSING_REQUIRED_PARAMETER
+  code: '401'
+  status: 400
+  message: Following required parameters are missing - {notificationId, type, sentOn, category, publisher, publisher
+    name, publisher type, notificationPayload}
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Retail Dynamic Client Registration
+- name: INVALID_CLIENT_METADATA
+  code: '401'
+  status: 400
+  message: Following request fields have invalid values - {type, sentOn, category, publisher type}
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Event Notifications
+  - Personal and Small Business Event Subscriptions
+  - Retail Dynamic Client Registration
+- name: SUBSCRIPTION_ID_REQUIRED
+  code: '401'
+  status: 400
+  message: Unique Subscription ID is required
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Event Subscriptions
+- name: INVALID_SUBSCRIPTION_ID
+  code: '401'
+  status: 400
+  message: Following request fields have invalid values - {subscriptionId}
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Event Subscriptions
+- name: INVALID_SUBSCRIPTION_ID
+  code: '1107'
+  status: 404
+  message: Invalid subscription id
+  meaning: Not Found
+  apis:
+  - Personal and Small Business Event Subscriptions
+- name: INVALID_ZIP_CODE
+  code: '401'
+  status: 400
+  message: Invalid Input
+  meaning: Bad Request
+  apis:
+  - Branch/ATM Locator
+- name: INVALID_Lat_Lng
+  code: '401'
+  status: 400
+  message: If either Lat or Lng is specified, the other must also be sent
+  meaning: Bad Request
+  apis:
+  - Branch/ATM Locator
+- name: INVALID_CITY_STATE
+  code: '401'
+  status: 400
+  message: Requested City was not found, please add State or Zip
+  meaning: Bad Request
+  apis:
+  - Branch/ATM Locator
+- name: ACCOUNTID_REQUIRED
+  code: '401'
+  status: 400
+  message: Account ID is required
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Account Payment Networks
+- name: FDX_API_DATA_RECIPIENT_ID_REQUIRED
+  code: '401'
+  status: 400
+  message: Invalid input, FDX-API-Data-Recipient-Id is required
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Account Payment Networks
+- name: FDX_API_DATA_RECIPIENT_ID_INVALID
+  code: '401'
+  status: 400
+  message: Invalid input, FDX-API-Data-Recipient-Id does not match customer consent
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Account Payment Networks
+- name: IDENTIFIER_TYPES_INVALID
+  code: '401'
+  status: 400
+  message: Invalid Input - Query parameter 'identifierTypes' is invalid
+  meaning: Bad Request
+  apis:
+  - Personal and Small Business Account Payment Networks
+- name: DATA_RECIPIENT_TEMPORARY_SUSPENSION
+  code: '480'
+  status: 403
+  message: Forbidden due to temporary suspension of Data Recipient connections
+  meaning: Forbidden
+  apis:
+  - Personal and Small Business Account Payment Networks
+- name: FDX_API_DATA_RECIPIENT_ID_RECORD_NOT_FOUND
+  code: '1001'
+  status: 404
+  message: Data Recipient ID is not found
+  meaning: Not Found
+  apis:
+  - Personal and Small Business Account Payment Networks
+- name: DATA_RECIPIENT_NOT_YET_INITIALIZED
+  code: '409'
+  status: 409
+  message: Data Recipient not yet initialized for tokenized account numbers
+  meaning: Conflict
+  apis:
+  - Personal and Small Business Account Payment Networks
+- name: DUPLICATE_CLIENT
+  code: '409'
+  status: 409
+  message: Duplicate Client Name request
+  meaning: Conflict
+  apis:
+  - Retail Dynamic Client Registration
+- name: OUT_OF_CONTRACT_METADATA
+  code: '401'
+  status: 400
+  message: Following request fields have out of contract metadata - {scope, duration_type, duration_period, lookback_period}
+  meaning: Bad Request
+  apis:
+  - Retail Dynamic Client Registration
+- name: UPDATE_NOT_YET_IMPLEMENTED
+  code: '401'
+  status: 400
+  message: Following requested field updates are not yet supported by Truist - {client_name, auto_connect, duration_type,
+    duration_period}
+  meaning: Bad Request
+  apis:
+  - Retail Dynamic Client Registration
+notes: 'Codes are harvested verbatim from the `examples` blocks of each published spec. Truist mixes two code spaces:
+  HTTP-mirroring codes (401/404/500) in the commercial account APIs, and numeric FDX/gateway codes (603, 602, 1101,
+  1206, 1207, 1208, 7xxx, 8xxx) in the retail and Credit Transfers APIs. No consolidated error reference is published
+  outside the specs.'

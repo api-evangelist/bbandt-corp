@@ -1,0 +1,60 @@
+generated: '2026-09-04'
+method: derived
+source: openapi/bbandt-corp-commercial-account-balance-openapi.yml, openapi/bbandt-corp-commercial-account-transactions-openapi.yml,
+  openapi/bbandt-corp-commercial-accounts-openapi.yml, openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml,
+  openapi/bbandt-corp-retail-accounts-contact-openapi.yml, openapi/bbandt-corp-retail-accounts-openapi.yml, openapi/bbandt-corp-retail-accounts-transaction-openapi.yml,
+  openapi/bbandt-corp-retail-auth-oauth-openapi.yml, openapi/bbandt-corp-retail-consents-openapi.yml, openapi/bbandt-corp-retail-customers-openapi.yml,
+  openapi/bbandt-corp-retail-event-notifications-openapi.yml, openapi/bbandt-corp-retail-event-subscriptions-openapi.yml
+  ...
+summary:
+  types:
+  - http
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: OAuth
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+    tokenUrl: https://apidev-sandbox.truist.com/commercial/auth/v1/oauth/token
+    scopes: 1
+  description: The production authorization URL will be provided after the onboarding process is completed.
+  sources:
+  - openapi/bbandt-corp-commercial-account-balance-openapi.yml
+  - openapi/bbandt-corp-commercial-account-transactions-openapi.yml
+  - openapi/bbandt-corp-commercial-accounts-openapi.yml
+  - openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+  - openapi/bbandt-corp-retail-accounts-contact-openapi.yml
+  - openapi/bbandt-corp-retail-accounts-openapi.yml
+  - openapi/bbandt-corp-retail-accounts-transaction-openapi.yml
+  - openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+  - openapi/bbandt-corp-retail-customers-openapi.yml
+  - openapi/bbandt-corp-retail-payment-networks-openapi.yml
+- name: BasicAuth
+  type: http
+  scheme: basic
+  description: This is the standard Basic Auth scheme encoded as `Base64(client_id:client_secret)`. Both Data Access
+    Platforms and Direct Data Recipients MUST use the DAP/DDR client_id and client_secret returned from creating their
+    Staging or Production application in Truist Developer Center. (You CANNOT use the Basic Auth credentials for a Data
+    Recipient returned from dynamic client registration via `POST /regi
+  sources:
+  - openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+  - openapi/bbandt-corp-retail-consents-openapi.yml
+  - openapi/bbandt-corp-retail-event-notifications-openapi.yml
+  - openapi/bbandt-corp-retail-event-subscriptions-openapi.yml
+  - openapi/bbandt-corp-retail-locator-openapi.yml
+  - openapi/bbandt-corp-retail-register-recipient-openapi.yml
+docs: https://developer.truist.com/api/retail-oauth-authentication/documentation
+note: 'Truist publishes a dedicated OAuth 2.0 API contract (openapi/bbandt-corp-retail-auth-oauth-openapi.yml, "Truist
+  Retail OAuth 2.0 API, v3") alongside the resource APIs. Two schemes are in play: OAuth 2.0 authorization_code with
+  per-customer consent on the data and payment APIs, and HTTP Basic (Base64(client_id:client_secret)) on the OAuth, consent,
+  event, dynamic-registration and locator APIs. The narrative auth pages on the developer portal render only behind sign-in,
+  so this profile stays spec-derived. Production authorization/token URLs are issued at onboarding; the specs carry the
+  sandbox hosts. Credential trap: the Basic Auth credentials returned by RFC 7591 dynamic client registration CANNOT
+  be used on the token endpoint — Truist requires the DAP/DDR client_id and client_secret from the Developer Center application.'
+mtls: false
+openid_connect: true
+openid_connect_note: The OAuth API declares the OIDC scopes profile, email, phone and address and returns an id_token,
+  but no /.well-known/openid-configuration is served (probed 2026-09-04).

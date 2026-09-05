@@ -1,0 +1,1372 @@
+openapi: 3.1.0
+info:
+  version: '2.4.0'
+  # build: '0'
+  title: Personal and Small Business Account Transactions
+  description: Truist Financial, modeled after FDX V5.4.1 Core API (except Transaction pagination)
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+  x-fdx-csdf-account-categories: [ANY]
+servers:
+  - url: 'https://api-sandbox.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Sandbox environment
+  - url: 'https://apicert-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Certification environment
+  - url: 'https://api-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Production environment
+security:
+  - OAuth: [TRANSACTIONS]
+tags:
+  - name: Account Transactions
+    description: Search and view account transactions
+paths:
+  ############################################################
+  #
+  # Core paths
+  #
+  ############################################################
+
+  /v2/accounts/{accountId}/transactions:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+    x-fdx-csdf-account-categories: [ANY]
+    get:
+      operationId: searchForAccountTransactions
+      tags:
+        - Account Transactions
+      description: >-
+        Search for account transactions. Example:
+        /v1/accounts/{accountId}/transactions?startTime=value1&endTime=value2
+      summary: Search for account transactions
+      x-fdx-csdf-account-categories: [ANY]
+      parameters:
+        - $ref: '#/components/parameters/AccountIdPath'
+        - $ref: '#/components/parameters/StartTimeQuery'
+        - $ref: '#/components/parameters/EndTimeQuery'
+        - $ref: '#/components/parameters/OffSetQuery'
+      responses:
+        '200':
+          description: >-
+            List of transactions, which can be one of
+            DepositTransaction, LoanTransaction or LocTransaction
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transactions'
+              examples:
+                DDA Checking Partial Paginated Response:
+                  value:
+                    paginatedArray:
+                      page:
+                        nextOffset: MjAyNC0wMS0wMXwyMDI1LTA1LTA1fE58bnVsbHw1MA==
+                        partialElements: 4
+                      links:
+                        next:
+                          href: >-
+                            /accounts/edLy3Kqu1PwccumVJlV6dyC8034J0SMkASO/transactions?offset=MjAyNC0wMS0wMXwyMDI1LTA1LTA1fE58bnVsbHw1MA==
+                          action: GET
+                    transactions:
+                      - depositTransaction:
+                          accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                          accountCategory: DEPOSIT_ACCOUNT
+                          referenceTransactionId: '220728255690288'
+                          transactionTimestamp: '2022-07-28T13:15:17.000Z'
+                          description: CREDIT LINE ADVANCE-CREDIT LINE ADVANCE-0001111111111 03-21-22
+                          debitCreditMemo: CREDIT
+                          status: PENDING
+                          amount: 1.00
+                      - depositTransaction:
+                          accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                          accountCategory: DEPOSIT_ACCOUNT
+                          referenceTransactionId: '220726389652470'
+                          transactionTimestamp: '2022-07-28T13:47:33.000Z'
+                          description: DEPOSIT TRANSFER-TRANSFER TO CHECKING-0002222222222 03-21-22
+                          debitCreditMemo: DEBIT
+                          status: PENDING
+                          amount: 10.00
+                      - depositTransaction:
+                          accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                          accountCategory: DEPOSIT_ACCOUNT
+                          transactionId: '2024495498'
+                          postedTimestamp: '2022-07-22T00:00:00.000Z'
+                          description: INTEREST PAYMENT
+                          debitCreditMemo: CREDIT
+                          reference: '55487'
+                          status: POSTED
+                          amount: 0.01
+                          transactionType: INTEREST
+                      - depositTransaction:
+                          accountId: p0VLBm0CDZ1HafHSX3jCQXOu32cnEeMZY8j
+                          accountCategory: DEPOSIT_ACCOUNT
+                          transactionId: '5645623838'
+                          postedTimestamp: '2023-07-17T00:00:00.000Z'
+                          description: CHECK
+                          debitCreditMemo: DEBIT
+                          reference: '6965702293'
+                          status: POSTED
+                          amount: 1764.99
+                          transactionType: CHECK
+                          checkNumber: 3059
+                DDA Checking Paginated Full Response:
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 4
+                    transactions:
+                      - depositTransaction:
+                          accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                          accountCategory: DEPOSIT_ACCOUNT
+                          referenceTransactionId: '220728255690288'
+                          transactionTimestamp: '2022-07-28T13:15:17.000Z'
+                          description: CREDIT LINE ADVANCE-CREDIT LINE ADVANCE-0001111111111 03-21-22
+                          debitCreditMemo: CREDIT
+                          status: PENDING
+                          amount: 1.00
+                      - depositTransaction:
+                          accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                          accountCategory: DEPOSIT_ACCOUNT
+                          referenceTransactionId: '220726389652470'
+                          transactionTimestamp: '2022-07-28T13:47:33.000Z'
+                          description: DEPOSIT TRANSFER-TRANSFER TO CHECKING-0002222222222 03-21-22
+                          debitCreditMemo: DEBIT
+                          status: PENDING
+                          amount: 10.00
+                      - depositTransaction:
+                          accountId: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+                          accountCategory: DEPOSIT_ACCOUNT
+                          transactionId: '2024495498'
+                          postedTimestamp: '2022-07-22T00:00:00.000Z'
+                          description: INTEREST PAYMENT
+                          debitCreditMemo: CREDIT
+                          reference: '55487'
+                          status: POSTED
+                          amount: 0.01
+                          transactionType: INTEREST
+                      - depositTransaction:
+                          accountId: p0VLBm0CDZ1HafHSX3jCQXOu32cnEeMZY8j
+                          accountCategory: DEPOSIT_ACCOUNT
+                          transactionId: '5645623838'
+                          postedTimestamp: '2023-07-17T00:00:00.000Z'
+                          description: CHECK
+                          debitCreditMemo: DEBIT
+                          reference: '6965702293'
+                          status: POSTED
+                          amount: 1764.99
+                          transactionType: CHECK
+                          checkNumber: 3059
+                Savings Paginated Full Response:
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 3
+                    transactions:
+                      - depositTransaction:
+                          accountId: CD69feLdRMb8EskxYG2KepL4XLiSnOFRyyT
+                          accountCategory: DEPOSIT_ACCOUNT
+                          referenceTransactionId: '220729795587959'
+                          transactionTimestamp: '2022-07-28T13:46:24.000Z'
+                          description: DEPOSIT TRANSFER-TRANSFER FROM MONEYACCOUNT-0707070707070707 03-21-22
+                          debitCreditMemo: CREDIT
+                          status: PENDING
+                          amount: 1.00
+                      - depositTransaction:
+                          accountId: CD69feLdRMb8EskxYG2KepL4XLiSnOFRyyT
+                          accountCategory: DEPOSIT_ACCOUNT
+                          transactionId: '1376160555'
+                          postedTimestamp: '2022-07-22T00:00:00.000Z'
+                          description: TRANSFER FROM MONEYACCOUNT ************1111 03-01-22 DEPOSIT TRANSFER
+                          debitCreditMemo: CREDIT
+                          reference: '111'
+                          status: POSTED
+                          amount: 12.22
+                          transactionType: DEPOSIT
+                      - depositTransaction:
+                          accountId: CD69feLdRMb8EskxYG2KepL4XLiSnOFRyyT
+                          accountCategory: DEPOSIT_ACCOUNT
+                          transactionId: '1376720570'
+                          postedTimestamp: '2022-07-26T00:00:00.000Z'
+                          description: TRANSFER TO MONEYACCOUNT ************1111 03-01-22 DEPOSIT TRANSFER
+                          debitCreditMemo: DEBIT
+                          reference: '111'
+                          status: POSTED
+                          amount: 2.11
+                          transactionType: TRANSFER
+                Line Of Credit Paginated Full Response (CRL):
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 2
+                    transactions:
+                      - locTransaction:
+                          accountId: PsBgRpTAT66ogdvy0wAa3qFZNpiDigawtQS
+                          accountCategory: LOC_ACCOUNT
+                          referenceTransactionId: '124080800081598'
+                          transactionTimestamp: '2022-03-21T00:00:00.000Z'
+                          description: ADVANCE TO CHECKING-0003333333333 03-21-22
+                          debitCreditMemo: DEBIT
+                          status: PENDING
+                          amount: 1.00
+                      - locTransaction:
+                          accountId: PsBgRpTAT66ogdvy0wAa3qFZNpiDigawtQS
+                          accountCategory: LOC_ACCOUNT
+                          transactionId: '0101010101'
+                          postedTimestamp: '2022-01-12T00:00:00.000Z'
+                          description: INTEREST CHARGED
+                          debitCreditMemo: DEBIT
+                          status: POSTED
+                          amount: 8.82
+                          transactionType: INTEREST
+                Visa Paginated Full Response:
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 2
+                    transactions:
+                      - locTransaction:
+                          accountId: 300ucQsGTV9Tlm2Sl3yy2hF4x60OmrFCerw
+                          accountCategory: LOC_ACCOUNT
+                          referenceTransactionId: '124080800081598'
+                          transactionTimestamp: '2022-03-21T00:00:00.000Z'
+                          description: PAYMENT - THANK YOU
+                          debitCreditMemo: CREDIT
+                          status: PENDING
+                          amount: 1.00
+                      - locTransaction:
+                          accountId: 300ucQsGTV9Tlm2Sl3yy2hF4x60OmrFCerw
+                          accountCategory: LOC_ACCOUNT
+                          transactionId: '6657205677'
+                          postedTimestamp: '2022-02-23T00:00:00.000Z'
+                          description: '000888888888 AUTOPAY'
+                          debitCreditMemo: CREDIT
+                          status: POSTED
+                          amount: 98.00
+                          reward:
+                            accrued: 472
+                            adjusted: 0
+                            type: "POINTS"
+                Mastercard Paginated Full Response:
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 3
+                    transactions:
+                      - locTransaction:
+                          accountId: Y4qEwEk62xYOrpKIEssEk6ztpCOQdhfXtle
+                          accountCategory: LOC_ACCOUNT
+                          referenceTransactionId: '124080800081598'
+                          transactionTimestamp: '2022-03-21T00:00:00.000Z'
+                          description: OVERDRAFT TRF TRUIST
+                          debitCreditMemo: CREDIT
+                          status: PENDING
+                          amount: 1.00
+                      - locTransaction:
+                          accountId: Y4qEwEk62xYOrpKIEssEk6ztpCOQdhfXtle
+                          accountCategory: LOC_ACCOUNT
+                          transactionId: '6657205677'
+                          postedTimestamp: '2022-03-05T00:00:00.000Z'
+                          description: '000888888888 AUTOPAY'
+                          debitCreditMemo: CREDIT
+                          status: POSTED
+                          amount: 122.00
+                          reward:
+                            accrued: 472
+                            adjusted: 0
+                            type: "POINTS"
+                      - locTransaction:
+                          accountId: Y4qEwEk62xYOrpKIEssEk6ztpCOQdhfXtle
+                          accountCategory: LOC_ACCOUNT
+                          transactionId: '6657205677'
+                          postedTimestamp: '2022-02-05T00:00:00.000Z'
+                          description: '000888888888 AUTOPAY'
+                          debitCreditMemo: CREDIT
+                          status: POSTED
+                          amount: 123.00
+                          reward:
+                            accrued: 472
+                            adjusted: 0
+                            type: "POINTS"
+                Mortgage  Paginated Full Response MLA/MTG:
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 1
+                    transactions:
+                      - loanTransaction:
+                          accountId: 35igCYFycMrL0l470ny9wuE5mMoa2LXOoas
+                          accountCategory: LOAN_ACCOUNT
+                          transactionId: '6657205677'
+                          postedTimestamp: '2022-03-10T00:00:00.000Z'
+                          description: Principal Payment
+                          status: POSTED
+                          amount: 3.67
+                          transactionType: PRINCIPAL
+                          paymentDetails:
+                            principalAmount: 3.67
+                            interestAmount: 0.00
+                            escrowAmount: 0.00
+                Shaw Credit Line Paginated Full Response CLA/CLN:
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 1
+                    transactions:
+                      - locTransaction:
+                          accountId: apPAcDP0EJZpFYM9cAJCe2k0DENEX4rjGOO
+                          accountCategory: LOC_ACCOUNT
+                          transactionId: '6657205677'
+                          postedTimestamp: '2022-03-11T00:00:00.000Z'
+                          debitCreditMemo: CREDIT
+                          status: POSTED
+                          amount: 2.00
+                          transactionType: PAYMENT
+                          paymentDetails:
+                            principalAmount: 2.00
+                Shaw Loan Paginated Full Response CLA:
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 1
+                    transactions:
+                      - loanTransaction:
+                          accountId: YEseynEIcdFdAkyDWllqMJ3Yu7tGUPmARot
+                          accountCategory: LOAN_ACCOUNT
+                          transactionId: '6657205677'
+                          postedTimestamp: '2022-03-11T00:00:00.000Z'
+                          status: POSTED
+                          transactionType: PAYMENT
+                          paymentDetails:
+                            principalAmount: 500.00
+                Investment Paginated Full Response:
+                  value:
+                    paginatedArray:
+                      page:
+                        totalElements: 2
+                    transactions:
+                      - investmentTransaction:
+                          accountId: AX6063932
+                          accountCategory: INVESTMENT_ACCOUNT
+                          referenceTransactionId: V01B2025-07-28000000000000016922042866
+                          postedTimestamp: '2025-06-24'
+                          transactionTimestamp: '0001-01-01T00:00:00'
+                          description: DIVIDEND RECEIVED
+                          amount: 3.28
+                          transactionType: DIVIDEND
+                          shares: 0.05
+                          securityId: '922042866'
+                          securityIdType: CUSIP
+                          symbol: VPL
+                          commission: 0
+                          unitPrice: 66.39
+                          units: 0.05
+                          unitType: SHARES
+                          settlementTimestamp: '2025-06-24'
+                      - investmentTransaction:
+                          accountId: AX6063932
+                          accountCategory: INVESTMENT_ACCOUNT
+                          referenceTransactionId: V01B2025-07-28000000000000016922042866
+                          postedTimestamp: '2025-06-24'
+                          transactionTimestamp: '0001-01-01T00:00:00'
+                          description: DIVIDEND RECEIVED
+                          amount: 8.85
+                          transactionType: DIVIDEND
+                          shares: 0
+                          securityId: '922042866'
+                          securityIdType: CUSIP
+                          symbol: VEU
+                          commission: 0
+                          unitPrice: 0
+                          units: 0
+                          unitType: SHARES
+                          settlementTimestamp: '2025-06-24'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '422':
+          $ref: '#/components/responses/422'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+      security:
+        - OAuth: [TRANSACTIONS]
+
+components:
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/authorize
+          tokenUrl: https://api-sandbox.truist.com/retail/auth/oauth/v3/token
+          scopes:
+            TRANSACTIONS: Scope required to access account transactions
+
+  parameters:
+    ############################################################
+    #
+    # Core request parameters
+    #
+    ############################################################
+
+    AccountIdPath:
+      name: accountId
+      in: path
+      description: Account Identifier
+      required: true
+      schema:
+        type: string
+      example: 'uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr'
+
+    OffSetQuery:
+      name: offset
+      in: query
+      description: offset Identifier
+      schema:
+        type: string
+      example: 'MjAyNS0wNC0wMXwyMDI1LTA0LTMwfFl8MTIzNDV8'
+
+    StartTimeQuery:
+      name: startTime
+      in: query
+      description: Required. Start date for use in retrieval of elements (ISO 8601 date as "yyyy-mm-dd")
+      schema:
+        $ref: '#/components/schemas/DateString'
+      example: '2022-03-01'
+
+    EndTimeQuery:
+      name: endTime
+      in: query
+      description: End date for use in retrieval of elements (ISO 8601 date as "yyyy-mm-dd").
+        Defaults to today's date
+      schema:
+        $ref: '#/components/schemas/DateString'
+      example: '2022-03-31'
+
+    ############################################################
+    #
+    # Shared request parameters (usable by core and all extensions)
+    #
+    ############################################################
+
+    FdxApiActorTypeHeader:
+      name: FDX-API-Actor-Type
+      in: header
+      description: Identifies whether the customer is present (USER) or it is a BATCH operation
+      schema:
+        $ref: '#/components/schemas/ActorType'
+      example: BATCH
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  schemas:
+    ############################################################
+    #
+    # Core data entities
+    #
+    ############################################################
+
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: >-
+        Universally unique identifier for this interaction,
+        used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    PaginatedArray:
+      title: Paginated Array
+      description: Base class for results that may be paginated
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        page:
+          $ref: '#/components/schemas/PageMetadata'
+          description: Offset IDs for navigating result sets
+          x-fdx-csdf-technical: true
+        links:
+          $ref: '#/components/schemas/PageMetadataLinks'
+          description: Resource URLs for navigating result sets
+          x-fdx-csdf-technical: true
+
+    PageMetadata:
+      title: Page Metadata
+      description: Offset IDs for paginated result sets
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        nextOffset:
+          type: string
+          example: "2"
+          description: Opaque identifier. Does not need to be numeric or have any specific pattern.
+          x-fdx-csdf-technical: true
+        totalElements:
+          type: integer
+          example: 3
+          description: Total number of elements, only available from Truist on final pagination query
+          x-fdx-csdf-technical: true
+        partialElements:
+          type: integer
+          example: 1103
+          description: The elements returned so far, adding these to prior pagination responses
+
+    PageMetadataLinks:
+      title: Page Metadata Links
+      description: Resource URLs for retrieving next or previous datasets
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        next:
+          $ref: '#/components/schemas/HateoasLink'
+          description: Resource URL for retrieving next dataset
+          x-fdx-csdf-technical: true
+
+    HateoasLink:
+      title: HATEOAS Link
+      description: REST application constraint (Hypermedia As The Engine Of Application State)
+      required: [href]
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        href:
+          type: string
+          format: uri-reference
+          description: URL to invoke the action on the resource
+          example: "https://api.fi.com/fdx/v4/accounts/12345"
+          x-fdx-csdf-technical: true
+        action:
+          $ref: '#/components/schemas/HttpAction'
+          description: HTTP Method to use for the request
+          x-fdx-csdf-technical: true
+
+    HttpAction:
+      title: HTTP Action Type
+      description: HTTP Methods to use for requests
+      type: string
+      x-fdx-csdf-technical: true
+      enum:
+        - GET
+
+    DepositTransaction:
+      title: Deposit Transaction entity
+      description: A transaction on a deposit account type
+      type: object
+      x-fdx-csdf-account-categories: [REG_E]
+      allOf:
+        - $ref: '#/components/schemas/Transaction'
+        - type: object
+          properties:
+            transactionType:
+              $ref: '#/components/schemas/DepositTransactionType'
+              description: ATMDEPOSIT, ATMWITHDRAWAL, CHECK, DEPOSIT, INTEREST, POSCREDIT, POSDEBIT, FEE
+              x-fdx-csdf-account-categories: [REG_E]
+            payee:
+              $ref: '#/components/schemas/String255'
+              description: Payee name
+              x-fdx-csdf-account-categories: [REG_E]
+            checkNumber:
+              type: integer
+              description: Check number
+              x-fdx-csdf-account-categories: [REG_E]
+
+    InvestmentTransaction:
+      title: Investment Transaction entity
+      description: An investment transaction
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Transaction'
+        - type: object
+          properties:
+            transactionType:
+              $ref: '#/components/schemas/InvestmentTransactionType'
+              description: >-
+                PURCHASED, SOLD, PURCHASEDTOCOVER, ADJUSTMENT, PURCHASETOOPEN, PURCHASETOCLOSE,
+                SOLDTOOPEN, SOLDTOCLOSE, INTEREST, MARGININTEREST, REINVESTOFINCOME, RETURNOFCAPITAL,
+                TRANSFER, CONTRIBUTION, FEE, OPTIONEXERCISE, OPTIONEXPIRATION, DIVIDEND, DIVIDENDREINVEST,
+                SPLIT, CLOSURE, INCOME, EXPENSE, CLOSUREOPT, INVEXPENSE, JRNLSEC, JRNLFUND, OTHER, DIV,
+                SRVCHG, DEP, DEPOSIT, ATM, POS, XFER, CHECK, PAYMENT, CASH, DIRECTDEP, DIRECTDEBIT, REPEATPMT
+            shares:
+              type: number
+              description: >-
+                Required for stock, mutual funds. Number of shares (with decimals).
+                Negative numbers indicate securities are being removed from the account
+            price:
+              type: number
+              description: Unit purchase price
+            securityId:
+              type: string
+              description: Unique identifier of security
+            securityIdType:
+              $ref: '#/components/schemas/SecurityIdType'
+              description: CINS, CMC, CME, CUSIP, ISIN, ITSA, NASDAQ, SEDOL, SICC, VALOR, WKN
+            securityType:
+              $ref: '#/components/schemas/SecurityType'
+              description: Truist is adding ANNUITY and CD per RFC 0394 with FDX v6.5, in addition
+                to FDX v6.4 values BOND, DEBT, MUTUALFUND, OPTION, OTHER, STOCK, SWEEP
+            symbol:
+              type: string
+              description: Ticker symbol
+            commission:
+              type: number
+              description: Transaction commission
+            fees:
+              type: number
+              description: Fees applied to the trade
+            unitPrice:
+              type: number
+              description: >-
+                Price per commonly-quoted unit. Does not include
+                markup/markdown, unitprice. Share price for stocks, mutual
+                funds, and others. Percentage of par for bonds. Per share (not
+                contract) for options
+            units:
+              type: number
+              description: >-
+                For security-based actions other than stock splits, quantity.
+                Shares for stocks, mutual funds, and others. Face value for bonds.
+                Contracts for options
+            unitType:
+              $ref: '#/components/schemas/UnitType'
+              description: SHARES, CURRENCY
+            settlementTimestamp:
+              description: When the trade settled
+              $ref: '#/components/schemas/Timestamp'
+
+    LoanTransaction:
+      title: Loan Transaction entity
+      description: A transaction on a loan account
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Transaction'
+        - type: object
+          properties:
+            transactionType:
+              $ref: '#/components/schemas/LoanTransactionType'
+              description: FEE, INTEREST, PAYMENT, PAYOFF, PRINCIPAL
+            paymentDetails:
+              $ref: '#/components/schemas/PaymentDetails'
+              description: Breakdown of payment details
+
+    LocTransaction:
+      title: Line-Of-Credit Transaction entity
+      description: A line-of-credit transaction
+      type: object
+      x-fdx-csdf-account-categories: [REG_Z]
+      allOf:
+        - $ref: '#/components/schemas/Transaction'
+        - type: object
+          properties:
+            transactionType:
+              $ref: '#/components/schemas/LocTransactionType'
+              description: FEE, INTEREST, PAYMENT
+              x-fdx-csdf-account-categories: [REG_Z]
+            checkNumber:
+              type: integer
+              description: Check number
+              x-fdx-csdf-account-categories: [REG_Z]
+
+    TransactionReward:
+      title: Transaction Reward entity
+      description: Rewards earned on a transaction
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        accrued:
+          type: number
+          description: Reward units accrued on this transaction
+          x-fdx-csdf-account-categories: [ANY]
+        adjusted:
+          type: number
+          description: Reward units adjusted on this transaction
+          x-fdx-csdf-account-categories: [ANY]
+        type:
+          $ref: '#/components/schemas/RewardType'
+          description: The type of the reward balance - CASHBACK, MILES, POINTS.
+            As added to `TransactionReward` by RFC 0379 with FDX Release v6.5 in Fall 2025
+          x-fdx-csdf-account-categories: [ANY]
+
+    Transaction:
+      title: Transaction
+      description: Base entity for financial transactions
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        accountId:
+          $ref: '#/components/schemas/Identifier'
+          description: Corresponds to AccountId in Account
+          x-fdx-csdf-account-categories: [ANY]
+        accountCategory:
+          $ref: '#/components/schemas/AccountCategory'
+          description: The category of account
+          x-fdx-csdf-account-categories: [ANY]
+        transactionId:
+          $ref: '#/components/schemas/Identifier'
+          description: Long term persistent identity of the transaction (unique to account)
+          x-fdx-csdf-account-categories: [ANY]
+        referenceTransactionId:
+          $ref: '#/components/schemas/Identifier'
+          description: >-
+            For reverse postings, the identity of the transaction being
+            reversed. For the correction transaction, the identity of the
+            reversing post. For credit card posting transactions, the identity
+            of the authorization transaction
+          x-fdx-csdf-account-categories: [ANY]
+        cardNumberDisplay:
+          type: string
+          description: >-
+            The payment card number (e.g. debit, credit or digital), suitably masked,
+            used to originate the transaction. May differ from primary account number as a
+            secondary or employee card or a one-time use number. This is an optional field
+            and won't be returned for certain types of transactions such as cash or check deposits
+          x-fdx-csdf-account-categories: [ANY]
+        postedTimestamp:
+          $ref: '#/components/schemas/Timestamp'
+          description: >-
+            The date and time that the transaction was posted to the account. If
+            not provided then TransactionTimestamp can be used as
+            PostedTimeStamp
+          x-fdx-csdf-account-categories: [ANY]
+        transactionTimestamp:
+          $ref: '#/components/schemas/Timestamp'
+          description: >-
+            The date and time that the transaction was added to the server
+            backend systems
+          x-fdx-csdf-account-categories: [ANY]
+        description:
+          type: string
+          description: The description of the transaction
+          x-fdx-csdf-account-categories: [ANY]
+        memo:
+          $ref: '#/components/schemas/String255'
+          description: Secondary transaction description
+          x-fdx-csdf-account-categories: [ANY]
+        debitCreditMemo:
+          $ref: '#/components/schemas/DebitCreditMemo'
+          description: DEBIT, CREDIT, MEMO
+          x-fdx-csdf-account-categories: [ANY]
+        reference:
+          type: string
+          description: A tracking reference identifier
+          x-fdx-csdf-account-categories: [ANY]
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+          description: PENDING, POSTED
+          x-fdx-csdf-account-categories: [ANY]
+        amount:
+          type: number
+          description: The amount of money in the account currency
+          x-fdx-csdf-account-categories: [ANY]
+        reward:
+          $ref: '#/components/schemas/TransactionReward'
+          description: Rewards earned with this transaction.
+            Will only be returned on posted LocTransactions for which customer is eligible for rewards
+          x-fdx-csdf-account-categories: [ANY]
+        fiAttributes:
+          type: array
+          description: Array of Financial institution-specific attributes
+          x-fdx-csdf-account-categories: [ANY]
+          items:
+            $ref: '#/components/schemas/FiAttribute'
+
+    Transactions:
+      title: Transactions entity
+      description: Optionally paginated array of transactions
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        paginatedArray:
+          $ref: '#/components/schemas/PaginatedArray'
+          description: Base class for results that may be paginated
+        transactions:
+          description: >-
+            An array of transactions with entity type dependent on the
+            account type (deposit, loan or line of credit)
+          type: array
+          x-fdx-csdf-account-categories: [ANY]
+          items:
+            oneOf:
+              - type: object
+                properties:
+                  depositTransaction:
+                    $ref: '#/components/schemas/DepositTransaction'
+                    description: A deposit transaction
+                    x-fdx-csdf-account-categories: [REG_E]
+              - type: object
+                properties:
+                  investmentTransaction:
+                    $ref: '#/components/schemas/InvestmentTransaction'
+                    description: An investment transaction
+              - type: object
+                properties:
+                  loanTransaction:
+                    $ref: '#/components/schemas/LoanTransaction'
+                    description: A loan transaction
+              - type: object
+                properties:
+                  locTransaction:
+                    $ref: '#/components/schemas/LocTransaction'
+                    description: A line-of-credit transaction
+                    x-fdx-csdf-account-categories: [REG_Z]
+
+    ############################################################
+    #
+    # Core data types
+    #
+    ############################################################
+
+    DebitCreditMemo:
+      title: Debit Credit Memo
+      description: The posting type of a transaction
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - CREDIT
+        - DEBIT
+
+    AccountCategory:
+      title: Account Category type
+      description: The category of account
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - DEPOSIT_ACCOUNT
+        - INVESTMENT_ACCOUNT
+        - LOAN_ACCOUNT
+        - LOC_ACCOUNT
+
+    DepositTransactionType:
+      title: Deposit Transaction Type
+      description: The type of a deposit transaction
+      type: string
+      x-fdx-csdf-account-categories: [REG_E]
+      enum:
+        - ATMDEPOSIT
+        - ATMWITHDRAWAL
+        - CHECK
+        - DEPOSIT
+        - FEE
+        - INTEREST
+        - POSCREDIT
+        - POSDEBIT
+
+    LoanTransactionType:
+      title: Loan Transaction Type
+      description: >-
+        Defines the type of a loan transaction:
+          * `FEE`: Fee charge. For example, a late payment fee
+          * `INTEREST`: Interest charge
+          * `PAYMENT`: Required payment that satisfies the minimum payment (e.g. principal + interest for mortgages)
+          * `PAYOFF`: Payment that satisfies the terms of the mortgage loan and completely pays off the debt
+      type: string
+      enum:
+        - FEE
+        - INTEREST
+        - PAYMENT
+        - PAYOFF
+        - PRINCIPAL
+
+    LocTransactionType:
+      title: Line-Of-Credit Transaction Type
+      description: The type of a line-of-credit transaction
+      type: string
+      x-fdx-csdf-account-categories: [REG_Z]
+      enum:
+        - FEE
+        - INTEREST
+        - PAYMENT
+
+    InvestmentTransactionType:
+      title: Investment Transaction Type
+      description: The type of an investment transaction
+      type: string
+      enum:
+        - ADJUSTMENT
+        - AIRDROP
+        - ATM
+        - CASH
+        - CHECK
+        - CLOSURE
+        - CLOSUREOPT
+        - CONTRIBUTION
+        - DEP
+        - DEPOSIT
+        - DIRECTDEBIT
+        - DIRECTDEP
+        - DIV
+        - DIVIDEND
+        - DIVIDENDREINVEST
+        - EXPENSE
+        - FEE
+        - FORKED
+        - INCOME
+        - INTEREST
+        - INVEXPENSE
+        - JRNLFUND
+        - JRNLSEC
+        - MARGININTEREST
+        - MINED
+        - OPTIONEXERCISE
+        - OPTIONEXPIRATION
+        - OTHER
+        - PAYMENT
+        - POS
+        - PURCHASED
+        - PURCHASEDTOCOVER
+        - PURCHASETOCLOSE
+        - PURCHASETOOPEN
+        - REINVESTOFINCOME
+        - REPEATPMT
+        - RETURNOFCAPITAL
+        - SOLD
+        - SOLDTOCLOSE
+        - SOLDTOOPEN
+        - SPLIT
+        - SRVCHG
+        - STAKED
+        - TRANSFER
+        - WITHDRAWAL
+        - XFER
+
+    RewardType:
+      title: Reward Type
+      description: >-
+        The type of the reward balance. Example: a reward program awarding
+        "Stars" for purchases would use the `POINTS` reward type.
+          * `CASHBACK`: Rewards balances enumerated using a monetary amount
+          * `MILES`: Rewards balances enumerated using distance
+          * `POINTS`: Default when a reward balance is not of type CASHBACK or MILES
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - CASHBACK
+        - MILES
+        - POINTS
+
+    SecurityIdType:
+      title: Security Id Type
+      description: >-
+        The source of the identifier for a security
+          | Value | Description |
+          |-----|-----|
+          | CINS | CUSIP International Numbering System) is a global securities identification numbering system that provides |
+          | CMC | Coin Market Cap |
+          | CME | Chicago Mercantile Exchange |
+          | CUSIP | Committee on Uniform Securities Identification Procedures |
+          | ISIN | International Securities Identification Number |
+          | ITSA | International Securities Identification Number Technical Committee  |
+          | NASDAQ | National Association of Securities Dealers Automated Quotations |
+          | SEDOL | Stock Exchange Daily Official List  |
+          | SICC | Standard Identification Code for Institutional Investment  |
+          | VALOR | SIX Swiss Exchange |
+          | WKN | Wertpapierkennnummer |
+      type: string
+      enum:
+        - CINS
+        - CMC
+        - CME
+        - CUSIP
+        - ISIN
+        - ITSA
+        - NASDAQ
+        - SEDOL
+        - SICC
+        - VALOR
+        - WKN
+
+    SecurityType:
+      title: Security Type
+      description: >-
+        The type of a security
+          | Value | Description |
+          |-----|-----|
+          | ANNUITY | Financial product that pays out a fixed stream of payments. Added by Truist per RFC 0394 with FDX v6.5 |
+          | BOND | Debt security as a loan to a government, agency or company, repaid with interest |
+          | CD | Certificate of Deposit, a savings account with a fixed rate and term. Added by Truist per RFC 0394 with FDX v6.5 |
+          | DEBT | Any type of security that must be paid back in full along with interest |
+          | MUTUALFUND | Pooled collection of assets invested in stocks, bonds, and other securities |
+          | OPTION | The right to buy a specific number of stock shares at a pre-set price |
+          | OTHER | Another type of security not listed here |
+          | STOCK | A share in the ownership of a company |
+          | SWEEP | Interest-earning account used to collect low- or non-interest-earning cash at close of day |
+      type: string
+      enum:
+        - ANNUITY
+        - BOND
+        - CD
+        - DEBT
+        - MUTUALFUND
+        - OPTION
+        - OTHER
+        - STOCK
+        - SWEEP
+
+    TransactionStatus:
+      title: Transaction Status
+      description: The status of a transaction
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - PENDING
+        - POSTED
+
+    UnitType:
+      title: Unit Type
+      description: The units of an investment transaction
+      type: string
+      enum:
+        - CURRENCY
+        - SHARES
+
+    ############################################################
+    #
+    # Shared data entities (usable by core and all extensions)
+    #
+    ############################################################
+
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        code:
+          type: string
+          description: >-
+            Error code defined by FDX API Specification or Data Provider
+            indicating the error situation which has occurred
+          x-fdx-csdf-technical: true
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+          x-fdx-csdf-technical: true
+
+    FiAttribute:
+      title: FI Attribute entity
+      description: Financial Institution provider-specific attribute
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        name:
+          type: string
+          description: Name of attribute
+          x-fdx-csdf-account-categories: [ANY]
+        value:
+          type: string
+          description: Value of attribute
+          x-fdx-csdf-account-categories: [ANY]
+
+    PaymentDetails:
+      title: Payment Details entity
+      description: Details of this payment
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        principalAmount:
+          type: number
+          description: The amount of payment applied to principal
+          x-fdx-csdf-account-categories: [ANY]
+        interestAmount:
+          type: number
+          description: The amount of payment applied to interest
+          x-fdx-csdf-account-categories: [ANY]
+        insuranceAmount:
+          type: number
+          description: The amount of payment applied to life/health/accident insurance on the loan
+          x-fdx-csdf-account-categories: [REG_E]
+        escrowAmount:
+          type: number
+          description: The amount of payment applied to escrow
+          x-fdx-csdf-account-categories: [REG_E]
+        pmiAmount:
+          type: number
+          description: The amount of payment applied to PMI
+          x-fdx-csdf-account-categories: [REG_E]
+        feesAmount:
+          type: number
+          description: The amount of payment applied to fees
+          x-fdx-csdf-account-categories: [ANY]
+
+    ############################################################
+    #
+    # Shared data types (usable by core and all extensions)
+    #
+    ############################################################
+
+    ActorType:
+      title: FDX API Actor Type
+      description: >-
+        Indicates whether a customer is present and has requested the operation (USER),
+        or if a batch job has requested the operation (BATCH)
+      type: string
+      enum:
+        - BATCH
+        - USER
+
+    DateString:
+      title: Date String
+      description: >-
+        ISO 8601 full-date in format 'YYYY-MM-DD' according
+        to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date
+      maxLength: 10
+      example: '2021-07-15'
+      x-fdx-csdf-account-categories: [ANY]
+
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+      x-fdx-csdf-account-categories: [ANY]
+
+    String255:
+      title: String 255
+      description: String of maximum length 255
+      type: string
+      maxLength: 255
+      x-fdx-csdf-account-categories: [ANY]
+
+    Timestamp:
+      title: Timestamp
+      description: >-
+        ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to
+        [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date-time
+      example: '2021-07-15T14:46:41.375Z'
+      x-fdx-csdf-account-categories: [ANY]
+
+  responses:
+    ############################################################
+    #
+    # Standard error responses
+    #
+    ############################################################
+
+    '400':
+      description: Bad Request
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_DATE_RANGE:
+              value:
+                code: '703'
+                message: Invalid date range
+            INVALID_START_OR_END_DATE:
+              value:
+                code: '702'
+                message: Invalid start or end date
+            START_TIME_MISSING:
+              value:
+                code: '401'
+                message: Bad request. startTime is required
+
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: '603'
+                message: Authentication failed
+            ACCESS_TOKEN_EXPIRED:
+              value:
+                code: '603'
+                message: Authentication failed
+            ACCESSTOKEN_NOT_APPROVED:
+              value:
+                code: '603'
+                message: Authentication failed
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '603-403'
+                message: Data recipient connection does not include TRANSACTIONS
+
+    '403':
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_SCOPE:
+              value:
+                code: '602'
+                message: Customer connection does not authorize transactions
+
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '701-1206'
+                message: URI does not represent a recognized resource
+            INVALID_ACCOUNT:
+              value:
+                code: '701'
+                message: Account not found
+
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: Method Not Allowed
+
+    '422':
+      description: Unprocessable Entity
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCOUNT_TYPE:
+              value:
+                code: '704'
+                message: Account type not supported for Transactions
+
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
+
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: Internal Server Error
+            SUBSYSTEM_UNAVAILABLE_ERROR:
+              value:
+                code: '501'
+                message: Subsystem unavailable
+
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server

@@ -1,0 +1,711 @@
+openapi: 3.1.0
+info:
+  version: '1.1.0'
+  # build: '0'
+  title: Personal and Small Business Customer Consent
+  description: Truist Financial, following FDX V5.4.1 and and V6.4.1 Consent API
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+servers:
+  - url: 'https://api-sandbox.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Sandbox environment
+  - url: 'https://apicert-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Certification environment
+  - url: 'https://api-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Production environment
+security:
+  - BasicAuth: []
+tags:
+  - name: User Consent
+    description: Request a customer consent grant
+paths:
+  ############################################################
+  #
+  # Consent paths
+  #
+  ############################################################
+
+  /v1/consents/{consentId}:
+    parameters:
+      - $ref: '#/components/parameters/ConsentIdPath'
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+    get:
+      summary: Get Consent Grant
+      description: Get a Consent Grant
+      operationId: getConsentGrant
+      tags:
+        - User Consent
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsentGrant'
+              examples:
+                (1) Single Resource:
+                  value:
+                    id: 9585694d3ae58863
+                    status: ACTIVE
+                    parties:
+                      - name: Seedling App
+                        type: DATA_RECIPIENT
+                        homeUri: https://www.seedling.com
+                        logoUri: https://www.seedling.com/assets/seedling-logo.png
+                        registry: PRIVATE
+                        registeredEntityName: Oak Tree Holdings, Inc
+                        registeredEntityId: 5493001052I34KDC1O18
+                      - name: Truist
+                        type: DATA_PROVIDER
+                        homeUri: https://www.truist.com
+                        logoUri: https://static.truist.com/content/dam/global-images/truist-logo-purple.svg
+                        registry: PRIVATE
+                        registeredEntityName: Truist
+                        registeredEntityId: '1'
+                    createdTime: '2021-07-03T22:08:10.375Z'
+                    expirationTime: '2022-07-03T22:08:10.374Z'
+                    durationType: ONE_TIME
+                    lookbackPeriod: 60
+                    autoConnect: true
+                    resources:
+                      - resourceType: ACCOUNT
+                        resourceId: b14e1e714693bc00
+                        dataClusters:
+                          - ACCOUNT_DETAILED
+                          - TRANSACTIONS
+                (2) Multiple Resources:
+                  value:
+                    id: 0e67811f9c12468f
+                    status: ACTIVE
+                    parties:
+                      - name: Seedling App
+                        type: DATA_RECIPIENT
+                        homeUri: https://www.seedling.com
+                        logoUri: https://www.seedling.com/assets/seedling-logo.png
+                        registry: PRIVATE
+                        registeredEntityName: Oak Tree Holdings, Inc
+                        registeredEntityId: 5493001052I34KDC1O18
+                      - name: Truist
+                        type: DATA_PROVIDER
+                        homeUri: https://www.truist.com
+                        logoUri: https://static.truist.com/content/dam/global-images/truist-logo-purple.svg
+                        registry: PRIVATE
+                        registeredEntityName: Truist
+                        registeredEntityId: '1'
+                    createdTime: '2021-07-03T22:08:10.375Z'
+                    expirationTime: '2022-07-03T22:08:10.374Z'
+                    durationType: TIME_BOUND
+                    durationPeriod: 365
+                    lookbackPeriod: 60
+                    autoConnect: false
+                    resources:
+                      - resourceType: ACCOUNT
+                        resourceId: b14e1e714693bc00
+                        dataClusters:
+                          - ACCOUNT_DETAILED
+                          - TRANSACTIONS
+                      - resourceType: ACCOUNT
+                        resourceId: ad6794161f45bc96
+                        dataClusters:
+                          - ACCOUNT_DETAILED
+                          - TRANSACTIONS
+                      - resourceType: CUSTOMER
+                        resourceId: aed694b22bc3d2b3
+                        dataClusters:
+                          - CUSTOMER_CONTACT
+                (3) Revoked Consent:
+                  value:
+                    id: 0e67811f9c12468f
+                    status: REVOKED
+                    parties:
+                      - name: Seedling App
+                        type: DATA_RECIPIENT
+                        homeUri: https://www.seedling.com
+                        logoUri: https://www.seedling.com/assets/seedling-logo.png
+                        registry: PRIVATE
+                        registeredEntityName: Oak Tree Holdings, Inc
+                        registeredEntityId: 5493001052I34KDC1O18
+                      - name: Truist
+                        type: DATA_PROVIDER
+                        homeUri: https://www.truist.com
+                        logoUri: https://static.truist.com/content/dam/global-images/truist-logo-purple.svg
+                        registry: PRIVATE
+                        registeredEntityName: Truist
+                        registeredEntityId: '1'
+                    createdTime: '2021-07-03T22:08:10.375Z'
+                    expirationTime: '2022-07-03T22:08:10.374Z'
+                    durationType: TIME_BOUND
+                    durationPeriod: 365
+                    lookbackPeriod: 60
+                (4) Expired Consent:
+                  value:
+                    id: 0e67811f9c12468f
+                    status: EXPIRED
+                    parties:
+                      - name: Seedling App
+                        type: DATA_RECIPIENT
+                        homeUri: https://www.seedling.com
+                        logoUri: https://www.seedling.com/assets/seedling-logo.png
+                        registry: PRIVATE
+                        registeredEntityName: Oak Tree Holdings, Inc
+                        registeredEntityId: 5493001052I34KDC1O18
+                      - name: Truist
+                        type: DATA_PROVIDER
+                        homeUri: https://www.truist.com
+                        logoUri: https://static.truist.com/content/dam/global-images/truist-logo-purple.svg
+                        registry: PRIVATE
+                        registeredEntityName: Truist
+                        registeredEntityId: '1'
+                    createdTime: '2021-07-03T22:08:10.375Z'
+                    expirationTime: '2022-07-03T22:08:10.374Z'
+                    durationType: TIME_BOUND
+                    durationPeriod: 365
+                    lookbackPeriod: 60
+
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+      security:
+        - BasicAuth: []
+
+  /v1/consents/{consentId}/revocation:
+    parameters:
+      - $ref: '#/components/parameters/ConsentIdPath'
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+    put:
+      summary: Revoke a Consent Grant
+      description: Revoke a Consent Grant
+      operationId: revokeConsentGrant
+      tags:
+        - User Consent
+      requestBody:
+        description: Reason and initiator of revocation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConsentRevocationRequest'
+            examples:
+              User cancellation in DR/app:
+                value:
+                  reason: USER_ACTION
+                  initiator: DATA_RECIPIENT
+      responses:
+        '204':
+          description: No Content
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+      security:
+        - BasicAuth: []
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+      description: Base64(client_id:client_secret)
+
+  parameters:
+    ############################################################
+    #
+    # Consent request parameters
+    #
+    ############################################################
+
+    ConsentIdPath:
+      name: consentId
+      in: path
+      description: Consent Identifier
+      required: true
+      schema:
+        $ref: '#/components/schemas/ConsentId'
+      example: '0e67811f9c12468f'
+
+    ############################################################
+    #
+    # Shared request parameters (usable by core and all extensions)
+    #
+    ############################################################
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request identifier
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique request identifier
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  schemas:
+    ############################################################
+    #
+    # Consent entities
+    #
+    ############################################################
+
+    ConsentGrant:
+      title: Consent Grant entity
+      description: Record of user consent
+      type: object
+      properties:
+        id:
+          description: The persistent identifier of the consent
+          $ref: '#/components/schemas/Identifier'
+        status:
+          description: The current status of the consent
+          $ref: '#/components/schemas/ConsentGrantStatus'
+        parties:
+          description: The non-end user parties participating in the Consent Grant
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentGrantParty'
+        createdTime:
+          description: When the consent was initially granted
+          $ref: '#/components/schemas/Timestamp'
+        expirationTime:
+          description: When the consent grant will become expired
+          $ref: '#/components/schemas/Timestamp'
+        updatedTime:
+          description: When the consent grant was updated
+          $ref: '#/components/schemas/Timestamp'
+        durationType:
+          description: The type of duration of the consent
+          $ref: '#/components/schemas/ConsentDurationType'
+        durationPeriod:
+          description: The consent duration in days from day of original grant
+          $ref: '#/components/schemas/ConsentDurationPeriod'
+        lookbackPeriod:
+          description: >-
+            Period, in days, for which historical data may be requested;
+            measured from request time, not grant time
+          $ref: '#/components/schemas/LookbackPeriod'
+        autoConnect:
+          description: >-
+            Truist flag for whether to automatically extend this consent to a customer account
+            which was newly opened or became newly visible in online banking
+          type: boolean
+        resources:
+          description: The permissioned resource entities
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsentGrantResource'
+
+    ConsentGrantParty:
+      title: Consent Grant Party entity
+      description: >-
+        Details on the non-end user parties in the Consent Grant. Includes the
+        legal entity operating branded products or services in the data sharing chain.
+        Descriptive information is collected during Data Recipient registration at
+        Data Provider, and populated during issuance by Data Provider from its registry
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Party'
+      required:
+        - homeUri
+        - registry
+        - registeredEntityName
+        - registeredEntityId
+
+    ConsentGrantResource:
+      title: Consent Grant Resource entity
+      description: Entity of permissioned resources
+      type: object
+      properties:
+        resourceType:
+          description: Type of resource to be permissioned
+          $ref: '#/components/schemas/ConsentResourceType'
+        resourceId:
+          description: Identifier of resource to be permissioned
+          $ref: '#/components/schemas/Identifier'
+        dataClusters:
+          description: Names of clusters of data elements permissioned
+          type: array
+          items:
+            $ref: '#/components/schemas/DataCluster'
+          minItems: 1
+      required:
+        - resourceType
+        - resourceId
+        - dataClusters
+
+    ConsentRevocationRequest:
+      title: Consent revocation request entity
+      description: Details of request to revoke consent grant
+      type: object
+      properties:
+        reason:
+          description: The reason for consent revocation
+          $ref: '#/components/schemas/ConsentUpdateReason'
+        initiator:
+          description: The party initiating revocation
+          $ref: '#/components/schemas/PartyType'
+      required:
+        - reason
+        - initiator
+
+    ############################################################
+    #
+    # Consent data types
+    #
+    ############################################################
+
+    ConsentDurationPeriod:
+      title: Consent Duration Period
+      description: Consent duration, in days, from day of original grant
+      type: integer
+
+    ConsentGrantStatus:
+      title: Consent Grant Status
+      description: Current status of Consent Grant
+      type: string
+      enum:
+        - ACTIVE
+        - EXPIRED
+        - REVOKED
+
+    ConsentId:
+      title: Consent Identifier
+      description: Unique ID for a consent grant
+      $ref: '#/components/schemas/Identifier'
+
+    ConsentResourceType:
+      title: Consent Resource Type
+      description: >-
+        Resource for which data may be permissioned;
+        can be extended to support additional types of resources
+      type: string
+      enum:
+        - ACCOUNT
+        - CUSTOMER
+        - DOCUMENT
+
+    ConsentUpdateReason:
+      title: Consent Update Reason
+      description: Reason for Updating a Consent Grant
+      type: string
+      enum:
+        - BUSINESS_RULE
+        - USER_ACTION
+
+    DataCluster:
+      title: Data Cluster
+      description: Name of permissioned
+        [cluster of data elements](https://fdx.atlassian.net/wiki/spaces/FDX/pages/872906996/v1.1+Data+Clusters)
+      type: string
+      enum:
+        - ACCOUNT_BASIC
+        - ACCOUNT_DETAILED
+        - CUSTOMER_CONTACT
+        - PAYMENT_SUPPORT
+        - TRANSACTIONS
+
+    LookbackPeriod:
+      title: Lookback Period
+      description: >-
+        Period, in days, for which historical data may be requested;
+        period is measured from request time, not grant time
+      type: integer
+
+    ############################################################
+    #
+    # Shared data entities (usable by core and all extensions)
+    #
+    ############################################################
+
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Error code defined by FDX API Specification or Data Provider
+            indicating the error situation which has occurred
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+
+    Party:
+      title: Party entity
+      description: FDX Participant - an entity or person that is a part of a FDX API transaction
+      type: object
+      required:
+        - name
+        - type
+      properties:
+        name:
+          description: Human recognizable common name
+          type: string
+        type:
+          description: Extensible string enum identifying the type of the party
+          $ref: '#/components/schemas/PartyType'
+        homeUri:
+          description: >-
+            URI for party, where an end user could learn more about the company
+            or application involved in the data sharing chain
+          type: string
+          format: uri
+        logoUri:
+          description: URI for a logo asset to be displayed to the end user
+          type: string
+          format: uri
+        registry:
+          description: >-
+            The Truist registry containing the party's registration with name and id: PRIVATE
+          $ref: '#/components/schemas/Registry'
+        registeredEntityName:
+          description: Registered name of party
+          type: string
+        registeredEntityId:
+          description: Registered id of party
+          type: string
+
+    ############################################################
+    #
+    # Shared data types (usable by core and all extensions)
+    #
+    ############################################################
+
+    ConsentDurationType:
+      title: Consent Duration Type
+      description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
+      type: string
+      enum:
+        - ONE_TIME
+        - TIME_BOUND
+
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+
+    PartyType:
+      title: Party Type
+      description: Identifies the type of a party
+      type: string
+      enum:
+        - DATA_ACCESS_PLATFORM
+        - DATA_PROVIDER
+        - DATA_RECIPIENT
+        - INDIVIDUAL
+        - MERCHANT
+        - VENDOR
+
+    Timestamp:
+      title: Timestamp
+      pattern: \d{4}\-\d\d\-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ
+      description: >-
+        ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to
+        [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date-time
+      example: '2021-07-15T14:46:41.375Z'
+
+    Registry:
+      title: Registry
+      description: Identifies the type of a Registry
+      type: string
+      enum:
+        - PRIVATE
+
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: >-
+        Universally unique identifier for this interaction,
+        used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  responses:
+    ############################################################
+    #
+    # Standard error responses
+    #
+    ############################################################
+
+    '400':
+      description: Bad Request
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_PATH_PARAMETER:
+              value:
+                code: '401'
+                message: Invalid consentId
+            INVALID_JSON:
+              value:
+                code: '401'
+                message: The request payload is not in a valid JSON format
+
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '603'
+                message: The app is not authorized for this API
+            INVALID_BASICAUTHENTICATION_SOURCE:
+              value:
+                code: '603'
+                message: Authentication failed
+
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '1107'
+                message: URI does not represent a recognized resource
+
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: Method Not Allowed
+
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
+
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: System down for maintenance
+
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server

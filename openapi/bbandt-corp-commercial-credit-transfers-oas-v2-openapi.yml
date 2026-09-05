@@ -1,0 +1,2148 @@
+openapi: 3.1.0
+info:
+  version: "2.6.0"
+  # build: "0"
+  title: Real Time Payment Credit Transfers
+  description: Truist Financial APIs for Real Time Payments Credit Transfers per ISO 20022
+  contact:
+    name: Truist API Support
+    url: "https://developer.truist.com/contact-us"
+servers:
+  - url: "https://api-sandbox.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Sandbox environment
+  - url: "https://apicert.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Certification environment
+  - url: "https://api.truist.com/commercial"
+    description: Truist Financial Commercial Open Banking APIs - Production environment
+
+tags:
+  - name: Credit Transfers Account List
+    description: Eligible accounts for Real Time Payment Credit Transfer
+  - name: Credit Transfers
+    description: Credit Transfers for a Real Time Payment
+  - name: Credit Transfers Approval/Reject
+    description: Approvals for Real Time Payment Credit Transfer
+  - name: Credit Transfers Acknowledge
+    description: Credit Transfer Acknowledge for an inbound credit transfer
+
+paths:
+  ############################################################
+  #
+  # Real Time Payment paths
+  #
+  ############################################################
+  /v2/payments/rtp/credit-transfers:
+    parameters:
+      - $ref: "#/components/parameters/FapiInteractionIdHeader"
+    post:
+      tags:
+        - Credit Transfers
+      description: Initiate credit transfers from Truist accounts to another bank accounts
+      summary: Post credit transfers
+      operationId: createRtpCreditTransfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MultipleRtpPaymentRequest"
+            examples:
+              B2B_TRANSFER:
+                value:
+                  payments:
+                    - correlationId: "3a8b3c99cfef00009615b026207b1b9e"
+                      fromAccountId: "kljTRlVDLS9kSqyTlT"
+                      paymentDate: "2023-10-10"
+                      amount: 1.99
+                      fullAmount: 1.99
+                      discountAmount: 0
+                      description: "Example B2B RTP"
+                      creditor:
+                        name: "John Doe"
+                        accountNumber: "1236511211235999"
+                        routingNumber: "101010101"
+                        address:
+                          addressLine: "1st Street"
+                          city: "Chicago"
+                          state: "IL"
+                          suiteNumber: "#404"
+                          zipCode: "10001"
+                        legalEntityId: "A23500XXXXXCREQRTP01"
+              SINGLE_CONSUMER_TRANSFER:
+                value:
+                  payments:
+                    - correlationId: "3a8b3c99cfef00009615b026207b1b9e"
+                      fromAccountId: "kljTRlVDLS9kSqyTlT"
+                      paymentDate: "2023-10-13"
+                      amount: 1.99
+                      fullAmount: 1.99
+                      discountAmount: 0
+                      description: "Example B2C RTP"
+                      creditor:
+                        name: "John Doe"
+                        accountNumber: "1236511211235999"
+                        routingNumber: "111000111"
+                        birthDate: "2001-01-01"
+                        cityOfBirth: "Raleigh"
+                        countryOfBirth: "US"
+                        address:
+                          addressLine: "1st Street"
+                          city: "Chicago"
+                          state: "IL"
+                          suiteNumber: "404"
+                          zipCode: "10001"
+              MULTIPLE_CONSUMER_TRANSFER:
+                value:
+                  payments:
+                    - correlationId: "3a8b3c99cfef00009615b026207b1b9e"
+                      fromAccountId: "kljTRlVDLS9kSqyTlT"
+                      paymentDate: "2023-10-13"
+                      amount: 1.01
+                      fullAmount: 1.99
+                      discountAmount: 0.98
+                      description: "Example B2C RTP 1"
+                      creditor:
+                        name: "John Doe1"
+                        accountNumber: "1236511211235999"
+                        routingNumber: "111000112"
+                        birthDate: "2002-02-02"
+                        cityOfBirth: "Charlotte"
+                        countryOfBirth: "US"
+                        address:
+                          addressLine: "2nd Street"
+                          city: "Bloomington"
+                          state: "IL"
+                          suiteNumber: "404"
+                          zipCode: "10001"
+                    - correlationId: "3a8b3c99cfef00009615b026207b1b9h"
+                      fromAccountId: "mljLWlVDLS9kSqxTlF"
+                      paymentDate: "2023-10-13"
+                      amount: 1.02
+                      fullAmount: 1.99
+                      discountAmount: 0.97
+                      description: "Example B2C RTP 2"
+                      creditor:
+                        name: "John Doe2"
+                        accountNumber: "2236511211235999"
+                        routingNumber: "111000113"
+                        birthDate: "2003-03-03"
+                        cityOfBirth: "Raleigh"
+                        countryOfBirth: "US"
+                        address:
+                          addressLine: "3rd Street"
+                          city: "Bloomington"
+                          state: "IL"
+                          suiteNumber: "404"
+                          zipCode: "10001"
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RtpResponse"
+              examples:
+                "SUCCESS":
+                  value:
+                    payments:
+                      - correlationId: "3a8b3c99cfef00009615b026207b1b9e"
+                        paymentId: "202403216917266289BTOV5600958950"
+        "400":
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                MISSING_AMOUNT:
+                  value:
+                    code: "7000"
+                    message: "Bad request, amount is missing, null or blank"
+                INVALID_AMOUNT:
+                  value:
+                    code: "8001"
+                    message: "Bad request, amount is invalid"
+                MISSING_FROMACCID:
+                  value:
+                    code: "7001"
+                    message: "Bad request, fromAccountId is missing, null or blank"
+                MISSING_PAYMENTDATE:
+                  value:
+                    code: "7002"
+                    message: "Bad request, paymentDate is missing, null or blank"
+                MISSING_CORRELATIONID:
+                  value:
+                    code: "7003"
+                    message: "Bad request, correlationId is missing, null or blank"
+                MISSING_CREDITOR:
+                  value:
+                    code: "7004"
+                    message: "Bad request, creditor is missing"
+                MISSING_CREDITOR_ACCOUNTNUMBER:
+                  value:
+                    code: "7005"
+                    message: "Bad request, creditor account number is missing, null or blank"
+                MISSING_CREDITOR_ROUTINGNUMBER:
+                  value:
+                    code: "7006"
+                    message: "Bad request, creditor routing number is missing, null or blank"
+                MISSING_CREDITOR_ADDRESS_LINE:
+                  value:
+                    code: "7008"
+                    message: "Bad request, creditor address line is missing, null or blank"
+                MISSING_CREDITOR_ADDRESS_STATE:
+                  value:
+                    code: "7009"
+                    message: "Bad request, creditor address's state is missing, null or blank"
+                MISSING_CREDITOR_ADDRESS_CITY:
+                  value:
+                    code: "7010"
+                    message: "Bad request, creditor address's city is missing, null or blank"
+                MISSING_CREDITOR_ZIPCODE:
+                  value:
+                    code: "7011"
+                    message: "Bad request, creditor address's zipcode is missing, null or blank"
+                INVALID_CORRELATIONID:
+                  value:
+                    code: "7024"
+                    message: "Bad request, correlationId is invalid"
+                AMOUNT_MORE_THAN_10MILLION:
+                  value:
+                    code: "8002"
+                    message: "Amount shouldn't be more than 10 million"
+                INVALID_FULL_AMOUNT:
+                  value:
+                    code: "8023"
+                    message: "Bad request, full amount is amount + discount amount"
+                TRANSACTION_LIMIT_EXCEEDED:
+                  value:
+                    code: "8027"
+                    message: "Transaction limit is exceeded"
+                DAILY_LIMIT_EXCEEDED:
+                  value:
+                    code: "8026"
+                    message: "Daily limit is exceeded"
+                INVALID_INPUT_OAS:
+                  value:
+                    code: "7021" # oas validation
+                    message: "Specify OAS validation error"
+                USER_DAILY_LIMIT_EXCEEDED:
+                  value:
+                    code: "8029"
+                    message: "Exceeded user's daily limit"
+                ROUTING_NUMBER_SERVICE_UNAVAILABLE:
+                  value:
+                    code: "8031"
+                    message: "Routing number service is unavailable"
+                CLOSED_ACCOUNT:
+                  value:
+                    code: "8037"
+                    message: "Payment initiation is not allowed on closed account"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "405":
+          $ref: "#/components/responses/405"
+        "429":
+          $ref: "#/components/responses/429"
+        "409":
+          $ref: "#/components/responses/409"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          description: Service unavailable / system down for maintenance
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                SERVICE_UNAVAILABLE:
+                  value:
+                    code: "503"
+                    message: Service unavailable
+        "504":
+          $ref: "#/components/responses/504"
+      security:
+        - OAuth: ["write:payments"]
+
+    get:
+      tags:
+        - Credit Transfers
+      description: Returns credit transfer transactions for a specific account
+      summary: Get credit transfers
+      operationId: getRealTimePaymentTransactions
+      parameters:
+        - $ref: "#/components/parameters/OffsetQuery"
+        - $ref: "#/components/parameters/LimitQuery"
+        - $ref: "#/components/parameters/PaymentIdQuery"
+        - $ref: "#/components/parameters/AccountIdQuery"
+        - $ref: "#/components/parameters/CorrelationIdQuery"
+        - $ref: "#/components/parameters/PaymentActionQuery"
+        - $ref: "#/components/parameters/StatusQuery"
+        - $ref: "#/components/parameters/AccountNumberQuery"
+        - $ref: "#/components/parameters/PaymentFromDateQuery"
+        - $ref: "#/components/parameters/PaymentToDateQuery"
+        - $ref: "#/components/parameters/FromAmountQuery"
+        - $ref: "#/components/parameters/ToAmountQuery"
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transactions"
+              example:
+                pageMetadata:
+                  totalElements: 2
+                transactions:
+                  - correlationId: "3a8b3c99cfef00009615b026207b1b9e"
+                    paymentId: "202403216917266289BTOV5600958950"
+                    submittedBy: "RTP Debtor Name"
+                    paymentType: "RTP"
+                    paymentDate: "2023-10-10T00:00:00"
+                    expirationDate: "2023-10-11T00:00:00"
+                    amount: 1.00
+                    status: "completed"
+                    statusReasonCode: "NARR"
+                    statusReasonDescription: "Defines status of the request"
+                    payFromAccountNumber: "*******604836"
+                    payToAccountNumber: "2899316377837"
+                    payToRoutingNumber: "101010101"
+                    description: "Example B2B RTP"
+                    recipient: "John Doe"
+                    requiredApprovals: 1
+                    alreadyApproved: 1
+                    approvedBy:
+                      - approverName: "Approver Name"
+                        approvedDate: "2023-10-10T12:56:46"
+                  - correlationId: "3a8b3c99cfef00009615b026207b1j9e"
+                    paymentId: "20221128053101121T1B073712193739899"
+                    submittedBy: "Mary Jane"
+                    paymentType: "RTP"
+                    frequency: "single"
+                    paymentDate: "2023-12-01T00:00:00"
+                    expirationDate: "2023-12-02T00:00:00"
+                    amount: 2.00
+                    status: "needsApproval"
+                    statusReasonCode: "NARR"
+                    statusReasonDescription: "Defines status of the request"
+                    payFromAccountNumber: "*******604836"
+                    payToAccountNumber: "2899316377838"
+                    payToRoutingNumber: "111000111"
+                    description: "Outbound RTP payment"
+                    recipient: "Recipient FI Name"
+                    requiredApprovals: 1
+                    alreadyApproved: 0
+        "400":
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                MISSING_MANDOTORY_PARAMS:
+                  value:
+                    code: "7027"
+                    message: >-
+                      Bad request, mandatory query param is missing.
+                      PaymentId, correlationId or accountId and paymentAction should be present
+                INVALID_LIMIT:
+                  value:
+                    code: "7013"
+                    message: "Bad request, limit has invalid values"
+                INVALID_INPUT_PARAM_CORRELATIONID:
+                  value:
+                    code: "7023"
+                    message: >-
+                      Bad request, either correlationId or paymentId should be present.
+                      Invalid search parameters"
+                INVALID_CORRELATIONID:
+                  value:
+                    code: "7024"
+                    message: "Bad request, correlationId is invalid"
+                INVALID_OFFSET:
+                  value:
+                    code: "7014"
+                    message: "Bad request, offset has invalid values"
+                MISSING_PAYMENTFROMDATE: # not applicable in case of paymentIds
+                  value:
+                    code: "7015"
+                    message: "Bad request, paymentFromDate is missing, null or blank"
+                INVALID_PAYMENTFROMDATE: # not applicable in case of paymentIds
+                  value:
+                    code: "7016"
+                    message: "Bad request, paymentFromDate is invalid"
+                MISSING_FROMAMOUNT: # not applicable in case of paymentIds
+                  value:
+                    code: "7017"
+                    message: "Bad request, fromAmount is missing, null or blank"
+                INVALID_FROMAMOUNT: # not applicable in case of paymentIds
+                  value:
+                    code: "7018"
+                    message: "Bad request, fromAmount is invalid"
+                MISSING_TOAMOUNT: # not applicable in case of paymentIds
+                  value:
+                    code: "7019"
+                    message: "Bad request, toAmount is missing, null or blank"
+                INVALID_TOAMOUNT: # not applicable in case of paymentIds
+                  value:
+                    code: "7020"
+                    message: "Bad request, toAmount is invalid"
+                INVALID_INPUT_OAS:
+                  value:
+                    code: "7021" # oas validation
+                    message: "Specify OAS validation error"
+        "401":
+          $ref: "#/components/responses/401"
+        "404":
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INVALID_ACCOUNTID:
+                  value:
+                    code: "7059"
+                    message: "Account not found"
+                DATA_NOT_FOUND:
+                  value:
+                    code: "1107"
+                    message: "Data not found for request parameters"
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "1101"
+                    message: "URI does not represent a recognised resource"
+        "405":
+          $ref: "#/components/responses/405"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+        "504":
+          $ref: "#/components/responses/504"
+      security:
+        - OAuth: ["read:payments"]
+
+    put:
+      tags:
+        - Credit Transfers
+      description: Cancels a credit transfer
+      summary: Credit transfers cancel
+      operationId: updatePaymentStatus
+      requestBody:
+        description: Credit transfer payment cancellation
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CancelPaymentRequest"
+            example:
+              status: CANCEL
+              payments:
+                - 202403216917266289BTOV5600958950
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePaymentResponse"
+              examples:
+                SUCCESS:
+                  value:
+                    message: "Payment status updated"
+                PARTIAL_SUCCESS:
+                  value:
+                    message: "The payments failed processing"
+                    payments:
+                      - "20221128053101121T1B073712193739891"
+                      - "20221128053101121T1B073712193739899"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "1101"
+                    message: URI does not represent a recognized resource
+
+        "405":
+          $ref: "#/components/responses/405"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+        "504":
+          $ref: "#/components/responses/504"
+      security:
+        - OAuth: ["write:payments"]
+  /v2/payments/rtp/credit-transfers/accounts:
+    parameters:
+      - $ref: "#/components/parameters/FapiInteractionIdHeader"
+      - $ref: "#/components/parameters/AccountStatus"
+    get:
+      tags:
+        - Credit Transfers Account List
+      description: Retrieves the list of accounts eligible for credit transfers
+      summary: Get accounts
+      operationId: getEligibleCreditTransfer
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountList"
+              example:
+                accounts:
+                  - accountId: "kljTRlVDLS9kSqyTlT"
+                    accountType: "CHECKING"
+                    displayName: "************604836"
+                    bankNumber: "102"
+                    description: "ANALYZED CHECKING"
+                    eligibilityType: "RTP"
+                    currentAvailableBalance: 20.40
+                    status: OPEN
+                  - accountId: "mljLWlVDLS9kSqxTlF"
+                    accountType: "SAVINGS"
+                    displayName: "************176443"
+                    bankNumber: "302"
+                    description: "BUSINESS 500 SAVINGS"
+                    eligibilityType: "RTP"
+                    currentAvailableBalance: 20.40
+                    status: OPEN
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Forbidden
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INSUFFICIENT_SCOPE:
+                  value:
+                    code: "403"
+                    message: Invalid scope
+        "404":
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                ACCOUNT_NOT_AVAILABLE:
+                  value:
+                    code: "8000"
+                    message: "Accounts not available for the given OnlineId"
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "1101"
+                    message: "URI does not represent a recognised resource"
+        "405":
+          description: Method Not Allowed
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                METHOD_NOT_ALLOWED:
+                  value:
+                    code: "1206"
+                    message: "Method Not Allowed"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          description: Internal Server Error
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INTERNAL_SERVER_ERROR:
+                  value:
+                    code: "500"
+                    message: "Internal server error"
+        "503":
+          $ref: "#/components/responses/503"
+        "504":
+          $ref: "#/components/responses/504"
+
+      security:
+        - OAuth: ["read:accounts"]
+
+  /v2/payments/rtp/credit-transfers/approvals:
+    parameters:
+      - $ref: "#/components/parameters/FapiInteractionIdHeader"
+    post:
+      tags:
+        - Credit Transfers Approval/Reject
+      description: Update the payment status of credit transfers
+      summary: Post credit transfers
+      operationId: createRtpCreditTransferApprove
+      requestBody:
+        description: Update approval status for a credit tranfer
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdatePaymentRequest"
+            example:
+              status: APPROVE
+              payments:
+                - 20221128053101121T1B073712193739872
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePaymentResponse"
+              examples:
+                SUCCESS:
+                  value:
+                    message: "Payment status updated"
+                PARTIAL_SUCCESS:
+                  value:
+                    message: "The payments failed processing"
+                    payments:
+                      - "20221128053101121T1B073712193739891"
+                      - "20221128053101121T1B073712193739899"
+        "400":
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INVALID_STATUS:
+                  value:
+                    code: "7167"
+                    message: "Bad request, status is invalid"
+                INVALID_INPUT_OAS:
+                  value:
+                    code: "7021" # oas validation
+                    message: "Specify OAS validation error"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          $ref: "#/components/responses/403"
+        "404":
+          $ref: "#/components/responses/404"
+        "405":
+          $ref: "#/components/responses/405"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+        "504":
+          $ref: "#/components/responses/504"
+      security:
+        - OAuth: ["write:payments"]
+    get:
+      tags:
+        - Credit Transfers Approval/Reject
+      description: Returns the pending approval list of credit transfers
+      summary: Get credit transfer approval list
+      operationId: getRealTimePaymentApprovals
+      parameters:
+        - $ref: "#/components/parameters/PaymentFromDateQuery"
+        - $ref: "#/components/parameters/PaymentToDateQuery"
+        - $ref: "#/components/parameters/FromAmountQuery"
+        - $ref: "#/components/parameters/ToAmountQuery"
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetApprovalsPaymentResponse"
+              example:
+                transactions:
+                  - correlationId: "3a8b3c99cfef00009615b026207b1j9e"
+                    paymentId: "20221128053101121T1B073712193739899"
+                    submittedBy: "RTP Debtor Name"
+                    paymentType: "RTP"
+                    paymentDate: "2023-12-01T00:00:00"
+                    expirationDate: "2023-12-02T00:00:00"
+                    amount: 1.00
+                    status: "needsApproval"
+                    payFromAccountNumber: "*******604836"
+                    payFromRoutingNumber: "111000222"
+                    payToAccountNumber: "2899316377837"
+                    payToRoutingNumber: "111000111"
+                    description: "Real Time Payment 1"
+                    recipient: "Mary Jane"
+                    requiredApprovals: 1
+                    alreadyApproved: 0
+                  - correlationId: "3a8b3c99cfef00009615b026207b1b9e"
+                    paymentId: "20221128053101121T1B073712193739798"
+                    submittedBy: "RTPCONSUMER2"
+                    paymentType: "RTP"
+                    frequency: "single"
+                    paymentDate: "2023-12-01T00:00:00"
+                    expirationDate: "2023-12-02T00:00:00"
+                    amount: 2.00
+                    status: "needsApproval"
+                    payFromAccountNumber: "*******604836"
+                    payFromRoutingNumber: "111000222"
+                    payToAccountNumber: "2899316377838"
+                    payToRoutingNumber: "111000111"
+                    description: "Trans#1022"
+                    recipient: "Recipient FI Name"
+                    requiredApprovals: 2
+                    alreadyApproved: 1
+                    approvedBy:
+                      - approverName: "Approver Name"
+                        approvedDate: "2023-12-01T09:00:39"
+        "400":
+          description: Bad Request
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                MISSING_PAYMENTFROMDATE: # not applicable in case of paymentIds
+                  value:
+                    code: "7015"
+                    message: "Bad request, paymentFromDate is missing, null or blank"
+                INVALID_PAYMENTFROMDATE: # not applicable in case of paymentIds
+                  value:
+                    code: "7016"
+                    message: "Bad request, paymentFromDate is invalid"
+                MISSING_PAYMENTTODATE: # not applicable in case of paymentIds
+                  value:
+                    code: "7029"
+                    message: "Bad request, paymentToDate is missing, null or blank"
+                INVALID_PAYMENTTODATE: # not applicable in case of paymentIds
+                  value:
+                    code: "7030"
+                    message: "Bad request, paymentToDate is invalid"
+                MISSING_FROMAMOUNT: # not applicable in case of paymentIds
+                  value:
+                    code: "7017"
+                    message: "Bad request, fromAmount is missing, null or blank"
+                INVALID_FROMAMOUNT: # not applicable in case of paymentIds
+                  value:
+                    code: "7018"
+                    message: "Bad request, fromAmount is invalid"
+                MISSING_TOAMOUNT: # not applicable in case of paymentIds
+                  value:
+                    code: "7019"
+                    message: "Bad request, toAmount is missing, null or blank"
+                INVALID_TOAMOUNT: # not applicable in case of paymentIds
+                  value:
+                    code: "7020"
+                    message: "Bad request, toAmount is invalid"
+                GREATER_PAYMENTTODATE: # not applicable in case of paymentIds
+                  value:
+                    code: "7164"
+                    message: "Bad request, paymentToDate should be greater than paymentFromDate"
+                INVALID_INPUT_OAS:
+                  value:
+                    code: "7021" # oas validation
+                    message: "Specify OAS validation error"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Forbidden
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INSUFFICIENT_SCOPE:
+                  value:
+                    code: "403"
+                    message: Invalid scope
+        "404":
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                DATA_NOT_FOUND:
+                  value:
+                    code: "1107"
+                    message: "Data not found for request parameters"
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "1101"
+                    message: "URI does not represent a recognised resource"
+        "405":
+          $ref: "#/components/responses/405"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+        "504":
+          $ref: "#/components/responses/504"
+      security:
+        - OAuth: ["read:payments"]
+
+  /v2/payments/rtp/credit-transfers/{paymentId}/acknowledgements:
+    parameters:
+      - $ref: "#/components/parameters/FapiInteractionIdHeader"
+    post:
+      tags:
+        - Credit Transfers Acknowledge
+      description: Acknowledge inbound credit transfers
+      summary: Post credit transfers acknowledge
+      operationId: createRtpPaymentAcknowledgment
+      parameters:
+        - in: path
+          name: paymentId
+          required: true
+          schema:
+            type: string
+          description: PaymentId to be acknowledged. The paymentId type should be IB RTP (Inbound Credit Transfer).
+          example: 202403216917266289BTOV5600958950
+      requestBody:
+        description: Acknowledge the real time payment credit transfer request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AcknowledgePaymentRequest"
+            example:
+              message: Ack for IB Credit Send
+      responses:
+        "200":
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AcknowledgePaymentResponse"
+        "400":
+          $ref: "#/components/responses/400"
+        "401":
+          $ref: "#/components/responses/401"
+        "403":
+          description: Forbidden
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                INSUFFICIENT_SCOPE:
+                  value:
+                    code: "403"
+                    message: Invalid scope
+        "404":
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: "#/components/headers/x-fapi-interaction-id"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: "1101"
+                    message: URI does not represent a recognized resource
+        "405":
+          $ref: "#/components/responses/405"
+        "429":
+          $ref: "#/components/responses/429"
+        "500":
+          $ref: "#/components/responses/500"
+        "503":
+          $ref: "#/components/responses/503"
+        "504":
+          $ref: "#/components/responses/504"
+      security:
+        - OAuth: ["write:payments"]
+
+components:
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+          tokenUrl: https://api-sandbox.truist.com/commercial/auth/v2/oauth/token
+          scopes:
+            read:payments: Scope required to read payment details
+            write:payments: Scope required to create or update payments
+            read:accounts: Scope required to read accounts information
+
+  parameters:
+    ############################################################
+    #
+    # Shared request parameters
+    #
+    ############################################################
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request Identifier
+      required: false
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+
+    OffsetQuery:
+      name: offset
+      in: query
+      description: Optional. The row number to begin the next response page. Defaults to 1.
+      required: false
+      schema:
+        type: integer
+        default: 1
+      example: 1
+
+    LimitQuery:
+      name: limit
+      in: query
+      description: Optional. The maximum number of rows for the next response page. Defaults to 100.
+      required: false
+      schema:
+        type: integer
+        default: 100
+        minimum: 10
+        maximum: 1000
+      example: 100
+
+    PaymentIdQuery:
+      name: paymentId
+      in: query
+      description: >-
+        An array of multiple Truist PaymentIds,
+        all other search criteria’s are ignored when paymentId is passed
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        format: array
+      example: ["202403216917266289BTOV5600958950"]
+
+    AccountIdQuery:
+      name: accountId
+      in: query
+      description: An array of multiple Truist accountIds, ignored when paymentId is passed
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        format: array
+      example: ["kljTRlVDLS9kSqyTlT"]
+
+    CorrelationIdQuery:
+      name: correlationId
+      in: query
+      description: >-
+        The Correlation ID is unique ID made by removing hyphens from a standard UUID
+        to make it 32 characters long.
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: string
+        format: array
+      example: ["3a8b3c99cfef00009615b026207b1b9b"]
+
+    PaymentActionQuery:
+      name: paymentAction
+      in: query
+      description: >-
+        Payment sent or received to/from Truist accounts.
+        Sent retrieves all the payments sent from provided Truist accounts.
+        Received retrieves the payments received to Truist accounts,
+        ignored when paymentId is passed. It is required when accountId is passed in search
+      required: false
+      schema:
+        $ref: "#/components/schemas/PaymentAction"
+      example: sent
+
+    StatusQuery:
+      name: status
+      in: query
+      description: >-
+        Specify the current status of RTPs to include, one of needsApproval, rejected, approved,
+        completed, canceled, scheduled, processing, rejectedByApprover, failed, expired, all
+      required: false
+      schema:
+        $ref: "#/components/schemas/RtpStatus"
+      example: needsApproval
+
+    AccountStatus:
+      name: status
+      in: query
+      description: >-
+        Status of the account
+      example: OPEN
+      schema:
+        type: string
+        enum:
+          - OPEN
+          - CLOSED
+
+    AccountNumberQuery:
+      name: accountNumber
+      in: query
+      description: An array of external bank account number
+      required: false
+      schema:
+        type: string
+        format: array
+        style: form
+        explode: false
+      example: ["000000001596001757"]
+
+    PaymentFromDateQuery:
+      name: paymentFromDate
+      in: query
+      description: From date
+      required: false
+      schema:
+        type: string
+        format: date
+      example: "2023-08-13"
+
+    PaymentToDateQuery:
+      name: paymentToDate
+      in: query
+      description: To date
+      required: false
+      schema:
+        type: string
+        format: date
+      example: "2023-09-20"
+
+    StartDateQuery:
+      name: startDate
+      in: query
+      description: Start date
+      required: false
+      schema:
+        type: string
+        format: date
+      example: "2024-09-13"
+
+    EndDateQuery:
+      name: endDate
+      in: query
+      description: End date
+      required: false
+      schema:
+        type: string
+        format: date
+      example: "2024-09-20"
+
+    FromAmountQuery:
+      name: fromAmount
+      in: query
+      description: From Amount
+      required: false
+      schema:
+        type: number
+      example: 1
+
+    FromAccountIdQuery:
+      name: fromAccountId
+      in: query
+      description: query param to search the RTP payments by fromAccountId
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+      example: ["kljTRlVDLS9kSqyTlT"]
+
+    ToAmountQuery:
+      name: toAmount
+      in: query
+      description: To Amount
+      required: false
+      schema:
+        type: number
+      example: 2
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+
+  schemas:
+    ############################################################
+    #
+    # Request for Payment entities
+    #
+    ############################################################
+
+    CorrelationId:
+      type: string
+      description: >-
+        The Correlation ID is unique ID made by removing hyphens from a standard UUID
+        to make it 32 characters long.
+      maxLength: 32
+      items:
+        type: string
+        example: "3a8b3c99cfef00009615b026207b1b9e"
+    AccountList:
+      title: Commercial Account List
+      description: Accounts returned by API upon successful search
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Account"
+
+    Account:
+      title: Commercial Account
+      description: List of commercial accounts for a user
+      type: object
+      properties:
+        accountId:
+          description: Unique identifier for account
+          type: string
+        accountType:
+          $ref: "#/components/schemas/AccountType"
+        displayName:
+          description: Obfuscated account number for display purpose ex. client app screen
+          type: string
+        bankNumber:
+          description: Bank number to identify the bank branch
+          type: string
+        description:
+          description: Customer created nick name linked to the account
+          type: string
+        eligibilityType:
+          description: Payment type allowed for this account
+          $ref: "#/components/schemas/PaymentType"
+        currentAvailableBalance:
+          description: current available balance
+          type: number
+        status:
+          description: Status of the account
+          type: string
+          enum:
+            - OPEN
+            - CLOSED
+
+    AccountType:
+      title: Account Type
+      description: Account type identified by the bank
+      type: string
+      enum:
+        - CHECKING
+        - SAVINGS
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+        or at the account level to indicate a problem specific to a particular
+        account
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            Long term persistent identifier which can be used to trace error
+            condition back to log information
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+
+    AcknowledgePaymentRequest:
+      title: Payment acknowledgement request
+      description: Payment acknowledgement request for credit transfer
+      type: object
+      properties:
+        message:
+          type: string
+          description: Acknowledgement message to be sent to the sender of money.
+
+    AcknowledgePaymentResponse:
+      title: Payment acknowledgement response
+      description: Payment acknowledgement response for credit transfer
+      type: object
+      properties:
+        acknowledgementMessage:
+          description: Acknowledgement Response message
+          type: string
+          example: success
+
+    RtpPaymentRequest:
+      title: RTP Credit Transfer Request
+      description: Real-Time payment, pacs.008, Intiate Transfer from one account number to several recipients
+      type: object
+      $ref: "#/components/schemas/RtpPaymentDetail"
+
+    PaymentType:
+      title: Schema definition for payment type
+      description: TCH Payment type
+      type: string
+      enum:
+        - "RTP"
+
+    PaymentSubType:
+      title: Schema definition for payment subtype type which will indicates whether its Inbound or Outbound transfers
+      description: >-
+        The subtype of a submitted RTP:
+          - RTP Credit Type
+          - Request for Return of Funds
+          - Inbound Request Credit
+      type: string
+      enum:
+        - "CRDT"
+        - "RFRF"
+        - "IBRTP"
+
+    PaymentIds:
+      title: IDs for the submitted payment.
+      type: object
+      description: Correlation and payment IDs for the payment
+      properties:
+        correlationId:
+          type: string
+          description: >-
+            The Correlation ID is unique ID made by removing hyphens from a standard UUID
+            to make it 32 characters long.
+        paymentId:
+          type: string
+          description: UUID for payment. Ex. 20230515053101121T1BCPSX00000000096
+
+    RtpPaymentDetail:
+      title: Individual real-time payment information for each recipient
+      description: Payment and recipient information
+      type: object
+      properties:
+        correlationId:
+          type: string
+          description: >-
+            The Correlation ID is unique ID made by removing hyphens from a standard UUID
+            to make it 32 characters long.
+        fromAccountId:
+          type: string
+          description: Unique identifier for the account
+        amount:
+          type: number
+          description: The payment amount to be transferred
+        fullAmount:
+          description: Full amount is amount + discount amount
+          type: number
+        discountAmount:
+          description: The discount amount
+          type: number
+        description:
+          type: string
+          description: Payment memo information
+        creditor:
+          $ref: "#/components/schemas/RtpCreditor"
+        paymentDate:
+          $ref: "#/components/schemas/PaymentDate"
+      required:
+        - correlationId
+        - amount
+        - creditor
+        - fromAccountId
+
+    RtpResponse:
+      title: Response definition for the RTP Transfer
+      description: Status of the RTP Transfer
+      type: object
+      properties:
+        payments:
+          description: Response Payment IDs
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentIds"
+
+    UpdatePaymentRequest:
+      title: Request definition for status update
+      description: Update payment status
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/UpdateStatus"
+        payments:
+          description: Unique identifiers for payments
+          type: array
+          items:
+            type: string
+          example: ["20221128053101121T1B073712193739891"]
+      required:
+        - status
+        - payments
+
+    UpdateStatus:
+      title: Update real time payment schema
+      description: Update payment status
+      type: string
+      enum:
+        - "APPROVE"
+        - "REJECT"
+
+    CancelPaymentRequest:
+      title: Request definition for status update
+      description: Update payment status
+      type: object
+      properties:
+        status:
+          $ref: "#/components/schemas/CancelStatus"
+        payments:
+          description: Unique identifiers for payments
+          type: array
+          items:
+            type: string
+          example: ["20221128053101121T1B073712193739891"]
+      required:
+        - status
+        - payments
+
+    CancelStatus:
+      title: Update real time payment schema
+      description: Update payment status
+      type: string
+      enum:
+        - "CANCEL"
+
+    GetApprovalsPaymentResponse:
+      title: All reported transactions
+      description: Real time payment transaction list
+      type: object
+      properties:
+        transactions:
+          type: array
+          description: An array of Credit Transfer Transaction inquiry responses
+          items:
+            $ref: "#/components/schemas/Transaction"
+
+    UpdatePaymentResponse:
+      title: Succcessful response for payment update
+      description: response for successful status update
+      type: object
+      properties:
+        message:
+          description: status of the cancellation
+          type: string
+        payments:
+          description: list of payment ids.
+          type: array
+          items:
+            type: string
+      required:
+        - message
+
+    Address:
+      title: Address information
+      type: object
+      properties:
+        addressLine:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        suiteNumber:
+          type: string
+        zipCode:
+          type: string
+      required:
+        - addressLine
+        - city
+        - state
+        - zipCode
+
+    ContactDetails:
+      title: Contact details address
+      type: object
+      properties:
+        name:
+          type: string
+        phoneNumber:
+          type: string
+        mobileNumber:
+          type: string
+        faxNumber:
+          type: string
+        emailAddress:
+          type: string
+
+    Iso3166CountryCode:
+      title: ISO 3166 Country Code
+      description: >-
+        ISO 3166-1 alpha-2 codes as of April 5, 2023, from officially assigned Country Codes on
+        [ISO Online Browsing Platform](https://www.iso.org/obp/ui/)
+      type: string
+      enum:
+        - AD
+        - AE
+        - AF
+        - AG
+        - AI
+        - AL
+        - AM
+        - AO
+        - AQ
+        - AR
+        - AS
+        - AT
+        - AU
+        - AW
+        - AX
+        - AZ
+        - BA
+        - BB
+        - BD
+        - BE
+        - BF
+        - BG
+        - BH
+        - BI
+        - BJ
+        - BL
+        - BM
+        - BN
+        - BO
+        - BQ
+        - BR
+        - BS
+        - BT
+        - BV
+        - BW
+        - BY
+        - BZ
+        - CA
+        - CC
+        - CD
+        - CF
+        - CG
+        - CH
+        - CI
+        - CK
+        - CL
+        - CM
+        - CN
+        - CO
+        - CR
+        - CU
+        - CV
+        - CW
+        - CX
+        - CY
+        - CZ
+        - DE
+        - DJ
+        - DK
+        - DM
+        - DO
+        - DZ
+        - EC
+        - EE
+        - EG
+        - EH
+        - ER
+        - ES
+        - ET
+        - FI
+        - FJ
+        - FK
+        - FM
+        - FO
+        - FR
+        - GA
+        - GB
+        - GD
+        - GE
+        - GF
+        - GG
+        - GH
+        - GI
+        - GL
+        - GM
+        - GN
+        - GP
+        - GQ
+        - GR
+        - GS
+        - GT
+        - GU
+        - GW
+        - GY
+        - HK
+        - HM
+        - HN
+        - HR
+        - HT
+        - HU
+        - ID
+        - IE
+        - IL
+        - IM
+        - IN
+        - IO
+        - IQ
+        - IR
+        - IS
+        - IT
+        - JE
+        - JM
+        - JO
+        - JP
+        - KE
+        - KG
+        - KH
+        - KI
+        - KM
+        - KN
+        - KP
+        - KR
+        - KW
+        - KY
+        - KZ
+        - LA
+        - LB
+        - LC
+        - LI
+        - LK
+        - LR
+        - LS
+        - LT
+        - LU
+        - LV
+        - LY
+        - MA
+        - MC
+        - MD
+        - ME
+        - MF
+        - MG
+        - MH
+        - MK
+        - ML
+        - MM
+        - MN
+        - MO
+        - MP
+        - MQ
+        - MR
+        - MS
+        - MT
+        - MU
+        - MV
+        - MW
+        - MX
+        - MY
+        - MZ
+        - NA
+        - NC
+        - NE
+        - NF
+        - NG
+        - NI
+        - NL
+        - "NO"
+        - NP
+        - NR
+        - NU
+        - NZ
+        - OM
+        - PA
+        - PE
+        - PF
+        - PG
+        - PH
+        - PK
+        - PL
+        - PM
+        - PN
+        - PR
+        - PS
+        - PT
+        - PW
+        - PY
+        - QA
+        - RE
+        - RO
+        - RS
+        - RU
+        - RW
+        - SA
+        - SB
+        - SC
+        - SD
+        - SE
+        - SG
+        - SH
+        - SI
+        - SJ
+        - SK
+        - SL
+        - SM
+        - SN
+        - SO
+        - SR
+        - SS
+        - ST
+        - SV
+        - SX
+        - SY
+        - SZ
+        - TC
+        - TD
+        - TF
+        - TG
+        - TH
+        - TJ
+        - TK
+        - TL
+        - TM
+        - TN
+        - TO
+        - TR
+        - TT
+        - TV
+        - TW
+        - TZ
+        - UA
+        - UG
+        - UM
+        - US
+        - UY
+        - UZ
+        - VA
+        - VC
+        - VE
+        - VG
+        - VI
+        - VN
+        - VU
+        - WF
+        - WS
+        - YE
+        - YT
+        - ZA
+        - ZM
+        - ZW
+
+    PaymentAction:
+      title: Payment action indicates whether the payment is sent or received from Truist account
+      description: >-
+        The payment action of a submitted RTP:
+          - sent
+          - received
+      type: string
+      enum:
+        - received
+        - sent
+
+    RtpStatus:
+      title: RTP Submitted Status
+      description: >-
+        The status of a submitted RTP:
+          - needsApproval
+          - rejected
+          - approved
+          - completed
+          - canceled
+          - scheduled
+          - processing
+          - rejectedByApprover
+          - failed
+          - expired
+          - all
+      type: string
+      enum:
+        - needsApproval
+        - rejected
+        - approved
+        - completed
+        - canceled
+        - scheduled
+        - processing
+        - rejectedByApprover
+        - failed
+        - expired
+        - all
+
+    RtpTransactionStatus:
+      title: RTP Status of Transaction
+      description: >-
+        The status of a submitted RTP:
+          - needsApproval
+          - rejected
+          - approved
+          - completed
+          - canceled
+          - scheduled
+          - processing
+          - rejectedByApprover
+          - failed
+          - expired
+      type: string
+      enum:
+        - needsApproval
+        - rejected
+        - approved
+        - completed
+        - canceled
+        - scheduled
+        - processing
+        - rejectedByApprover
+        - failed
+        - expired
+
+    RtpCreditor:
+      title: Payer or Recipient Information
+      description: Common details for RtpCreditor
+      type: object
+      properties:
+        name:
+          type: string
+          description: Payer or Recipient name
+        accountNumber:
+          type: string
+          description: Requested source or destination account number
+        routingNumber:
+          type: string
+          description: Payer or Recipient routing number
+        birthDate:
+          type: string
+          description: Individual payer or recipient birth date represented in ISO 8601 date as "yyyy-mm-dd"
+          pattern: \d{4}\-\d\d\-\d\d
+          format: date
+        cityOfBirth:
+          type: string
+          description: City of birth of the individual payer or recipient
+        countryOfBirth:
+          description: The birth country code for the individual payer or recipient
+          $ref: "#/components/schemas/Iso3166CountryCode"
+        address:
+          $ref: "#/components/schemas/Address"
+        contactDetails:
+          $ref: "#/components/schemas/ContactDetails"
+        customerReference:
+          description: Transaction reference
+          type: string
+        legalEntityId:
+          description: LEI for business
+          type: string
+          pattern: "[A-Z0-9]{18}[0-9]{2}"
+        internalComments:
+          description: Memo
+          type: string
+      required:
+        - accountNumber
+        - routingNumber
+
+    Transactions:
+      title: All reported transactions
+      description: Real time payment transaction list
+      type: object
+      properties:
+        pageMetadata:
+          $ref: "#/components/schemas/PageMetadata"
+        transactions:
+          type: array
+          description: An array of Credit Transfer Transaction inquiry responses
+          items:
+            $ref: "#/components/schemas/Transaction"
+
+    PageMetadata:
+      title: Page Metadata
+      description: Offset IDs for paginated result sets
+      type: object
+      properties:
+        nextOffset:
+          type: string
+          example: "2"
+          description:
+            Opaque identifier. Does not need to be numeric or have any specific pattern.
+            Implementation specific
+        totalElements:
+          type: integer
+          example: 3
+          description: Total number of elements
+
+    Transaction:
+      title: real time payment transaction
+      description: payment transaction inquiry response payload
+      type: object
+      properties:
+        correlationId:
+          description: >-
+            The Correlation ID is unique ID made by removing hyphens from a standard UUID
+            to make it 32 characters long.
+          type: string
+        paymentId:
+          description: unique payment id.
+          type: string
+        submittedBy:
+          description: initiator id or name.
+          type: string
+        paymentType:
+          description: type of the payment.
+          type: string
+        # actions:
+        #   description: actions allowed on this transactions.
+        #   type: string
+        #   enum:
+        #   - cancel
+        #   - edit
+        #   - duplicate
+        paymentTypeCode:
+          $ref: "#/components/schemas/PaymentSubType"
+        frequency:
+          $ref: "#/components/schemas/Frequency"
+        paymentDate:
+          type: string
+          format: date-time
+          description: payment execution date time.
+        expirationDate:
+          type: string
+          format: date-time
+          description: expiration date after which the payment is invalid.
+        amount:
+          description: amount of transaction
+          type: number
+        payFromAccountNumber:
+          description: debtor account number
+          type: string
+        payFromAccountId:
+          description: debtor account id.
+          type: string
+        payFromRoutingNumber:
+          description: debtor routing number
+          type: string
+        payToAccountNumber:
+          description: creditor account number
+          type: string
+        payToAccountId:
+          description: creditor account id.
+          type: string
+        payToRoutingNumber:
+          description: creditor routing number
+          type: string
+        status:
+          description: status of the rtp transaction
+          $ref: "#/components/schemas/RtpTransactionStatus"
+        statusReasonCode:
+          description: NARR
+          type: string
+        statusReasonDescription:
+          description: Defines status of the RTP request
+          type: string
+        description:
+          description: transaction memo
+          type: string
+        recipient:
+          type: string
+          description: recipient name or any identifying information.
+        requiredApprovals:
+          type: number
+          description: required number of approvals.
+        alreadyApproved:
+          type: number
+          description: current number of approvals granted.
+        approvedBy:
+          type: array
+          description: desc
+          items:
+            type: object
+            properties:
+              approverName:
+                type: string
+                description: Name of the approver
+              approvedDate:
+                type: string
+                format: date-time
+                description: approved date and time
+      required:
+        - paymentId
+        - paymentType
+        - amount
+        - description
+        - payToAccountNumber
+
+    PaymentDate:
+      type: string
+      description: >-
+        Date to dispatch the payment. ISO 8601 date as "yyyy-mm-dd".
+        Only applicable for future dated(OTFD) and One time payments.
+      format: date
+    MultipleRtpPaymentRequest:
+      title: MultipleRtpPaymentRequest.
+      description: Object for holding multiple payment transfers.
+      type: object
+      properties:
+        payments:
+          type: array
+          description: Payments object for RTP
+          items:
+            $ref: "#/components/schemas/RtpPaymentRequest"
+
+  responses:
+    ############################################################
+    #
+    # Standard error responses
+    #
+    ############################################################
+
+    "400":
+      description: Bad Request
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            INVALID_INPUT_OAS:
+              value:
+                code: "7021" # oas validation
+                message: "Specify OAS validation error"
+
+    "401":
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: "603"
+                message: Authentication failed
+
+    "403":
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            ENTITLEMENT_ERROR:
+              value:
+                code: "602"
+                message: Account not entitled
+            INSUFFICIENT_SCOPE:
+              value:
+                code: "403"
+                message: Invalid scope
+
+    "404":
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: "1101"
+                message: URI does not represent a recognized resource
+            INVALID_ACCOUNTID:
+              value:
+                code: "7059"
+                message: Account not found
+
+    "405":
+      description: Method Not Allowed
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            METHOD_NOT_ALLOWED:
+              value:
+                code: "1206"
+                message: Method Not Allowed
+    "409":
+      description: Conflict
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            DUPLICATE_PAYMENT_REQUEST:
+              value:
+                code: "908"
+                message: Duplicate payment request
+    "429":
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: "1207"
+                message: Too Many Requests
+            QUOTA_VIOLATION:
+              value:
+                code: "1208"
+                message: Quota Violation
+
+    "500":
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: "500"
+                message: "We are currently unable to process your request due to a system issue"
+            UNEXPECTED_ERROR:
+              value:
+                code: "500"
+                message: "An unexpected error occurred while processing your request"
+
+    "503":
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: "503"
+                message: "We are currently unable to process your request due to a system issue"
+
+    "504":
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: "#/components/headers/x-fapi-interaction-id"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: "504"
+                message: "An unexpected error occurred while processing your request"

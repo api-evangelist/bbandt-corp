@@ -1,0 +1,38 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Truist Account Address
+  version: 1.0.0
+extends: openapi/bbandt-corp-retail-accounts-contact-openapi.yml
+x-generated: '2026-09-04'
+x-method: generated
+x-source: Derived from the verbatim Truist contract at https://developer.truist.com/assets/data/swagger-prod/retail-accounts-contact.yaml
+  ; adds API Evangelist catalog metadata only. The original spec is never mutated.
+actions:
+- target: $.info
+  update:
+    x-api-evangelist:
+      provider: BB&T Corp (Truist)
+      providerId: bbandt-corp
+      apiId: bbandt-corp:account-address
+      harvested: '2026-09-04'
+      harvestedFrom: https://developer.truist.com/assets/data/swagger-prod/retail-accounts-contact.yaml
+      portal: https://developer.truist.com/api/account-address/overview
+      documentation: https://developer.truist.com/api/account-address/documentation
+      lineOfBusiness: Retail
+      apiType: Data
+      artifacts:
+        authentication: authentication/bbandt-corp-authentication.yml
+        scopes: scopes/bbandt-corp-scopes.yml
+        errors: errors/bbandt-corp-problem-types.yml
+        conventions: conventions/bbandt-corp-conventions.yml
+        conformance: conformance/bbandt-corp-conformance.yml
+        lifecycle: lifecycle/bbandt-corp-lifecycle.yml
+        rateLimits: rate-limits/bbandt-corp-rate-limits.yml
+        dataModel: data-model/bbandt-corp-data-model.yml
+- target: $.info
+  update:
+    x-environments:
+    - mode: sandbox
+      url: https://api-sandbox.truist.com/retail
+    - mode: production
+      url: https://api-secure.truist.com/retail

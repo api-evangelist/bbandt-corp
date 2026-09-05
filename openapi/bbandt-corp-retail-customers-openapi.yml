@@ -1,0 +1,772 @@
+openapi: 3.1.0
+info:
+  version: '1.5.0'
+  # build: '0'
+  title: Personal and Small Business Client Contact
+  description: Truist Financial, following FDX V5.4.1 Customers API
+  contact:
+    name: Truist API Support
+    url: 'https://developer.truist.com/contact-us'
+  x-fdx-csdf-account-categories: [ANY]
+servers:
+  - url: 'https://api-sandbox.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Sandbox environment
+  - url: 'https://apicert-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Certification environment
+  - url: 'https://api-secure.truist.com/retail'
+    description: Truist Financial Retail Open Banking APIs - Production environment
+
+security:
+  - OAuth: [CUSTOMER_CONTACT]
+tags:
+  - name: Personal Information
+    description: Get a client's contact info - name, email, address, and phone number
+
+paths:
+  ############################################################
+  #
+  # Customer paths
+  #
+  ############################################################
+
+  /v1/customers/current:
+    parameters:
+      - $ref: '#/components/parameters/FapiInteractionIdHeader'
+      - $ref: '#/components/parameters/FdxApiActorTypeHeader'
+    x-fdx-csdf-account-categories: [ANY]
+    get:
+      operationId: getCustomerInfo
+      tags:
+        - Personal Information
+      description: Get information about the customer within the authorization scope
+      summary: Get current authenticated customer information
+      x-fdx-csdf-account-categories: [ANY]
+      responses:
+        '200':
+          description: Data describing current authenticated customer
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+              examples:
+                example1:
+                  value:
+                    customerId: 777PSuIHqJH93ugONq8v3zlNbwkKKK
+                    name:
+                      first: JOHN
+                      middle: O
+                      last: DOE
+                    email:
+                      - John.Doe@example.com
+                    addresses:
+                      - line1: 123 Main Street
+                        city: CHARLOTTE
+                        region: NC
+                        postalCode: '275348945'
+                        country: US
+                        type: MAILING
+                    telephones:
+                      - type: HOME
+                        number: '9191234567'
+                      - type: CELL
+                        number: '9197654321'
+                      - type: BUSINESS
+                        number: '9191111111'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          $ref: '#/components/responses/403'
+        '404':
+          $ref: '#/components/responses/404'
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+      security:
+        - OAuth: [CUSTOMER_CONTACT]
+
+components:
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description:
+        The production authorization URL will be provided after the onboarding
+        process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api-sandbox.truist.com/retail-aggregator/auth/v1/oauth/authorize
+          tokenUrl: https://api-sandbox.truist.com/retail-aggregator/auth/v1/oauth/token
+          scopes:
+            CUSTOMER_CONTACT: Scope required to access customer details
+
+  parameters:
+    ############################################################
+    #
+    # Shared request parameters (usable by core and all extensions)
+    #
+    ############################################################
+
+    FdxApiActorTypeHeader:
+      name: FDX-API-Actor-Type
+      in: header
+      description: Identifies whether the customer is present (USER) or it is a BATCH operation
+      schema:
+        $ref: '#/components/schemas/ActorType'
+      example: BATCH
+
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  headers:
+    ############################################################
+    #
+    # Standard response headers
+    #
+    ############################################################
+
+    x-fapi-interaction-id:
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+  schemas:
+
+    ############################################################
+    #
+    # Shared data entities (usable by core and all extensions)
+    #
+    ############################################################
+
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: >-
+        Universally unique identifier for this interaction,
+        used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+
+    Address:
+      title: Address
+      description: Postal address
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        line1:
+          $ref: '#/components/schemas/String64'
+          description: Address line 1
+          x-fdx-csdf-account-categories: [ANY]
+        line2:
+          $ref: '#/components/schemas/String64'
+          description: Address line 2
+          x-fdx-csdf-account-categories: [ANY]
+        line3:
+          $ref: '#/components/schemas/String64'
+          description: Address line 3
+          x-fdx-csdf-account-categories: [ANY]
+        city:
+          $ref: '#/components/schemas/String64'
+          description: City
+          x-fdx-csdf-account-categories: [ANY]
+        region:
+          $ref: '#/components/schemas/String64'
+          description: State or province or territory. Replaces "state" property.
+            From [Universal Postal Union](https://www.upu.int/en/Postal-Solutions/Programmes-Services/Addressing-Solutions#addressing-s42-standard)
+            as of 2-26-2020, [S42 International Address Standards](https://www.upu.int/UPU/media/upu/documents/PostCode/S42_International-Addressing-Standards.pdf).
+            For U.S. addresses can be 2-character code from '#/components/schemas/StateCode'
+          x-fdx-csdf-account-categories: [ANY]
+        postalCode:
+          type: string
+          maxLength: 16
+          description: Postal code
+          x-fdx-csdf-account-categories: [ANY]
+        country:
+          $ref: '#/components/schemas/Iso3166CountryCode'
+          description: Country code
+          x-fdx-csdf-account-categories: [ANY]
+
+    Customer:
+      title: Customer entity
+      description: Represents a customer
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        customerId:
+          $ref: '#/components/schemas/Identifier'
+          description: >-
+            Long-term persistent identity of the customer.
+            This identity must be unique to the owning institution
+          x-fdx-csdf-account-categories: [ANY]
+        name:
+          $ref: '#/components/schemas/CustomerName'
+          description: The customer's name
+          x-fdx-csdf-account-categories: [ANY]
+        email:
+          type: array
+          items:
+            type: string
+          description: >-
+            An array of the customer's electronic mail addresses
+          x-fdx-csdf-account-categories: [ANY]
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryAddress'
+          description: >-
+            An array of the customer's physical mail addresses
+          x-fdx-csdf-account-categories: [ANY]
+        telephones:
+          type: array
+          items:
+            $ref: '#/components/schemas/TelephoneNumber'
+          description: An array of the customer's telephone numbers
+          x-fdx-csdf-account-categories: [ANY]
+
+    CustomerName:
+      title: Customer Name entity
+      description: The name of an individual in their role as a customer
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      allOf:
+        - $ref: '#/components/schemas/IndividualName'
+        - type: object
+          properties:
+            company:
+              type: string
+              description: Company name
+              x-fdx-csdf-account-categories: [ANY]
+
+    DeliveryAddress:
+      title: Delivery Address
+      description: A delivery address and its location type
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      allOf:
+        - $ref: '#/components/schemas/Address'
+        - type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/DeliveryAddressType'
+              description: Type of address location. One of BUSINESS, HOME, MAILING
+              x-fdx-csdf-account-categories: [ANY]
+
+    Error:
+      title: Error
+      description: >-
+        An error entity which can be used at the API level for error responses
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        code:
+          type: string
+          description: >-
+            Error code defined by FDX API Specification or Data Provider
+            indicating the error situation which has occurred
+          x-fdx-csdf-technical: true
+        message:
+          type: string
+          description: >-
+            End user displayable information which might help the customer
+            diagnose an error
+          x-fdx-csdf-technical: true
+
+    IndividualName:
+      title: Individual name
+      description: First name, middle initial, last name, suffix fields
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        first:
+          description: First name
+          type: string
+          x-fdx-csdf-account-categories: [ANY]
+        middle:
+          description: Middle initial
+          type: string
+          x-fdx-csdf-account-categories: [ANY]
+        last:
+          description: Last name
+          type: string
+          x-fdx-csdf-account-categories: [ANY]
+
+    TelephoneNumber:
+      title: Telephone Number
+      description: Standard for international phone numbers
+      type: object
+      x-fdx-csdf-account-categories: [ANY]
+      properties:
+        type:
+          $ref: '#/components/schemas/TelephoneNumberType'
+          description: 'Type of phone number: HOME, BUSINESS, CELL, FAX'
+          x-fdx-csdf-account-categories: [ANY]
+        number:
+          type: string
+          maxLength: 15
+          pattern: '\d+'
+          description: Telephone subscriber number defined by ITU-T recommendation E.164
+          x-fdx-csdf-account-categories: [ANY]
+
+    ############################################################
+    #
+    # Shared data types (usable by core and all extensions)
+    #
+    ############################################################
+
+    ActorType:
+      title: FDX API Actor Type
+      description: >-
+        Indicates whether a customer is present and has requested the operation (USER),
+        or if a batch job has requested the operation (BATCH)
+      type: string
+      enum:
+        - BATCH
+        - USER
+
+    DeliveryAddressType:
+      title: Delivery Address Type
+      description: The location type of an address
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - HOME
+        - BUSINESS
+        - MAILING
+
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+      x-fdx-csdf-account-categories: [ANY]
+
+    Iso3166CountryCode:
+      title: ISO 3166 Country Code
+      description: >-
+        ISO 3166-1 alpha-2 codes as of April 5, 2023, from officially assigned Country Codes on
+        [ISO Online Browsing Platform](https://www.iso.org/obp/ui/). Change log is at
+        [ISO 3166 Maintenance Agency](https://www.iso.org/fr/committee/48750.html?t=3V3rukDb61p05Wd6ojyTRvE0S3Yg_fZgUjrLjHWcd9-mDmTKHOGjbX3nEJ3SqHar&view=documents#section-isodocuments-top)
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - AD
+        - AE
+        - AF
+        - AG
+        - AI
+        - AL
+        - AM
+        - AO
+        - AQ
+        - AR
+        - AS
+        - AT
+        - AU
+        - AW
+        - AX
+        - AZ
+        - BA
+        - BB
+        - BD
+        - BE
+        - BF
+        - BG
+        - BH
+        - BI
+        - BJ
+        - BL
+        - BM
+        - BN
+        - BO
+        - BQ
+        - BR
+        - BS
+        - BT
+        - BV
+        - BW
+        - BY
+        - BZ
+        - CA
+        - CC
+        - CD
+        - CF
+        - CG
+        - CH
+        - CI
+        - CK
+        - CL
+        - CM
+        - CN
+        - CO
+        - CR
+        - CU
+        - CV
+        - CW
+        - CX
+        - CY
+        - CZ
+        - DE
+        - DJ
+        - DK
+        - DM
+        - DO
+        - DZ
+        - EC
+        - EE
+        - EG
+        - EH
+        - ER
+        - ES
+        - ET
+        - FI
+        - FJ
+        - FK
+        - FM
+        - FO
+        - FR
+        - GA
+        - GB
+        - GD
+        - GE
+        - GF
+        - GG
+        - GH
+        - GI
+        - GL
+        - GM
+        - GN
+        - GP
+        - GQ
+        - GR
+        - GS
+        - GT
+        - GU
+        - GW
+        - GY
+        - HK
+        - HM
+        - HN
+        - HR
+        - HT
+        - HU
+        - ID
+        - IE
+        - IL
+        - IM
+        - IN
+        - IO
+        - IQ
+        - IR
+        - IS
+        - IT
+        - JE
+        - JM
+        - JO
+        - JP
+        - KE
+        - KG
+        - KH
+        - KI
+        - KM
+        - KN
+        - KP
+        - KR
+        - KW
+        - KY
+        - KZ
+        - LA
+        - LB
+        - LC
+        - LI
+        - LK
+        - LR
+        - LS
+        - LT
+        - LU
+        - LV
+        - LY
+        - MA
+        - MC
+        - MD
+        - ME
+        - MF
+        - MG
+        - MH
+        - MK
+        - ML
+        - MM
+        - MN
+        - MO
+        - MP
+        - MQ
+        - MR
+        - MS
+        - MT
+        - MU
+        - MV
+        - MW
+        - MX
+        - MY
+        - MZ
+        - NA
+        - NC
+        - NE
+        - NF
+        - NG
+        - NI
+        - NL
+        - 'NO'
+        - NP
+        - NR
+        - NU
+        - NZ
+        - OM
+        - PA
+        - PE
+        - PF
+        - PG
+        - PH
+        - PK
+        - PL
+        - PM
+        - PN
+        - PR
+        - PS
+        - PT
+        - PW
+        - PY
+        - QA
+        - RE
+        - RO
+        - RS
+        - RU
+        - RW
+        - SA
+        - SB
+        - SC
+        - SD
+        - SE
+        - SG
+        - SH
+        - SI
+        - SJ
+        - SK
+        - SL
+        - SM
+        - SN
+        - SO
+        - SR
+        - SS
+        - ST
+        - SV
+        - SX
+        - SY
+        - SZ
+        - TC
+        - TD
+        - TF
+        - TG
+        - TH
+        - TJ
+        - TK
+        - TL
+        - TM
+        - TN
+        - TO
+        - TR
+        - TT
+        - TV
+        - TW
+        - TZ
+        - UA
+        - UG
+        - UM
+        - US
+        - UY
+        - UZ
+        - VA
+        - VC
+        - VE
+        - VG
+        - VI
+        - VN
+        - VU
+        - WF
+        - WS
+        - YE
+        - YT
+        - ZA
+        - ZM
+        - ZW
+
+    String64:
+      title: String 64
+      description: String of maximum length 64
+      type: string
+      maxLength: 64
+      x-fdx-csdf-account-categories: [ANY]
+
+    TelephoneNumberType:
+      title: Telephone Number Type
+      description: Purpose or type of telephone number
+      type: string
+      x-fdx-csdf-account-categories: [ANY]
+      enum:
+        - BUSINESS
+        - CELL
+        - FAX
+        - HOME
+
+  responses:
+
+    ############################################################
+    #
+    # Standard error responses
+    #
+    ############################################################
+
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            AUTHENTICATION_FAILED:
+              value:
+                code: '603'
+                message: Authentication failed
+
+    '403':
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INSUFFICIENT_SCOPE:
+              value:
+                code: '602'
+                message: Customer connection does not authorize customer data
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '403'
+                message: Data recipient connection does not include customer data
+
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '1107'
+                message: URI does not represent a recognized resource
+
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: The request method is not supported by this resource
+
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Spike Arrest Violation
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota Violation
+
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: System down for maintenance
+
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server

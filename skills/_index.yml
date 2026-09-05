@@ -1,0 +1,67 @@
+generated: '2026-09-04'
+method: generated
+source: openapi/bbandt-corp-*-openapi.yml — every operationId in these skills is verified against the published Truist
+  contracts
+specification: Agent Skills
+specificationVersion: '0.1'
+provider: BB&T Corp (Truist)
+providerId: bbandt-corp
+description: Packaged operating instructions for the marquee Truist open-banking flows. Grounded in the 31 operationIds
+  Truist publishes, plus the conventions, error and reversibility findings in this repo. Truist publishes no skills or
+  AGENTS.md of its own (searched 2026-09-04).
+skill_count: 5
+skills:
+- file: bbandt-corp-find-branches-and-atms.md
+  name: truist-find-branches-and-atms
+  description: Search Truist branch and ATM locations by geography — the one Truist API that needs no customer consent.
+  api: Truist Branch/ATM Locator
+  operations:
+  - searchForAll
+  - searchForBranches
+  - searchForATMs
+- file: bbandt-corp-manage-consent-and-events.md
+  name: truist-manage-consent-and-events
+  description: Read and revoke a Truist customer consent grant, and subscribe to the consent lifecycle events Truist
+    publishes to a registered callback URL.
+  api: Truist User Consent / Event Subscriptions / Event Notifications
+  operations:
+  - getConsentGrant
+  - revokeConsentGrant
+  - createNotificationSubscription
+  - getNotificationSubscription
+  - deleteNotificationSubscription
+  - publishNotification
+- file: bbandt-corp-register-data-recipient.md
+  name: truist-register-data-recipient
+  description: Dynamically register, update and delete an OAuth data-recipient client with Truist under RFC 7591, the
+    prerequisite for aggregator access to the retail open-banking APIs.
+  api: Truist Retail Dynamic Client Registration
+  operations:
+  - createRecipient
+  - getRecipient
+  - updateRecipient
+  - deleteRecipient
+- file: bbandt-corp-retrieve-accounts-and-transactions.md
+  name: truist-retrieve-accounts-and-transactions
+  description: Retrieve a Truist personal or small-business customer's accounts, account detail and transaction history
+    over the FDX open-banking APIs, using a consented OAuth 2.0 access token.
+  api: Truist Personal and Small Business Accounts / Transactions
+  operations:
+  - authorize
+  - token
+  - searchForAccounts
+  - getAccount
+  - searchForAccountTransactions
+- file: bbandt-corp-send-rtp-credit-transfer.md
+  name: truist-send-rtp-credit-transfer
+  description: Initiate, approve, track and cancel a real-time payment (RTP) credit transfer from a Truist commercial
+    account, including the duplicate and limit failure modes.
+  api: Truist Credit Transfers
+  operations:
+  - getEligibleCreditTransfer
+  - createRtpCreditTransfer
+  - getRealTimePaymentApprovals
+  - createRtpCreditTransferApprove
+  - getRealTimePaymentTransactions
+  - updatePaymentStatus
+  - createRtpPaymentAcknowledgment

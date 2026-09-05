@@ -1,0 +1,81 @@
+# BB&T Corp (Truist) — Truist Developer Center
+
+> Truist Financial Corporation (formed by the December 2019 merger of BB&T and SunTrust) publishes an open-banking API program at developer.truist.com. Fifteen first-party OpenAPI contracts covering 31 operations are served publicly at https://developer.truist.com/assets/data/swagger-prod/. The retail surface is built to the Financial Data Exchange (FDX) API (V5.4.1 / V6.4.1 / v6.5); every API carries the FAPI `x-fapi-interaction-id` correlation header. Access is OAuth 2.0 authorization_code with per-customer consent; sandbox and production both require a registered application, and production requires manual approval.
+
+## APIs
+
+- [Truist Commercial Accounts](https://developer.truist.com/api/commercial-accounts/overview): Access a list of commercial accounts. Base URL https://api.truist.com/commercial. OpenAPI 3.0.1, contract v4.3.0.
+- [Truist Commercial Account Balance](https://developer.truist.com/api/commercial-account-balance/overview): Get balance information for the current or previous day. Base URL https://api.truist.com/commercial. OpenAPI 3.0.1, contract v3.6.0.
+- [Truist Commercial Account Transactions](https://developer.truist.com/api/commercial-account-transactions/overview): Access transactions from the current or previous day. Base URL https://api.truist.com/commercial. OpenAPI 3.1.0, contract v3.6.0.
+- [Truist Personal and Small Business Accounts](https://developer.truist.com/api/personal-and-small-business-accounts/overview): Access details for checking, savings, credit, loan, and investment accounts. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v2.6.0.
+- [Truist Branch/ATM Locator](https://developer.truist.com/api/branch-atm-locator/overview): Locate Truist branches and ATMs. Base URL https://api-sandbox.truist.com/retail. OpenAPI 3.0.1, contract v1.2.0.
+- [Truist Personal and Small Business Transactions](https://developer.truist.com/api/personal-and-small-business-transactions/overview): Access transaction data for a specific personal or small business account. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v2.4.0.
+- [Truist Personal and Small Business Client Contact](https://developer.truist.com/api/personal-and-small-business-client-contact/overview): Get a client's contact info—name, email, address, and phone number. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v1.5.0.
+- [Truist Retail Oauth Authentication](https://developer.truist.com/api/retail-oauth-authentication/overview): Set up consent authorization tokens to access a client's Truist account data. Base URL https://api.truist.com/retail/auth/oauth. OpenAPI 3.1.0, contract v3.3.0.
+- [Truist User Consent](https://developer.truist.com/api/user-consent/overview): View or revoke a client's consent. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v1.1.0.
+- [Truist Retail Dynamic Client Registration](https://developer.truist.com/api/retail-dynamic-client-registration/overview): Enable data access platforms to manage registrations for fintech applications. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v1.3.0.
+- [Truist Personal and Small Business Account Payment Networks](https://developer.truist.com/api/personal-and-small-business-account-payment-networks/overview): Retrieve tokenized account numbers for initiating transactions on client deposit accounts. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v1.3.2.
+- [Truist Account Address](https://developer.truist.com/api/account-address/overview): Retrieve all addresses associated with a specific account. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v1.2.1.
+- [Truist Credit Transfers](https://developer.truist.com/api/credit-transfers/overview): Process real-time credit transfer payments to and from eligible accounts. Base URL https://api.truist.com/commercial. OpenAPI 3.1.0, contract v2.6.0.
+- [Truist Personal and Small Business Event Notifications](https://developer.truist.com/api/personal-and-small-business-event-notifications/overview): Publish a notification to Truist of consent revocation for one of our connected customers. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v1.1.0.
+- [Truist Personal and Small Business Event Subscriptions](https://developer.truist.com/api/personal-and-small-business-event-subscriptions/overview): Subscribe to receive Truist events about your connected customers and their fintech applications. Base URL https://api-secure.truist.com/retail. OpenAPI 3.1.0, contract v1.2.0.
+
+## Machine-readable contracts
+
+- [Commercial Accounts OpenAPI](https://developer.truist.com/assets/data/swagger-prod/commercial-accounts.yaml): OpenAPI 3.0.1, harvested verbatim to openapi/bbandt-corp-commercial-accounts-openapi.yml
+- [Commercial Account Balance OpenAPI](https://developer.truist.com/assets/data/swagger-prod/commercial-account-balance.yaml): OpenAPI 3.0.1, harvested verbatim to openapi/bbandt-corp-commercial-account-balance-openapi.yml
+- [Commercial Account Transactions OpenAPI](https://developer.truist.com/assets/data/swagger-prod/commercial-account-transactions.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-commercial-account-transactions-openapi.yml
+- [Personal and Small Business Accounts OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-accounts.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-accounts-openapi.yml
+- [Branch/ATM Locator OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-locator.yaml): OpenAPI 3.0.1, harvested verbatim to openapi/bbandt-corp-retail-locator-openapi.yml
+- [Personal and Small Business Transactions OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-accounts-transaction.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-accounts-transaction-openapi.yml
+- [Personal and Small Business Client Contact OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-customers.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-customers-openapi.yml
+- [Retail Oauth Authentication OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-auth-oauth.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-auth-oauth-openapi.yml
+- [User Consent OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-consents.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-consents-openapi.yml
+- [Retail Dynamic Client Registration OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-register-recipient.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-register-recipient-openapi.yml
+- [Personal and Small Business Account Payment Networks OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-payment-networks.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-payment-networks-openapi.yml
+- [Account Address OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-accounts-contact.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-accounts-contact-openapi.yml
+- [Credit Transfers OpenAPI](https://developer.truist.com/assets/data/swagger-prod/commercial-credit-transfers-oas-v2.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-commercial-credit-transfers-oas-v2-openapi.yml
+- [Personal and Small Business Event Notifications OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-event-notifications.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-event-notifications-openapi.yml
+- [Personal and Small Business Event Subscriptions OpenAPI](https://developer.truist.com/assets/data/swagger-prod/retail-event-subscriptions.yaml): OpenAPI 3.1.0, harvested verbatim to openapi/bbandt-corp-retail-event-subscriptions-openapi.yml
+
+## Getting started
+
+- [Truist Developer Center](https://developer.truist.com/): registration, API catalog, Swagger try-it-out console
+- [Working with Truist APIs](https://developer.truist.com/api/working-with-truist): the six-step path from registration to production
+- [View APIs](https://developer.truist.com/api/view-api): the full API catalog
+- [FAQ](https://developer.truist.com/faq)
+- [Contact us](https://developer.truist.com/contact-us): the only support channel
+- [Terms and conditions](https://www.truist.com/terms-and-conditions)
+- [Privacy](https://www.truist.com/privacy)
+
+## Authentication
+
+- OAuth 2.0 authorization_code with customer consent on the account, transaction, contact, payment-network and credit-transfer APIs. Retail authorize/token: https://api.truist.com/retail/auth/oauth/v3/authorize and /v3/token. Commercial token endpoints are issued at onboarding.
+- HTTP Basic (`Base64(client_id:client_secret)`) on the OAuth, consent, event, dynamic-registration and locator APIs.
+- Retail scopes: ACCOUNT_BASIC, ACCOUNT_DETAILED, TRANSACTIONS, CUSTOMER_CONTACT, PAYMENT_SUPPORT, plus the OIDC scopes profile, email, phone, address. Commercial scopes: read:accounts, read:payments, write:payments.
+- RFC 7591 dynamic client registration is published for aggregators at POST /v1/register.
+
+## Runtime semantics an agent needs
+
+- `x-fapi-interaction-id` is a REQUIRED request header and is echoed on every response, including errors. The Branch/ATM Locator returns `x-RqUID` instead.
+- Errors are the FDX `Error` envelope `{code, message}`, NOT RFC 9457 problem+json. 119 published codes are catalogued in errors/bbandt-corp-problem-types.yml.
+- There is NO idempotency mechanism on any of the 8 mutating operations. Credit Transfers rejects duplicates with HTTP 409 code 908; recover by querying on your own `correlationId`, never by blind retry.
+- Reversal paths exist and are documented, but NO window is published for any of them: cancel a credit transfer with PUT /v2/payments/rtp/credit-transfers (status CANCEL), reject a pending one with status REJECT, revoke consent with PUT /v1/consents/{consentId}/revocation, delete a registered recipient or event subscription.
+- No rate-limit headers and no published numeric limits. A 429 carries code 1207 (spike arrest) or 1207/1208 (quota). Back off with jitter; there is no Retry-After.
+- No dry-run or preview mode. The sandbox at api-sandbox.truist.com returns mock data and is the rehearsal surface.
+- Event surface: subscribe a callbackUrl with POST /v1/notification-subscriptions to receive CONSENT_REVOKED and CONSENT_UPDATED. No webhook signature scheme is published.
+
+## Not published
+
+- No /.well-known documents on any Truist host (security.txt, openid-configuration, oauth-authorization-server, api-catalog, agent-card.json all probed 2026-09-04, all absent).
+- No MCP server, no A2A agent card, no llms.txt of Truist's own.
+- No SDKs, client libraries, CLI or Postman collection; no Truist GitHub organization.
+- No pricing, plans or rate card; no status page; no changelog or release notes; no deprecation or sunset policy.
+- No AsyncAPI document, though a real event surface exists.
+
+## Optional
+
+- [Truist newsroom RSS](https://media.truist.com/news-releases?pagetemplate=rss)
+- [Truist corporate site](https://www.truist.com/)
+
+_Generated by API Evangelist on 2026-09-04 from the Truist Developer Center's own published product catalog and OpenAPI contracts. Truist publishes no llms.txt; this file is our summary of their surface, not theirs._
