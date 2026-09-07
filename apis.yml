@@ -451,5 +451,5 @@ x-enrichment:
   status: enriched
   artifacts_added: 65
   pass: local-v3
-x-parent: truist
+x-parent: truist-financial
 x-relationship: merger
