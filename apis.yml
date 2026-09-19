@@ -635,6 +635,8 @@ apis:
   humanURL: https://developer.truist.com/api/commercial-accounts/overview
   baseURL: https://api.truist.com/commercial
   tags:
+  - Authentication
+  tags_raw:
   - OAuth 2.0
   properties:
   - type: OpenAPI
