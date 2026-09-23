@@ -1,7 +1,9 @@
 ---
 title: BB&T, SunTrust to combine in $28B merger
 url: https://www.americanbanker.com/news/bb-t-suntrust-to-combine-in-28b-merger
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"BB&T Corp." press release artificial intelligence'
 position: 1
 source: serpapi-google

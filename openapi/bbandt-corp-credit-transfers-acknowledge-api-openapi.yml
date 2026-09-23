@@ -1,0 +1,265 @@
+openapi: 3.2.0
+info:
+  version: 2.6.0
+  title: Real Time Payment Credit Transfers Credit Transfers…
+  description: Truist Financial APIs for Real Time Payments Credit Transfers per ISO 20022
+  contact:
+    name: Truist API Support
+    url: https://developer.truist.com/contact-us
+servers:
+- url: https://api-sandbox.truist.com/commercial
+  description: Truist Financial Commercial Open Banking APIs - Sandbox environment
+- url: https://apicert.truist.com/commercial
+  description: Truist Financial Commercial Open Banking APIs - Certification environment
+- url: https://api.truist.com/commercial
+  description: Truist Financial Commercial Open Banking APIs - Production environment
+tags:
+- name: Credit Transfers Acknowledge
+  description: Credit Transfer Acknowledge for an inbound credit transfer
+paths:
+  /v2/payments/rtp/credit-transfers/{paymentId}/acknowledgements:
+    parameters:
+    - $ref: '#/components/parameters/FapiInteractionIdHeader'
+    post:
+      tags:
+      - Credit Transfers Acknowledge
+      description: Acknowledge inbound credit transfers
+      summary: Post credit transfers acknowledge
+      operationId: createRtpPaymentAcknowledgment
+      parameters:
+      - in: path
+        name: paymentId
+        required: true
+        schema:
+          type: string
+        description: PaymentId to be acknowledged. The paymentId type should be IB RTP (Inbound Credit Transfer).
+        example: 202403216917266289BTOV5600958950
+      requestBody:
+        description: Acknowledge the real time payment credit transfer request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcknowledgePaymentRequest'
+            example:
+              message: Ack for IB Credit Send
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcknowledgePaymentResponse'
+        '400':
+          $ref: '#/components/responses/400'
+        '401':
+          $ref: '#/components/responses/401'
+        '403':
+          description: Forbidden
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                INSUFFICIENT_SCOPE:
+                  value:
+                    code: '403'
+                    message: Invalid scope
+        '404':
+          description: Not Found
+          headers:
+            x-fapi-interaction-id:
+              $ref: '#/components/headers/x-fapi-interaction-id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              examples:
+                RESOURCE_NOT_FOUND:
+                  value:
+                    code: '1101'
+                    message: URI does not represent a recognized resource
+        '405':
+          $ref: '#/components/responses/405'
+        '429':
+          $ref: '#/components/responses/429'
+        '500':
+          $ref: '#/components/responses/500'
+        '503':
+          $ref: '#/components/responses/503'
+        '504':
+          $ref: '#/components/responses/504'
+      security:
+      - OAuth:
+        - write:payments
+components:
+  responses:
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: We are currently unable to process your request due to a system issue
+            UNEXPECTED_ERROR:
+              value:
+                code: '500'
+                message: An unexpected error occurred while processing your request
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Too Many Requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1208'
+                message: Quota Violation
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: We are currently unable to process your request due to a system issue
+    '400':
+      description: Bad Request
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_INPUT_OAS:
+              value:
+                code: '7021'
+                message: Specify OAS validation error
+    '405':
+      description: Method Not Allowed
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            METHOD_NOT_ALLOWED:
+              value:
+                code: '1206'
+                message: Method Not Allowed
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: '603'
+                message: Authentication failed
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: An unexpected error occurred while processing your request
+  parameters:
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request Identifier
+      required: false
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+  schemas:
+    AcknowledgePaymentResponse:
+      title: Payment acknowledgement response
+      description: Payment acknowledgement response for credit transfer
+      type: object
+      properties:
+        acknowledgementMessage:
+          description: Acknowledgement Response message
+          type: string
+          example: success
+    AcknowledgePaymentRequest:
+      title: Payment acknowledgement request
+      description: Payment acknowledgement request for credit transfer
+      type: object
+      properties:
+        message:
+          type: string
+          description: Acknowledgement message to be sent to the sender of money.
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
+      type: object
+      properties:
+        code:
+          type: string
+          description: Long term persistent identifier which can be used to trace error condition back to log information
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+  headers:
+    x-fapi-interaction-id:
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+  securitySchemes:
+    OAuth:
+      type: oauth2
+      description: The production authorization URL will be provided after the onboarding process is completed.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api-sandbox.truist.com/commercial/auth/v1/oauth/authorize
+          tokenUrl: https://api-sandbox.truist.com/commercial/auth/v2/oauth/token
+          scopes:
+            read:payments: Scope required to read payment details
+            write:payments: Scope required to create or update payments
+            read:accounts: Scope required to read accounts information

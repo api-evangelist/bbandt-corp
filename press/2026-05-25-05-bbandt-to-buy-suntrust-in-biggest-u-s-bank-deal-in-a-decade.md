@@ -1,7 +1,9 @@
 ---
 title: BB&T to buy SunTrust in biggest U.S. bank deal in a decade
 url: https://www.reuters.com/article/business/bbt-to-buy-suntrust-in-biggest-us-bank-deal-in-a-decade-idUSKCN1PW17G/
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"BB&T Corp." press release artificial intelligence'
 position: 5
 source: serpapi-google

@@ -1,7 +1,9 @@
 ---
 title: Truist CIO Focuses on Positioning Bank for Digital Innovation
 url: https://www.wsj.com/articles/truist-cio-focuses-on-positioning-bank-for-digital-innovation-11625563800?eafs_enabled=false
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"BB&T Corp." press release artificial intelligence'
 position: 2
 source: serpapi-google
