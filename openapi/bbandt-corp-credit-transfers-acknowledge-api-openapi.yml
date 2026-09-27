@@ -100,8 +100,8 @@ paths:
         - write:payments
 components:
   responses:
-    '500':
-      description: Internal Server Error
+    '401':
+      description: Unauthorized
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -110,14 +110,10 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            INTERNAL_SERVER_ERROR:
+            INVALID_ACCESS_TOKEN:
               value:
-                code: '500'
-                message: We are currently unable to process your request due to a system issue
-            UNEXPECTED_ERROR:
-              value:
-                code: '500'
-                message: An unexpected error occurred while processing your request
+                code: '603'
+                message: Authentication failed
     '429':
       description: Too Many Requests
       headers:
@@ -136,8 +132,8 @@ components:
               value:
                 code: '1208'
                 message: Quota Violation
-    '503':
-      description: Service unavailable / system down for maintenance
+    '500':
+      description: Internal Server Error
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -146,24 +142,14 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            SERVICE_UNAVAILABLE:
+            INTERNAL_SERVER_ERROR:
               value:
-                code: '503'
+                code: '500'
                 message: We are currently unable to process your request due to a system issue
-    '400':
-      description: Bad Request
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_INPUT_OAS:
+            UNEXPECTED_ERROR:
               value:
-                code: '7021'
-                message: Specify OAS validation error
+                code: '500'
+                message: An unexpected error occurred while processing your request
     '405':
       description: Method Not Allowed
       headers:
@@ -178,8 +164,8 @@ components:
               value:
                 code: '1206'
                 message: Method Not Allowed
-    '401':
-      description: Unauthorized
+    '400':
+      description: Bad Request
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -188,10 +174,10 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            INVALID_ACCESS_TOKEN:
+            INVALID_INPUT_OAS:
               value:
-                code: '603'
-                message: Authentication failed
+                code: '7021'
+                message: Specify OAS validation error
     '504':
       description: Service Timed out
       headers:
@@ -206,16 +192,29 @@ components:
               value:
                 code: '504'
                 message: An unexpected error occurred while processing your request
-  parameters:
-    FapiInteractionIdHeader:
-      name: x-fapi-interaction-id
-      in: header
-      description: Unique request Identifier
-      required: false
-      schema:
-        type: string
-      example: rrt-970585410023330903-b-gce-821-23397-1
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: We are currently unable to process your request due to a system issue
   schemas:
+    AcknowledgePaymentRequest:
+      title: Payment acknowledgement request
+      description: Payment acknowledgement request for credit transfer
+      type: object
+      properties:
+        message:
+          type: string
+          description: Acknowledgement message to be sent to the sender of money.
     AcknowledgePaymentResponse:
       title: Payment acknowledgement response
       description: Payment acknowledgement response for credit transfer
@@ -225,14 +224,6 @@ components:
           description: Acknowledgement Response message
           type: string
           example: success
-    AcknowledgePaymentRequest:
-      title: Payment acknowledgement request
-      description: Payment acknowledgement request for credit transfer
-      type: object
-      properties:
-        message:
-          type: string
-          description: Acknowledgement message to be sent to the sender of money.
     Error:
       title: Error
       description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
@@ -248,6 +239,15 @@ components:
     x-fapi-interaction-id:
       description: Unique request identifier
       required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+  parameters:
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request Identifier
+      required: false
       schema:
         type: string
       example: rrt-970585410023330903-b-gce-821-23397-1

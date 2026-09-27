@@ -196,23 +196,14 @@ paths:
                     message: System Down for maintenance
 components:
   schemas:
-    TransactionType:
-      description: Type of transaction, Debit (DB) or Credit (CR)
-      type: string
-      enum:
-      - DB
-      - CR
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
+    PostedOrPending:
+      description: Array of posted or pending transactions for the account, or error status for the same.
       type: object
       properties:
-        code:
-          type: string
-          description: Long term persistent identifier which can be used to trace error condition back to log information
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
     Transaction:
       title: Each transaction response
       type: object
@@ -244,35 +235,43 @@ components:
           type: string
           format: date
           example: '2019-05-20'
-    PreviousDateIndicator:
-      description: Indicator for Previous (P) or Current (C) date
+    TransactionType:
+      description: Type of transaction, Debit (DB) or Credit (CR)
       type: string
       enum:
-      - P
-      - C
+      - DB
+      - CR
     TransactionStatus:
       description: Status of transaction, cleared or pending
       type: string
       enum:
       - cleared
       - pending
-    PostedOrPending:
-      description: Array of posted or pending transactions for the account, or error status for the same.
+    PreviousDateIndicator:
+      description: Indicator for Previous (P) or Current (C) date
+      type: string
+      enum:
+      - P
+      - C
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
       type: object
       properties:
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
-  parameters:
-    FapiInteractionIdHeader:
-      name: x-fapi-interaction-id
-      in: header
-      description: Unique identifier for this interaction
-      required: false
+        code:
+          type: string
+          description: Long term persistent identifier which can be used to trace error condition back to log information
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier
+      required: true
       schema:
         type: string
-      example: rrt-9705854100-bgce-821-23397-1
+      example: rrt-970585410023330903-b-gce-821-23397-1
+  parameters:
     AccountIdPath:
       name: accountId
       in: path
@@ -281,13 +280,14 @@ components:
       schema:
         type: string
       example: ZZZmrmm3C3JjK
-  headers:
-    x-fapi-interaction-id:
-      description: Unique identifier
-      required: true
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      required: false
       schema:
         type: string
-      example: rrt-970585410023330903-b-gce-821-23397-1
+      example: rrt-9705854100-bgce-821-23397-1
   securitySchemes:
     OAuth:
       type: oauth2

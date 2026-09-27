@@ -225,21 +225,6 @@ paths:
         - read:accounts
 components:
   schemas:
-    Account:
-      title: Base Account
-      description: Account attributes shared across all account types
-      type: object
-      properties:
-        balanceType:
-          $ref: '#/components/schemas/BalanceType'
-        lineOfBusiness:
-          $ref: '#/components/schemas/LineOfBusiness'
-    BalanceType:
-      type: string
-      description: Type of balances on account("ASSET", "LIABILITY")
-      enum:
-      - ASSET
-      - LIABILITY
     CreditCardAccount:
       title: schema definition for commercial CreditCardAccount details.
       description: Credit card account details
@@ -271,49 +256,12 @@ components:
           pastDueAmount:
             description: Amount due from past month.
             type: number
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses
-      type: object
-      properties:
-        code:
-          type: string
-          description: Defined error type codes
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-    LineOfBusiness:
+    BalanceType:
       type: string
-      description: Truist Line of Business to which the account maps("Commercial, "Retail")
+      description: Type of balances on account("ASSET", "LIABILITY")
       enum:
-      - Commercial
-      - Retail
-    AccountDetail:
-      title: Commercial account eligible account list
-      description: Accounts returned by API upon successful search
-      type: object
-      properties:
-        depositAccount:
-          $ref: '#/components/schemas/DepositAccount'
-        loanAccount:
-          $ref: '#/components/schemas/LoanAccount'
-        lineOfCreditAccount:
-          $ref: '#/components/schemas/LineOfCreditAccount'
-        creditCardAccount:
-          $ref: '#/components/schemas/CreditCardAccount'
-    BalanceDetails:
-      description: Balance details
-      type: object
-      properties:
-        baiCode:
-          description: Bank administration code (BAI Code) for the balance
-          type: string
-        value:
-          description: Balance value in USD
-          type: number
-        asofDate:
-          description: Business Date associated with the balance.
-          type: string
+      - ASSET
+      - LIABILITY
     LineOfCreditAccount:
       title: schema definition for commercial LineOfCreditAccount details
       description: Line of credit Account details
@@ -331,47 +279,38 @@ components:
           availableBalance:
             description: Amount available to be used for this line account.
             type: number
-    LoanAccount:
-      title: Schema definition for commercial LoanAccount details
-      description: Loan account details.
+    LineOfBusiness:
+      type: string
+      description: Truist Line of Business to which the account maps("Commercial, "Retail")
+      enum:
+      - Commercial
+      - Retail
+    BalanceDetails:
+      description: Balance details
       type: object
-      allOf:
-      - $ref: '#/components/schemas/Account'
-      - type: object
-        properties:
-          loanAmount:
-            description: Original loan amount
-            type: number
-          nextPaymentDueAmount:
-            description: Due payment amount.
-            type: number
-          nextPaymentDueDate:
-            description: Due date for the nextPaymentDueAmount.
-            type: string
-            format: date
-          principalBalance:
-            description: Principal balance amount - Available balance
-            type: number
-          maturityDate:
-            description: Maturity date of the loan
-            type: string
-            format: date
-          originationDate:
-            description: Origination date of the loan
-            type: string
-            format: date
-          lastPaymentAmount:
-            description: Amount of last payment
-            type: number
-          interestRate:
-            description: Rate of interest
-            type: number
-          lastYearInterestPaid:
-            description: Last year interest paid
-            type: number
-          interestPaidYTD:
-            description: Interest paid year to date
-            type: number
+      properties:
+        baiCode:
+          description: Bank administration code (BAI Code) for the balance
+          type: string
+        value:
+          description: Balance value in USD
+          type: number
+        asofDate:
+          description: Business Date associated with the balance.
+          type: string
+    AccountDetail:
+      title: Commercial account eligible account list
+      description: Accounts returned by API upon successful search
+      type: object
+      properties:
+        depositAccount:
+          $ref: '#/components/schemas/DepositAccount'
+        loanAccount:
+          $ref: '#/components/schemas/LoanAccount'
+        lineOfCreditAccount:
+          $ref: '#/components/schemas/LineOfCreditAccount'
+        creditCardAccount:
+          $ref: '#/components/schemas/CreditCardAccount'
     DepositAccount:
       title: schema definition for commercial DepositAccount details.
       description: Deposit account details
@@ -427,6 +366,74 @@ components:
           pendingDebit:
             description: A total of all of the pending debits to your account that have not yet posted, but are reflected in your available balance.
             type: number
+    Account:
+      title: Base Account
+      description: Account attributes shared across all account types
+      type: object
+      properties:
+        balanceType:
+          $ref: '#/components/schemas/BalanceType'
+        lineOfBusiness:
+          $ref: '#/components/schemas/LineOfBusiness'
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: Defined error type codes
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+    LoanAccount:
+      title: Schema definition for commercial LoanAccount details
+      description: Loan account details.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Account'
+      - type: object
+        properties:
+          loanAmount:
+            description: Original loan amount
+            type: number
+          nextPaymentDueAmount:
+            description: Due payment amount.
+            type: number
+          nextPaymentDueDate:
+            description: Due date for the nextPaymentDueAmount.
+            type: string
+            format: date
+          principalBalance:
+            description: Principal balance amount - Available balance
+            type: number
+          maturityDate:
+            description: Maturity date of the loan
+            type: string
+            format: date
+          originationDate:
+            description: Origination date of the loan
+            type: string
+            format: date
+          lastPaymentAmount:
+            description: Amount of last payment
+            type: number
+          interestRate:
+            description: Rate of interest
+            type: number
+          lastYearInterestPaid:
+            description: Last year interest paid
+            type: number
+          interestPaidYTD:
+            description: Interest paid year to date
+            type: number
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
   parameters:
     FapiInteractionIdHeader:
       name: x-fapi-interaction-id
@@ -436,13 +443,6 @@ components:
       schema:
         type: string
       example: rrt-9705854100-bgce-821-23397-1
-  headers:
-    x-fapi-interaction-id:
-      description: Unique identifier
-      required: true
-      schema:
-        type: string
-      example: rrt-970585410023330903-b-gce-821-23397-1
   securitySchemes:
     OAuth:
       type: oauth2

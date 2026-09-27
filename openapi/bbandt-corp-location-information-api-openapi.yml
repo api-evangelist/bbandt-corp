@@ -733,6 +733,21 @@ paths:
       - BasicAuth: []
 components:
   parameters:
+    DriveThroughWindowBranches:
+      name: DriveThroughWindowBranches
+      in: query
+      required: false
+      description: Drive through window branches?
+      schema:
+        $ref: '#/components/schemas/Option'
+    CityQuery:
+      name: City
+      in: query
+      required: false
+      description: Lookup address city.
+      schema:
+        type: string
+        maxLength: 20
     LongitudeQuery:
       name: Lng
       in: query
@@ -742,14 +757,21 @@ components:
         type: number
         minimum: -180
         maximum: 180
-    LocationType:
-      name: LocationType
+    SpanishSpeakingBranches:
+      name: SpanishSpeakingBranches
       in: query
       required: false
-      description: Branch or ATM
+      description: Spanish-speaking branches?
       schema:
-        type: integer
-        maxLength: 126
+        $ref: '#/components/schemas/Option'
+    StateQuery:
+      name: State
+      in: query
+      required: false
+      description: Lookup State.
+      schema:
+        type: string
+        maxLength: 2
     SaturdayHoursBranches:
       name: SaturdayHoursBranches
       in: query
@@ -757,6 +779,24 @@ components:
       description: Saturday hours branches?
       schema:
         $ref: '#/components/schemas/Option'
+    LimitQuery:
+      name: limit
+      in: query
+      required: false
+      description: Number of elements that the consumer wishes to receive
+      schema:
+        type: integer
+        maxLength: 2
+        maximum: 99
+    ZipQuery:
+      name: ZIP
+      in: query
+      required: false
+      description: Lookup ZIP.
+      schema:
+        type: string
+        maxLength: 10
+      example: '27604'
     Address1Query:
       name: Address1
       in: query
@@ -772,14 +812,21 @@ components:
       description: BB&T Spanish ATMs?
       schema:
         $ref: '#/components/schemas/Option'
-    CityQuery:
-      name: City
+    LocationType:
+      name: LocationType
       in: query
       required: false
-      description: Lookup address city.
+      description: Branch or ATM
       schema:
-        type: string
-        maxLength: 20
+        type: integer
+        maxLength: 126
+    NightDepositsBranches:
+      name: NightDepositsBranches
+      in: query
+      required: false
+      description: Night deposits branches
+      schema:
+        $ref: '#/components/schemas/Option'
     LatitudeQuery:
       name: Lat
       in: query
@@ -789,47 +836,6 @@ components:
         type: number
         minimum: -90
         maximum: 90
-    StateQuery:
-      name: State
-      in: query
-      required: false
-      description: Lookup State.
-      schema:
-        type: string
-        maxLength: 2
-    ZipQuery:
-      name: ZIP
-      in: query
-      required: false
-      description: Lookup ZIP.
-      schema:
-        type: string
-        maxLength: 10
-      example: '27604'
-    LimitQuery:
-      name: limit
-      in: query
-      required: false
-      description: Number of elements that the consumer wishes to receive
-      schema:
-        type: integer
-        maxLength: 2
-        maximum: 99
-    DriveThroughWindowBranches:
-      name: DriveThroughWindowBranches
-      in: query
-      required: false
-      description: Drive through window branches?
-      schema:
-        $ref: '#/components/schemas/Option'
-    Address2Query:
-      name: Address2
-      in: query
-      required: false
-      description: Lookup address continued.
-      schema:
-        type: string
-        maxLength: 126
     SearchRadiusQuery:
       name: SearchRadius
       in: query
@@ -838,37 +844,32 @@ components:
       schema:
         type: integer
         maximum: 99
-    SpanishSpeakingBranches:
-      name: SpanishSpeakingBranches
+    Address2Query:
+      name: Address2
       in: query
       required: false
-      description: Spanish-speaking branches?
+      description: Lookup address continued.
       schema:
-        $ref: '#/components/schemas/Option'
-    NightDepositsBranches:
-      name: NightDepositsBranches
-      in: query
-      required: false
-      description: Night deposits branches
-      schema:
-        $ref: '#/components/schemas/Option'
+        type: string
+        maxLength: 126
   schemas:
-    Error:
+    Locations:
+      title: All or ATM Locations
+      description: List of All or just ATM Locations
       type: object
       properties:
-        code:
-          type: string
-          description: standard REST HTTP status codes
-        message:
-          type: string
-          description: path of the failing element
-    Branches:
-      title: Branches Entity
-      description: List of Branch Locations
+        locations:
+          description: List of All or just ATM Locations
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    ATMs:
+      title: ATMs Entity
+      description: searchForATMs
       type: object
       properties:
-        branchLocations:
-          description: List of Branch Locations
+        atmLocations:
+          description: List of All ATM Locations
           type: array
           items:
             $ref: '#/components/schemas/Location'
@@ -905,6 +906,32 @@ components:
           type: array
           items:
             type: string
+    Option:
+      title: Option
+      description: Yes ot No
+      type: string
+      enum:
+      - Y
+      - N
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: standard REST HTTP status codes
+        message:
+          type: string
+          description: path of the failing element
+    Branches:
+      title: Branches Entity
+      description: List of Branch Locations
+      type: object
+      properties:
+        branchLocations:
+          description: List of Branch Locations
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
     Address:
       type: object
       description: Location of the branch
@@ -935,33 +962,6 @@ components:
           type: number
           format: double
           description: Longitude of the location
-    ATMs:
-      title: ATMs Entity
-      description: searchForATMs
-      type: object
-      properties:
-        atmLocations:
-          description: List of All ATM Locations
-          type: array
-          items:
-            $ref: '#/components/schemas/Location'
-    Locations:
-      title: All or ATM Locations
-      description: List of All or just ATM Locations
-      type: object
-      properties:
-        locations:
-          description: List of All or just ATM Locations
-          type: array
-          items:
-            $ref: '#/components/schemas/Location'
-    Option:
-      title: Option
-      description: Yes ot No
-      type: string
-      enum:
-      - Y
-      - N
   securitySchemes:
     BasicAuth:
       type: http

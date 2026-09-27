@@ -128,6 +128,20 @@ paths:
         - read:accounts
 components:
   responses:
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: '603'
+                message: Authentication failed
     '429':
       description: Too Many Requests
       headers:
@@ -146,20 +160,6 @@ components:
               value:
                 code: '1208'
                 message: Quota Violation
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: We are currently unable to process your request due to a system issue
     '504':
       description: Service Timed out
       headers:
@@ -174,8 +174,8 @@ components:
               value:
                 code: '504'
                 message: An unexpected error occurred while processing your request
-    '401':
-      description: Unauthorized
+    '503':
+      description: Service unavailable / system down for maintenance
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -184,11 +184,43 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            INVALID_ACCESS_TOKEN:
+            SERVICE_UNAVAILABLE:
               value:
-                code: '603'
-                message: Authentication failed
+                code: '503'
+                message: We are currently unable to process your request due to a system issue
+  parameters:
+    AccountStatus:
+      name: status
+      in: query
+      description: Status of the account
+      example: OPEN
+      schema:
+        type: string
+        enum:
+        - OPEN
+        - CLOSED
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request Identifier
+      required: false
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
   schemas:
+    AccountType:
+      title: Account Type
+      description: Account type identified by the bank
+      type: string
+      enum:
+      - CHECKING
+      - SAVINGS
+    PaymentType:
+      title: Schema definition for payment type
+      description: TCH Payment type
+      type: string
+      enum:
+      - RTP
     AccountList:
       title: Commercial Account List
       description: Accounts returned by API upon successful search
@@ -240,38 +272,6 @@ components:
         message:
           type: string
           description: End user displayable information which might help the customer diagnose an error
-    PaymentType:
-      title: Schema definition for payment type
-      description: TCH Payment type
-      type: string
-      enum:
-      - RTP
-    AccountType:
-      title: Account Type
-      description: Account type identified by the bank
-      type: string
-      enum:
-      - CHECKING
-      - SAVINGS
-  parameters:
-    FapiInteractionIdHeader:
-      name: x-fapi-interaction-id
-      in: header
-      description: Unique request Identifier
-      required: false
-      schema:
-        type: string
-      example: rrt-970585410023330903-b-gce-821-23397-1
-    AccountStatus:
-      name: status
-      in: query
-      description: Status of the account
-      example: OPEN
-      schema:
-        type: string
-        enum:
-        - OPEN
-        - CLOSED
   headers:
     x-fapi-interaction-id:
       description: Unique request identifier

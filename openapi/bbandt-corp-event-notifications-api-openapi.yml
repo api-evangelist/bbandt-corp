@@ -91,156 +91,57 @@ paths:
         '504':
           $ref: '#/components/responses/504'
 components:
-  schemas:
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
-      type: object
-      properties:
-        code:
-          type: string
-          description: Long term persistent identifier which can be used to trace error condition back to log information
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-    Notification:
-      title: Notification entity
-      description: Provides the base fields of a notification. Clients will read the `type` property to determine the expected notification payload
-      type: object
-      properties:
-        notificationId:
-          type: string
-          description: Id of notification
-          maxLength: 64
-        type:
-          $ref: '#/components/schemas/NotificationType'
-          description: Type of notification
-        sentOn:
-          $ref: '#/components/schemas/Timestamp'
-          description: Time notification was sent
-        category:
-          $ref: '#/components/schemas/NotificationCategory'
-          description: Category of notification
-        severity:
-          $ref: '#/components/schemas/NotificationSeverity'
-          description: Notification severity
-        priority:
-          $ref: '#/components/schemas/NotificationPriority'
-          description: Notification priority
-        publisher:
-          $ref: '#/components/schemas/Party'
-          description: Publisher of notification
-        notificationPayload:
-          $ref: '#/components/schemas/NotificationPayload'
-          description: Notification-specific key-value paired data
-      required:
-      - notificationId
-      - type
-      - sentOn
-      - category
-      - publisher
-      - notificationPayload
-    FiAttribute:
-      title: FI Attribute entity
-      description: Financial Institution provider-specific attribute
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of attribute, INITIATOR
-        value:
-          type: string
-          description: Value of attribute, INDIVIDUAL or DATA_RECIPIENT
-    PartyType:
-      title: Party Type
-      description: Identifies the type of a party
-      type: string
-      enum:
-      - DATA_RECIPIENT
-      - INDIVIDUAL
-    NotificationPayloadIdType:
-      title: Notification Payload Id Type
-      description: Type of entity causing origination of a notification
-      type: string
-      enum:
-      - CONSENT
-    Party:
-      title: Party entity
-      description: FDX Participant - an entity or person that is a part of a FDX API transaction
-      type: object
-      required:
-      - name
-      - type
-      properties:
-        name:
-          description: Human recognizable common name
-          type: string
-        type:
-          description: Extensible string enum identifying the type of the party
-          $ref: '#/components/schemas/PartyType'
-        registeredEntityId:
-          description: Registered id of party
-          type: string
-    NotificationPayload:
-      title: Notification Payload entity
-      description: Custom key-value pairs payload for a notification
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID for the origination entity related to the notification
-          maxLength: 64
-        idType:
-          $ref: '#/components/schemas/NotificationPayloadIdType'
-          description: Type of entity causing origination of the notification with the given ID
-        customFields:
-          $ref: '#/components/schemas/FiAttribute'
-          description: Custom key-value pairs for a notification
-    NotificationPriority:
-      title: Notification Priority
-      description: Priority of notification
-      type: string
-      enum:
-      - HIGH
-      - MEDIUM
-      - LOW
-    Timestamp:
-      title: Timestamp
-      description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
-      type: string
-      format: date-time
-      example: '2021-07-15T14:46:41.375Z'
-    FapiInteractionId:
-      title: FAPI Interaction ID
-      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
-      type: string
-      format: uuid
-      minLength: 36
-      maxLength: 36
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
-    NotificationType:
-      title: Notification Type
-      description: Type of notification
-      type: string
-      enum:
-      - CONSENT_REVOKED
-    NotificationSeverity:
-      title: Notification Severity
-      description: Severity level of notification
-      type: string
-      enum:
-      - EMERGENCY
-      - ALERT
-      - WARNING
-      - NOTICE
-      - INFO
-    NotificationCategory:
-      title: Notification Category
-      description: Category of Notification
-      type: string
-      enum:
-      - CONSENT
   responses:
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_BASICAUTHENTICATION_SOURCE:
+              value:
+                code: '603'
+                message: Authentication failed
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: 603-403
+                message: Data recipient connection does not include Event Notifications API
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
     '405':
       description: Client called an unimplemented REST method
       headers:
@@ -301,56 +202,155 @@ components:
               value:
                 code: '503'
                 message: An upstream server is unavailable
-    '401':
-      description: Unauthorized
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_BASICAUTHENTICATION_SOURCE:
-              value:
-                code: '603'
-                message: Authentication failed
-            NO_APIPRODUCT_MATCHFOUND:
-              value:
-                code: 603-403
-                message: Data recipient connection does not include Event Notifications API
-    '429':
-      description: Too Many Requests
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SPIKE_ARREST_VIOLATION:
-              value:
-                code: '1207'
-                message: Traffic spike, too many requests
-            QUOTA_VIOLATION:
-              value:
-                code: '1207'
-                message: Quota violation, too many requests
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: A time-out occurred connecting to an upstream server
+  schemas:
+    Party:
+      title: Party entity
+      description: FDX Participant - an entity or person that is a part of a FDX API transaction
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          description: Human recognizable common name
+          type: string
+        type:
+          description: Extensible string enum identifying the type of the party
+          $ref: '#/components/schemas/PartyType'
+        registeredEntityId:
+          description: Registered id of party
+          type: string
+    PartyType:
+      title: Party Type
+      description: Identifies the type of a party
+      type: string
+      enum:
+      - DATA_RECIPIENT
+      - INDIVIDUAL
+    NotificationSeverity:
+      title: Notification Severity
+      description: Severity level of notification
+      type: string
+      enum:
+      - EMERGENCY
+      - ALERT
+      - WARNING
+      - NOTICE
+      - INFO
+    Timestamp:
+      title: Timestamp
+      description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date-time
+      example: '2021-07-15T14:46:41.375Z'
+    Notification:
+      title: Notification entity
+      description: Provides the base fields of a notification. Clients will read the `type` property to determine the expected notification payload
+      type: object
+      properties:
+        notificationId:
+          type: string
+          description: Id of notification
+          maxLength: 64
+        type:
+          $ref: '#/components/schemas/NotificationType'
+          description: Type of notification
+        sentOn:
+          $ref: '#/components/schemas/Timestamp'
+          description: Time notification was sent
+        category:
+          $ref: '#/components/schemas/NotificationCategory'
+          description: Category of notification
+        severity:
+          $ref: '#/components/schemas/NotificationSeverity'
+          description: Notification severity
+        priority:
+          $ref: '#/components/schemas/NotificationPriority'
+          description: Notification priority
+        publisher:
+          $ref: '#/components/schemas/Party'
+          description: Publisher of notification
+        notificationPayload:
+          $ref: '#/components/schemas/NotificationPayload'
+          description: Notification-specific key-value paired data
+      required:
+      - notificationId
+      - type
+      - sentOn
+      - category
+      - publisher
+      - notificationPayload
+    NotificationType:
+      title: Notification Type
+      description: Type of notification
+      type: string
+      enum:
+      - CONSENT_REVOKED
+    NotificationPriority:
+      title: Notification Priority
+      description: Priority of notification
+      type: string
+      enum:
+      - HIGH
+      - MEDIUM
+      - LOW
+    NotificationCategory:
+      title: Notification Category
+      description: Category of Notification
+      type: string
+      enum:
+      - CONSENT
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
+      type: object
+      properties:
+        code:
+          type: string
+          description: Long term persistent identifier which can be used to trace error condition back to log information
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+    NotificationPayloadIdType:
+      title: Notification Payload Id Type
+      description: Type of entity causing origination of a notification
+      type: string
+      enum:
+      - CONSENT
+    FiAttribute:
+      title: FI Attribute entity
+      description: Financial Institution provider-specific attribute
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of attribute, INITIATOR
+        value:
+          type: string
+          description: Value of attribute, INDIVIDUAL or DATA_RECIPIENT
+    NotificationPayload:
+      title: Notification Payload entity
+      description: Custom key-value pairs payload for a notification
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID for the origination entity related to the notification
+          maxLength: 64
+        idType:
+          $ref: '#/components/schemas/NotificationPayloadIdType'
+          description: Type of entity causing origination of the notification with the given ID
+        customFields:
+          $ref: '#/components/schemas/FiAttribute'
+          description: Custom key-value pairs for a notification
   parameters:
     FapiInteractionIdHeader:
       name: x-fapi-interaction-id

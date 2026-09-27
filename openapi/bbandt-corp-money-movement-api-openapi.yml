@@ -77,48 +77,9 @@ paths:
       - OAuth:
         - PAYMENT_SUPPORT
 components:
-  schemas:
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
-      type: object
-      x-fdx-csdf-technical: true
-      properties:
-        code:
-          type: string
-          description: Error code defined by FDX API Specification or Data Provider indicating the error situation which has occurred
-          x-fdx-csdf-technical: true
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-          x-fdx-csdf-technical: true
-    PaymentNetworkIdentifierType:
-      title: Payment Network Identifier Type
-      description: "Enumerated values for type of account `identifier` used on a payment network.\n\n  | Value | Description |\n  |-------|-------------|\n  | ACCOUNT_NUMBER | The 'real' account number, which is sensitive data and should only be exchanged if encrypted |\n  | TOKENIZED_ACCOUNT_NUMBER | A token representation of an account number which Provider or Token Issuer can use to identify the real account |"
-      type: string
-      x-fdx-csdf-account-categories:
-      - REG_E
-      enum:
-      - ACCOUNT_NUMBER
-      - TOKENIZED_ACCOUNT_NUMBER
-    Identifier:
-      title: Identifier
-      description: Value for a unique identifier
-      type: string
-      maxLength: 256
-      x-fdx-csdf-account-categories:
-      - ANY
-    FapiInteractionId:
-      title: FAPI Interaction ID
-      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
-      type: string
-      format: uuid
-      minLength: 36
-      maxLength: 36
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
   responses:
-    '400':
-      description: Bad Request
+    '401':
+      description: Unauthorized
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -127,22 +88,60 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            ACCOUNTID_REQUIRED:
+            AUTHENTICATION_FAILED:
               value:
-                code: '401'
-                message: Account ID is required
-            FDX_API_DATA_RECIPIENT_ID_REQUIRED:
+                code: '603'
+                message: Authentication failed
+            NO_APIPRODUCT_MATCHFOUND:
               value:
-                code: '401'
-                message: Invalid input, FDX-API-Data-Recipient-Id is required
-            FDX_API_DATA_RECIPIENT_ID_INVALID:
+                code: 603-403
+                message: Data recipient connection does not include PAYMENT_SUPPORT
+    '422':
+      description: Unprocessable Entity
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCOUNT_TYPE:
               value:
-                code: '401'
-                message: Invalid input, FDX-API-Data-Recipient-Id does not match customer consent
-            IDENTIFIER_TYPES_INVALID:
+                code: '704'
+                message: Account type not supported for Payment Networks
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
               value:
-                code: '401'
-                message: Invalid Input - Query parameter 'identifierTypes' is invalid
+                code: '504'
+                message: A time-out occurred connecting to an upstream server
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Spike Arrest Violation
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota Violation
     '405':
       description: Client called an unimplemented REST method
       headers:
@@ -183,6 +182,32 @@ components:
               value:
                 code: '1001'
                 message: Data Recipient ID is not found
+    '400':
+      description: Bad Request
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ACCOUNTID_REQUIRED:
+              value:
+                code: '401'
+                message: Account ID is required
+            FDX_API_DATA_RECIPIENT_ID_REQUIRED:
+              value:
+                code: '401'
+                message: Invalid input, FDX-API-Data-Recipient-Id is required
+            FDX_API_DATA_RECIPIENT_ID_INVALID:
+              value:
+                code: '401'
+                message: Invalid input, FDX-API-Data-Recipient-Id does not match customer consent
+            IDENTIFIER_TYPES_INVALID:
+              value:
+                code: '401'
+                message: Invalid Input - Query parameter 'identifierTypes' is invalid
     '500':
       description: Internal Server Error
       headers:
@@ -197,66 +222,6 @@ components:
               value:
                 code: '500'
                 message: System down for maintenance
-    '422':
-      description: Unprocessable Entity
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_ACCOUNT_TYPE:
-              value:
-                code: '704'
-                message: Account type not supported for Payment Networks
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: An upstream server is unavailable
-    '401':
-      description: Unauthorized
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            AUTHENTICATION_FAILED:
-              value:
-                code: '603'
-                message: Authentication failed
-            NO_APIPRODUCT_MATCHFOUND:
-              value:
-                code: 603-403
-                message: Data recipient connection does not include PAYMENT_SUPPORT
-    '409':
-      description: Conflict
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            DATA_RECIPIENT_NOT_YET_INITIALIZED:
-              value:
-                code: '409'
-                message: Data Recipient not yet initialized for tokenized account numbers
     '403':
       description: Forbidden
       headers:
@@ -275,8 +240,8 @@ components:
               value:
                 code: '480'
                 message: Forbidden due to temporary suspension of Data Recipient connections
-    '429':
-      description: Too Many Requests
+    '409':
+      description: Conflict
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -285,16 +250,12 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            SPIKE_ARREST_VIOLATION:
+            DATA_RECIPIENT_NOT_YET_INITIALIZED:
               value:
-                code: '1207'
-                message: Spike Arrest Violation
-            QUOTA_VIOLATION:
-              value:
-                code: '1207'
-                message: Quota Violation
-    '504':
-      description: Service Timed out
+                code: '409'
+                message: Data Recipient not yet initialized for tokenized account numbers
+    '503':
+      description: Service unavailable / system down for maintenance
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -303,11 +264,66 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            GATEWAY_TIMEOUT:
+            SERVICE_UNAVAILABLE:
               value:
-                code: '504'
-                message: A time-out occurred connecting to an upstream server
+                code: '503'
+                message: An upstream server is unavailable
+  schemas:
+    PaymentNetworkIdentifierType:
+      title: Payment Network Identifier Type
+      description: "Enumerated values for type of account `identifier` used on a payment network.\n\n  | Value | Description |\n  |-------|-------------|\n  | ACCOUNT_NUMBER | The 'real' account number, which is sensitive data and should only be exchanged if encrypted |\n  | TOKENIZED_ACCOUNT_NUMBER | A token representation of an account number which Provider or Token Issuer can use to identify the real account |"
+      type: string
+      x-fdx-csdf-account-categories:
+      - REG_E
+      enum:
+      - ACCOUNT_NUMBER
+      - TOKENIZED_ACCOUNT_NUMBER
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+      x-fdx-csdf-account-categories:
+      - ANY
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        code:
+          type: string
+          description: Error code defined by FDX API Specification or Data Provider indicating the error situation which has occurred
+          x-fdx-csdf-technical: true
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+          x-fdx-csdf-technical: true
   parameters:
+    AccountIdPath:
+      name: accountId
+      in: path
+      description: Account Identifier
+      required: true
+      schema:
+        type: string
+      example: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
     IdentifierTypesQuery:
       name: identifierTypes
       in: query
@@ -319,14 +335,6 @@ components:
         type: array
         items:
           $ref: '#/components/schemas/PaymentNetworkIdentifierType'
-    FapiInteractionIdHeader:
-      name: x-fapi-interaction-id
-      in: header
-      description: Unique identifier for this interaction
-      schema:
-        $ref: '#/components/schemas/FapiInteractionId'
-      required: true
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
     FdxApiDataRecipientIdHeader:
       name: FDX-API-Data-Recipient-Id
       in: header
@@ -335,14 +343,6 @@ components:
         $ref: '#/components/schemas/Identifier'
         description: "If the FDX API service is being called by a Data Access Platform which supports multiple data recipients, the FDX API client must provide a header that identifies the calling data recipient. Data Recipient ID header values for Truist must correspond to\n  * `client_id` from dynamic client registration in the Truist data recipient registry"
       required: false
-    AccountIdPath:
-      name: accountId
-      in: path
-      description: Account Identifier
-      required: true
-      schema:
-        type: string
-      example: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
   headers:
     x-fapi-interaction-id:
       description: Unique request identifier
