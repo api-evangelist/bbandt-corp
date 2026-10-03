@@ -987,167 +987,60 @@ paths:
       - OAuth:
         - ACCOUNT_DETAILED
 components:
-  responses:
-    '401':
-      description: Unauthorized
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_ACCESS_TOKEN:
-              value:
-                code: '603'
-                message: Authentication failed
-            ACCESS_TOKEN_EXPIRED:
-              value:
-                code: '603'
-                message: Authentication failed
-            NO_APIPRODUCT_MATCHFOUND:
-              value:
-                code: '603'
-                message: Authentication failed
-            ACCESSTOKEN_NOT_APPROVED:
-              value:
-                code: '603'
-                message: Authentication failed
-            INVALID_BASICAUTHENTICATION_SOURCE:
-              value:
-                code: '603'
-                message: Authentication failed
-    '422':
-      description: Unprocessable Entity
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_ACCOUNT_TYPE:
-              value:
-                code: '704'
-                message: Account type not supported for Account Details
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: A time-out occurred connecting to an upstream server
-    '429':
-      description: Too Many Requests
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SPIKE_ARREST_VIOLATION:
-              value:
-                code: '1207'
-                message: Traffic spike, too many requests
-            QUOTA_VIOLATION:
-              value:
-                code: '1207'
-                message: Quota violation, too many requests
-    '405':
-      description: Client called an unimplemented REST method
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_METHOD:
-              value:
-                code: '1206'
-                message: Method Not Allowed
-    '404':
-      description: Not Found
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            RESOURCE_NOT_FOUND:
-              value:
-                code: '701'
-                message: URI does not represent a recognized resource
-            INVALID_ACCOUNT:
-              value:
-                code: '701'
-                message: Invalid account id
-            ACCOUNTID_NOT_FOUND:
-              value:
-                code: '701'
-                message: Account Id is required
-    '500':
-      description: Internal Server Error
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INTERNAL_SERVER_ERROR:
-              value:
-                code: '500'
-                message: System down for maintenance
-            SUBSYSTEM_UNAVAILABLE:
-              value:
-                code: '501'
-                message: System down for maintenance
-    '409':
-      description: Business error; returned from the backend
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: An upstream server is unavailable
   schemas:
-    LocAccount:
-      title: Line-Of-Credit Account entity
-      description: A line-of-credit account
+    BalanceType:
+      title: Balance Type
+      description: "Type of balance\n  * 'ASSET': Positive transaction amount increases balance\n  * 'LIABILITY': Positive transaction amount decreases balance"
+      type: string
+      x-fdx-csdf-account-categories:
+      - ANY
+      enum:
+      - ASSET
+      - LIABILITY
+    PaymentFrequency:
+      title: Payment Frequency
+      description: The frequency of payments.
+      type: string
+      enum:
+      - ANNUALLY
+      - BIWEEKLY
+      - DAILY
+      - MONTHLY
+      - SEMIANNUALLY
+      - SEMIMONTHLY
+      - WEEKLY
+    AccountContact:
+      title: Account Contact entity
+      description: Contact information for the account
       type: object
       x-fdx-csdf-account-categories:
-      - REG_Z
+      - ANY
+      properties:
+        holders:
+          type: array
+          x-fdx-csdf-account-categories:
+          - ANY
+          items:
+            $ref: '#/components/schemas/AccountHolder'
+          description: Owners of the account
+    PositionType:
+      title: Position Type
+      description: The type of an investment position
+      type: string
+      enum:
+      - LONG
+      - SHORT
+    InvestmentBalanceType:
+      title: Investment Balance Type
+      description: The type of an investment balance
+      type: string
+      enum:
+      - AMOUNT
+      - PERCENTAGE
+    LoanAccount:
+      title: Loan Account entity
+      description: A loan account type
+      type: object
       allOf:
       - $ref: '#/components/schemas/Account'
       - type: object
@@ -1155,126 +1048,89 @@ components:
           balanceAsOf:
             $ref: '#/components/schemas/Timestamp'
             description: As-of date for balances
-            x-fdx-csdf-account-categories:
-            - REG_Z
+          currentBalance:
+            type: number
+            description: Balance of funds in account
           availableBalance:
             type: number
             description: Balance of funds available for use
-          creditLine:
+          principalBalance:
             type: number
-            description: Credit limit
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          availableCredit:
+            description: Principal balance of loan
+          escrowBalance:
             type: number
-            description: Available credit
-            x-fdx-csdf-account-categories:
-            - REG_Z
+            description: Escrow balance of loan
+          originalPrincipal:
+            type: number
+            description: Original principal of loan
+          originatingDate:
+            $ref: '#/components/schemas/DateString'
+            description: Loan origination date
+          loanTerm:
+            type: integer
+            description: Term of loan in months
+          totalNumberOfPayments:
+            type: integer
+            description: Total number of payments
           nextPaymentAmount:
             type: number
             description: Amount of next payment
-          currentBalance:
-            type: number
-            description: Current balance of the line of credit
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          minimumPaymentAmount:
-            type: number
-            description: Minimum payment amount
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          lastPaymentAmount:
-            type: number
-            description: Last payment amount
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          lastPaymentDate:
+          nextPaymentDate:
             $ref: '#/components/schemas/DateString'
-            description: Last payment date
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          pastDueAmount:
-            type: number
-            description: Past Due Amount
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          lastStmtBalance:
-            type: number
-            description: Last Statement Balance
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          lastStmtDate:
-            $ref: '#/components/schemas/DateString'
-            description: Last Statement Date
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          purchasesApr:
-            type: number
-            description: Annual Percentage Rate for purchases
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          advancesApr:
-            type: number
-            description: Annual Percentage Rate for cash advances
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          transfersApr:
-            type: number
-            description: Annual Percentage Rate for balance transfers
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          cashAdvanceLimit:
-            type: number
-            description: Cash advance limit
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          availableCash:
-            type: number
-            description: Available cash
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          financeCharges:
-            type: number
-            description: Finance charges
-            x-fdx-csdf-account-categories:
-            - REG_Z
-          cardNetwork:
-            type: string
-            description: Card network, e.g. 'VISA', 'MASTERCARD', 'AMERICAN_EXPRESS', 'DISCOVER', 'INTERLINK', 'STAR' etc.
-            x-fdx-csdf-account-categories:
-            - REG_Z
+            description: Date of next payment
+          paymentFrequency:
+            $ref: '#/components/schemas/PaymentFrequency'
+            description: DAILY, WEEKLY, BIWEEKLY, SEMIMONTHLY, MONTHLY, SEMIANNUALLY, ANNUALLY
+          compoundingPeriod:
+            $ref: '#/components/schemas/CompoundingPeriod'
+            description: DAILY, WEEKLY, BIWEEKLY, SEMIMONTHLY, MONTHLY, SEMIANNUALLY, ANNUALLY
           payOffAmount:
             type: number
             description: Payoff amount
+          lastPaymentAmount:
+            type: number
+            description: Last payment amount
+          lastPaymentDate:
+            $ref: '#/components/schemas/DateString'
+            description: Last payment date
           maturityDate:
             $ref: '#/components/schemas/DateString'
             description: Maturity date
           interestPaidYearToDate:
             type: number
             description: Interest paid year to date
-          originalPrincipal:
-            type: number
-            description: Original principal of loan
-          originatingDate:
-            $ref: '#/components/schemas/DateString'
-    SecurityCategory:
-      title: Security Category
-      description: The type of security
-      type: string
-      enum:
-      - DEBT_SECURITY
-    AccountHolder:
-      title: Account Holder entity
-      description: Defines the account holder's relationship with an account.
-      type: object
+    AccountType:
+      title: Account Type
       x-fdx-csdf-account-categories:
       - ANY
+      description: "The type of an account.\n  | Value | Description |\n  |-----|-----|\n  | BROKERAGEPRODUCT | Investment management offered by a licensed brokerage firm that places trades on behalf of the customer, utilizing any number of investment options |\n  | CD | A certificate of deposit (CD) is a product offered by banks and credit unions that provides an interest rate premium in exchange for the customer agreeing to leave a lump-sum deposit untouched for a predetermined period of time |\n  | CHECKING | A deposit account held at a financial institution that allows withdrawals and deposits |\n  | COMMERCIALLOAN | A preset borrowing limit that can be used at any time |\n  | CREDITCARD | Allows cardholders to borrow funds with which to pay for goods and services with merchants that accept cards for payment |\n  | IRA | An individual retirement account (IRA) is a tax-advantaged account that individuals use to save and invest for retirement |\n  | LINEOFCREDIT | A credit facility extended by a bank or other financial institution to a government, business or individual customer that enables the customer to draw on the facility when the customer needs funds |\n  | MORTGAGE | A type of loan you can use to buy or refinance a home |\n  | PERSONALLOAN | A type of debt that is not protected by a guarantor, or collateralized by a lien on specific assets of the borrower |\n  | SAVINGS | An interest-bearing deposit account held at a bank or other financial institution |\n  | TRUST | A type of financial account that is opened by an individual and managed by a designated trustee for the benefit of a third party in accordance with agreed-upon terms |"
+      type: string
+      enum:
+      - BROKERAGEPRODUCT
+      - CD
+      - CHECKING
+      - COMMERCIALLOAN
+      - CREDITCARD
+      - IRA
+      - LINEOFCREDIT
+      - MORTGAGE
+      - PERSONALLOAN
+      - SAVINGS
+      - TRUST
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      x-fdx-csdf-technical: true
       properties:
-        relationship:
-          $ref: '#/components/schemas/AccountHolderRelationship'
-          description: Customer's relationship to the account
-          x-fdx-csdf-account-categories:
-          - ANY
+        code:
+          type: string
+          description: Error code defined by FDX API Specification or Data Provider indicating the error situation which has occurred
+          x-fdx-csdf-technical: true
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+          x-fdx-csdf-technical: true
     AccountDescriptor:
       title: Account Descriptor entity
       description: This descriptor provides minimal information about the account for use in lightweight arrays
@@ -1339,134 +1195,6 @@ components:
             $ref: '#/components/schemas/FiAttribute'
           x-fdx-csdf-account-categories:
           - ANY
-    PositionType:
-      title: Position Type
-      description: The type of an investment position
-      type: string
-      enum:
-      - LONG
-      - SHORT
-    AccountWithDetails:
-      title: Account With Details entity
-      description: This provides an instance of an account with full details
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      oneOf:
-      - type: object
-        properties:
-          depositAccount:
-            $ref: '#/components/schemas/DepositAccount'
-            description: A deposit account
-            x-fdx-csdf-account-categories:
-            - REG_E
-      - type: object
-        properties:
-          investmentAccount:
-            $ref: '#/components/schemas/InvestmentAccount'
-            description: An investment account
-      - type: object
-        properties:
-          locAccount:
-            $ref: '#/components/schemas/LocAccount'
-            description: A line-of-credit account
-            x-fdx-csdf-account-categories:
-            - REG_Z
-      - type: object
-        properties:
-          loanAccount:
-            $ref: '#/components/schemas/LoanAccount'
-            description: A loan account
-    InvestmentBalanceType:
-      title: Investment Balance Type
-      description: The type of an investment balance
-      type: string
-      enum:
-      - AMOUNT
-      - PERCENTAGE
-    DebtClass:
-      title: Debt Class
-      description: The classification of a debt instrument
-      type: string
-      enum:
-      - CORPORATE
-      - MUNICIPAL
-      - OTHER
-      - TREASURY
-    AccountStatus:
-      title: Account Status
-      description: The status of an account
-      type: string
-      x-fdx-csdf-account-categories:
-      - ANY
-      enum:
-      - CLOSED
-      - OPEN
-    Security:
-      title: Security entity
-      description: A base Security entity which defines the type of this security
-      type: object
-      properties:
-        securityCategory:
-          $ref: '#/components/schemas/SecurityCategory'
-          description: The main type of this Security
-    DebtType:
-      title: Debt Type
-      description: The type of a debt instrument
-      type: string
-      enum:
-      - COUPON
-      - ZERO
-    ResultType:
-      title: Result Type
-      description: Flag to indicate if you want a lightweight array of metadata (AccountDescriptor or Tax or Operations) or full item details (Account or a Tax subclass or Availability details). If set to 'lightweight', should only return the fields associated with the metadata entity.
-      type: string
-      enum:
-      - lightweight
-      - details
-      default: lightweight
-    DateString:
-      title: Date String
-      description: ISO 8601 full-date in format 'YYYY-MM-DD' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
-      type: string
-      format: date
-      maxLength: 10
-      example: '2021-07-15'
-      x-fdx-csdf-account-categories:
-      - ANY
-    AccountType:
-      title: Account Type
-      x-fdx-csdf-account-categories:
-      - ANY
-      description: "The type of an account.\n  | Value | Description |\n  |-----|-----|\n  | BROKERAGEPRODUCT | Investment management offered by a licensed brokerage firm that places trades on behalf of the customer, utilizing any number of investment options |\n  | CD | A certificate of deposit (CD) is a product offered by banks and credit unions that provides an interest rate premium in exchange for the customer agreeing to leave a lump-sum deposit untouched for a predetermined period of time |\n  | CHECKING | A deposit account held at a financial institution that allows withdrawals and deposits |\n  | COMMERCIALLOAN | A preset borrowing limit that can be used at any time |\n  | CREDITCARD | Allows cardholders to borrow funds with which to pay for goods and services with merchants that accept cards for payment |\n  | IRA | An individual retirement account (IRA) is a tax-advantaged account that individuals use to save and invest for retirement |\n  | LINEOFCREDIT | A credit facility extended by a bank or other financial institution to a government, business or individual customer that enables the customer to draw on the facility when the customer needs funds |\n  | MORTGAGE | A type of loan you can use to buy or refinance a home |\n  | PERSONALLOAN | A type of debt that is not protected by a guarantor, or collateralized by a lien on specific assets of the borrower |\n  | SAVINGS | An interest-bearing deposit account held at a bank or other financial institution |\n  | TRUST | A type of financial account that is opened by an individual and managed by a designated trustee for the benefit of a third party in accordance with agreed-upon terms |"
-      type: string
-      enum:
-      - BROKERAGEPRODUCT
-      - CD
-      - CHECKING
-      - COMMERCIALLOAN
-      - CREDITCARD
-      - IRA
-      - LINEOFCREDIT
-      - MORTGAGE
-      - PERSONALLOAN
-      - SAVINGS
-      - TRUST
-    Identifier:
-      title: Identifier
-      description: Value for a unique identifier
-      type: string
-      maxLength: 256
-      x-fdx-csdf-account-categories:
-      - ANY
-    Timestamp:
-      title: Timestamp
-      description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
-      type: string
-      format: date-time
-      example: '2021-07-15T14:46:41.375Z'
-      x-fdx-csdf-account-categories:
-      - ANY
     Iso4217Code:
       title: ISO 4217 Code
       description: Currency, fund and precious metal codes effective from May 12, 2025 and ISO 4217 amendment 179 per [ISO 4217 Currency Code Maintenance](https://www.six-group.com/en/products-services/financial-information/data-standards.html)
@@ -1657,352 +1385,6 @@ components:
       - ZMW
       - ZWG
       - ZWL
-    Currency:
-      title: Currency entity
-      description: Represents an international currency
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      properties:
-        currencyCode:
-          $ref: '#/components/schemas/Iso4217Code'
-          description: ISO 4217 currency code
-          x-fdx-csdf-account-categories:
-          - ANY
-    CompoundingPeriod:
-      title: Compounding Period
-      description: Interest compounding Period
-      type: string
-      x-fdx-csdf-account-categories:
-      - ANY
-      enum:
-      - ANNUALLY
-      - BIWEEKLY
-      - DAILY
-      - MONTHLY
-      - SEMIANNUALLY
-      - SEMIMONTHLY
-      - WEEKLY
-    FapiInteractionId:
-      title: FAPI Interaction ID
-      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
-      type: string
-      format: uuid
-      minLength: 36
-      maxLength: 36
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses
-      type: object
-      x-fdx-csdf-technical: true
-      properties:
-        code:
-          type: string
-          description: Error code defined by FDX API Specification or Data Provider indicating the error situation which has occurred
-          x-fdx-csdf-technical: true
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-          x-fdx-csdf-technical: true
-    LoanAccount:
-      title: Loan Account entity
-      description: A loan account type
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Account'
-      - type: object
-        properties:
-          balanceAsOf:
-            $ref: '#/components/schemas/Timestamp'
-            description: As-of date for balances
-          currentBalance:
-            type: number
-            description: Balance of funds in account
-          availableBalance:
-            type: number
-            description: Balance of funds available for use
-          principalBalance:
-            type: number
-            description: Principal balance of loan
-          escrowBalance:
-            type: number
-            description: Escrow balance of loan
-          originalPrincipal:
-            type: number
-            description: Original principal of loan
-          originatingDate:
-            $ref: '#/components/schemas/DateString'
-            description: Loan origination date
-          loanTerm:
-            type: integer
-            description: Term of loan in months
-          totalNumberOfPayments:
-            type: integer
-            description: Total number of payments
-          nextPaymentAmount:
-            type: number
-            description: Amount of next payment
-          nextPaymentDate:
-            $ref: '#/components/schemas/DateString'
-            description: Date of next payment
-          paymentFrequency:
-            $ref: '#/components/schemas/PaymentFrequency'
-            description: DAILY, WEEKLY, BIWEEKLY, SEMIMONTHLY, MONTHLY, SEMIANNUALLY, ANNUALLY
-          compoundingPeriod:
-            $ref: '#/components/schemas/CompoundingPeriod'
-            description: DAILY, WEEKLY, BIWEEKLY, SEMIMONTHLY, MONTHLY, SEMIANNUALLY, ANNUALLY
-          payOffAmount:
-            type: number
-            description: Payoff amount
-          lastPaymentAmount:
-            type: number
-            description: Last payment amount
-          lastPaymentDate:
-            $ref: '#/components/schemas/DateString'
-            description: Last payment date
-          maturityDate:
-            $ref: '#/components/schemas/DateString'
-            description: Maturity date
-          interestPaidYearToDate:
-            type: number
-            description: Interest paid year to date
-    InvestmentAccount:
-      title: Investment Account entity
-      description: An investment account type and information such as balances, transactions, holdings and privileges
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Account'
-      - type: object
-        properties:
-          balanceAsOf:
-            description: As-of date for balances
-            $ref: '#/components/schemas/Timestamp'
-          currentBalance:
-            type: number
-            description: Balance of funds in account
-          availableBalance:
-            type: number
-            description: Balance of funds available for use
-          currentValue:
-            type: number
-            description: Total current value of all investments
-          holdings:
-            type: array
-            description: Holdings in the investment account
-            items:
-              $ref: '#/components/schemas/Holding'
-          availableCashBalance:
-            description: Cash balance across all sub-accounts. Should include sweep funds
-            type: number
-          balanceList:
-            type: array
-            description: List of balances. Aggregate of name value pairs
-            items:
-              $ref: '#/components/schemas/InvestmentBalance'
-          interestYtd:
-            type: number
-            description: YTD Interest
-          maturityDate:
-            $ref: '#/components/schemas/DateString'
-            description: Maturity date
-    AccountHolderRelationship:
-      title: Account Holder Relationship
-      description: Types of relationships between accounts and holders
-      type: string
-      x-fdx-csdf-account-categories:
-      - ANY
-      enum:
-      - AUTHORIZED_USER
-      - BUSINESS
-      - POWER_OF_ATTORNEY
-      - PRIMARY
-      - PRIMARY_JOINT
-      - PRIMARY_JOINT_TENANTS
-      - SECONDARY
-      - TRUSTEE
-    BalanceType:
-      title: Balance Type
-      description: "Type of balance\n  * 'ASSET': Positive transaction amount increases balance\n  * 'LIABILITY': Positive transaction amount decreases balance"
-      type: string
-      x-fdx-csdf-account-categories:
-      - ANY
-      enum:
-      - ASSET
-      - LIABILITY
-    PaymentFrequency:
-      title: Payment Frequency
-      description: The frequency of payments.
-      type: string
-      enum:
-      - ANNUALLY
-      - BIWEEKLY
-      - DAILY
-      - MONTHLY
-      - SEMIANNUALLY
-      - SEMIMONTHLY
-      - WEEKLY
-    AccountContact:
-      title: Account Contact entity
-      description: Contact information for the account
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      properties:
-        holders:
-          type: array
-          x-fdx-csdf-account-categories:
-          - ANY
-          items:
-            $ref: '#/components/schemas/AccountHolder'
-          description: Owners of the account
-    FiAttribute:
-      title: FI Attribute entity
-      description: Financial Institution provider-specific attribute
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      properties:
-        name:
-          type: string
-          description: Name of attribute
-          x-fdx-csdf-account-categories:
-          - ANY
-        value:
-          type: string
-          description: Value of attribute
-          x-fdx-csdf-account-categories:
-          - ANY
-    Holding:
-      title: Holding entity
-      description: A holding in an investment account
-      type: object
-      properties:
-        holdingId:
-          type: string
-          description: Currently the CUSIP id for the holding. May not be a unique value across the account's holdings
-        securityId:
-          type: string
-          description: Unique identifier of security
-        holdingName:
-          type: string
-          description: Holding name or security name
-        holdingType:
-          $ref: '#/components/schemas/HoldingType'
-          description: ANNUITY, BOND, CD, DEBT, DIGITALASSET, MUTUALFUND, OPTION, OTHER, STOCK
-        positionType:
-          $ref: '#/components/schemas/PositionType'
-          description: LONG, SHORT
-        description:
-          type: string
-          description: The description of the holding
-        symbol:
-          type: string
-          description: Ticker / Market symbol
-        purchasedPrice:
-          type: number
-          description: Price of holding at the time of purchase
-        currentUnitPrice:
-          type: number
-          description: Current unit price
-        currentUnitPriceDate:
-          type: number
-          description: Current unit price as of date
-        units:
-          type: number
-          description: Required for stock, mutual funds. Number of shares (with decimals)
-        taxLots:
-          type: array
-          description: Breakdown by tax lot
-          items:
-            $ref: '#/components/schemas/TaxLot'
-        debtSecurity:
-          $ref: '#/components/schemas/DebtSecurity'
-          description: A debt security
-        currency:
-          $ref: '#/components/schemas/Currency'
-          description: Currency information if it is different from Account entity
-        marketValue:
-          type: number
-          description: Market value at the time of data retrieved
-    TaxLot:
-      title: Tax Lot entity
-      description: Block of securities receiving the same tax treatment
-      type: object
-      properties:
-        originalPurchaseDate:
-          $ref: '#/components/schemas/DateString'
-          description: Lot acquired date
-        quantity:
-          type: number
-          description: Lot quantity
-        purchasedPrice:
-          type: number
-          description: Original purchase price
-        costBasis:
-          type: number
-          description: Total amount of money spent acquiring this lot including any fees or commission expenses incurred
-        currentValue:
-          type: number
-          description: Lot market value
-        positionType:
-          $ref: '#/components/schemas/PositionType'
-          description: LONG, SHORT
-    AccountCategory:
-      title: Account Category type
-      description: The category of account
-      type: string
-      x-fdx-csdf-account-categories:
-      - ANY
-      enum:
-      - DEPOSIT_ACCOUNT
-      - INVESTMENT_ACCOUNT
-      - LOAN_ACCOUNT
-      - LOC_ACCOUNT
-    AccountBillPayStatus:
-      title: Account Bill Pay Status
-      description: "Indicates bill pay capabilities for an account.\n  * `ACTIVE`: Can be used for bill payment\n  * `AVAILABLE`: Account can be requested for bill payment\n  * `NOT_AVAILABLE`: Account cannot participate in bill payment\n  * `PENDING`: Account requested for bill payment, but not available yet"
-      type: string
-      x-fdx-csdf-account-categories:
-      - REG_E
-      enum:
-      - ACTIVE
-      - AVAILABLE
-      - NOT_AVAILABLE
-      - PENDING
-    HoldingType:
-      title: Holding Type
-      description: "The type of an investment holding\n\n  | Value | Description |\n  |-----|-----|\n  | ANNUITY | Financial product that pays out a fixed stream of payments |\n  | BOND | Debt security as a loan to a government, agency or company, repaid with interest |\n  | CD | Certificate of Deposit, a savings account with a fixed rate and term |\n  | DEBT | Any type of security that must be paid back in full along with interest |\n  | DIGITALASSET | Digital representation of an asset or right that is stored and transferred on a digital network such as the internet or a blockchain |\n  | MUTUALFUND | Pooled collection of assets invested in stocks, bonds, and other securities |\n  | OPTION | The right to buy a specific number of stock shares at a pre-set price |\n  | OTHER | Another type of holding not listed here |\n  | STOCK | A share in the ownership of a company |"
-      type: string
-      enum:
-      - ANNUITY
-      - BOND
-      - CD
-      - DEBT
-      - DIGITALASSET
-      - MUTUALFUND
-      - OPTION
-      - OTHER
-      - STOCK
-    ActorType:
-      title: FDX API Actor Type
-      description: Indicates whether a customer is present and has requested the operation (USER), or if a batch job has requested the operation (BATCH)
-      type: string
-      enum:
-      - BATCH
-      - USER
-    Accounts:
-      title: Accounts entity
-      description: An optionally paginated array of accounts
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      properties:
-        accounts:
-          type: array
-          description: 'An array of accounts with entity types dependent on the account type (deposit, investment, loan or line of credit) x-fdx-csdf-account-categories: [ANY]'
-          items:
-            $ref: '#/components/schemas/AccountWithDetails'
     InvestmentBalance:
       title: Investment Balance entity
       description: A point-in-time balance of the investment account
@@ -2026,6 +1408,60 @@ components:
         currency:
           $ref: '#/components/schemas/Currency'
           description: Currency if different from that of account
+    FiAttribute:
+      title: FI Attribute entity
+      description: Financial Institution provider-specific attribute
+      type: object
+      x-fdx-csdf-account-categories:
+      - ANY
+      properties:
+        name:
+          type: string
+          description: Name of attribute
+          x-fdx-csdf-account-categories:
+          - ANY
+        value:
+          type: string
+          description: Value of attribute
+          x-fdx-csdf-account-categories:
+          - ANY
+    CompoundingPeriod:
+      title: Compounding Period
+      description: Interest compounding Period
+      type: string
+      x-fdx-csdf-account-categories:
+      - ANY
+      enum:
+      - ANNUALLY
+      - BIWEEKLY
+      - DAILY
+      - MONTHLY
+      - SEMIANNUALLY
+      - SEMIMONTHLY
+      - WEEKLY
+    TaxLot:
+      title: Tax Lot entity
+      description: Block of securities receiving the same tax treatment
+      type: object
+      properties:
+        originalPurchaseDate:
+          $ref: '#/components/schemas/DateString'
+          description: Lot acquired date
+        quantity:
+          type: number
+          description: Lot quantity
+        purchasedPrice:
+          type: number
+          description: Original purchase price
+        costBasis:
+          type: number
+          description: Total amount of money spent acquiring this lot including any fees or commission expenses incurred
+        currentValue:
+          type: number
+          description: Lot market value
+        positionType:
+          $ref: '#/components/schemas/PositionType'
+          description: LONG, SHORT
     DebtSecurity:
       title: Debt Security entity
       description: An investment in a debt security
@@ -2049,6 +1485,32 @@ components:
           bondMaturityDate:
             $ref: '#/components/schemas/DateString'
             description: Bond maturity date
+    AccountBillPayStatus:
+      title: Account Bill Pay Status
+      description: "Indicates bill pay capabilities for an account.\n  * `ACTIVE`: Can be used for bill payment\n  * `AVAILABLE`: Account can be requested for bill payment\n  * `NOT_AVAILABLE`: Account cannot participate in bill payment\n  * `PENDING`: Account requested for bill payment, but not available yet"
+      type: string
+      x-fdx-csdf-account-categories:
+      - REG_E
+      enum:
+      - ACTIVE
+      - AVAILABLE
+      - NOT_AVAILABLE
+      - PENDING
+    AccountHolderRelationship:
+      title: Account Holder Relationship
+      description: Types of relationships between accounts and holders
+      type: string
+      x-fdx-csdf-account-categories:
+      - ANY
+      enum:
+      - AUTHORIZED_USER
+      - BUSINESS
+      - POWER_OF_ATTORNEY
+      - PRIMARY
+      - PRIMARY_JOINT
+      - PRIMARY_JOINT_TENANTS
+      - SECONDARY
+      - TRUSTEE
     DepositAccount:
       title: Deposit Account entity
       description: Information for a deposit account type
@@ -2094,6 +1556,15 @@ components:
             description: Maturity date for CDs
             x-fdx-csdf-account-categories:
             - REG_E
+    DebtClass:
+      title: Debt Class
+      description: The classification of a debt instrument
+      type: string
+      enum:
+      - CORPORATE
+      - MUNICIPAL
+      - OTHER
+      - TREASURY
     Account:
       title: Account entity
       description: An abstract account entity that concrete account entities extend
@@ -2147,7 +1618,389 @@ components:
             description: Date that last transaction occurred on account
             x-fdx-csdf-account-categories:
             - ANY
+    HoldingType:
+      title: Holding Type
+      description: "The type of an investment holding\n\n  | Value | Description |\n  |-----|-----|\n  | ANNUITY | Financial product that pays out a fixed stream of payments |\n  | BOND | Debt security as a loan to a government, agency or company, repaid with interest |\n  | CD | Certificate of Deposit, a savings account with a fixed rate and term |\n  | DEBT | Any type of security that must be paid back in full along with interest |\n  | DIGITALASSET | Digital representation of an asset or right that is stored and transferred on a digital network such as the internet or a blockchain |\n  | MUTUALFUND | Pooled collection of assets invested in stocks, bonds, and other securities |\n  | OPTION | The right to buy a specific number of stock shares at a pre-set price |\n  | OTHER | Another type of holding not listed here |\n  | STOCK | A share in the ownership of a company |"
+      type: string
+      enum:
+      - ANNUITY
+      - BOND
+      - CD
+      - DEBT
+      - DIGITALASSET
+      - MUTUALFUND
+      - OPTION
+      - OTHER
+      - STOCK
+    Timestamp:
+      title: Timestamp
+      description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date-time
+      example: '2021-07-15T14:46:41.375Z'
+      x-fdx-csdf-account-categories:
+      - ANY
+    Accounts:
+      title: Accounts entity
+      description: An optionally paginated array of accounts
+      type: object
+      x-fdx-csdf-account-categories:
+      - ANY
+      properties:
+        accounts:
+          type: array
+          description: 'An array of accounts with entity types dependent on the account type (deposit, investment, loan or line of credit) x-fdx-csdf-account-categories: [ANY]'
+          items:
+            $ref: '#/components/schemas/AccountWithDetails'
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+      x-fdx-csdf-account-categories:
+      - ANY
+    InvestmentAccount:
+      title: Investment Account entity
+      description: An investment account type and information such as balances, transactions, holdings and privileges
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Account'
+      - type: object
+        properties:
+          balanceAsOf:
+            description: As-of date for balances
+            $ref: '#/components/schemas/Timestamp'
+          currentBalance:
+            type: number
+            description: Balance of funds in account
+          availableBalance:
+            type: number
+            description: Balance of funds available for use
+          currentValue:
+            type: number
+            description: Total current value of all investments
+          holdings:
+            type: array
+            description: Holdings in the investment account
+            items:
+              $ref: '#/components/schemas/Holding'
+          availableCashBalance:
+            description: Cash balance across all sub-accounts. Should include sweep funds
+            type: number
+          balanceList:
+            type: array
+            description: List of balances. Aggregate of name value pairs
+            items:
+              $ref: '#/components/schemas/InvestmentBalance'
+          interestYtd:
+            type: number
+            description: YTD Interest
+          maturityDate:
+            $ref: '#/components/schemas/DateString'
+            description: Maturity date
+    AccountStatus:
+      title: Account Status
+      description: The status of an account
+      type: string
+      x-fdx-csdf-account-categories:
+      - ANY
+      enum:
+      - CLOSED
+      - OPEN
+    DebtType:
+      title: Debt Type
+      description: The type of a debt instrument
+      type: string
+      enum:
+      - COUPON
+      - ZERO
+    ResultType:
+      title: Result Type
+      description: Flag to indicate if you want a lightweight array of metadata (AccountDescriptor or Tax or Operations) or full item details (Account or a Tax subclass or Availability details). If set to 'lightweight', should only return the fields associated with the metadata entity.
+      type: string
+      enum:
+      - lightweight
+      - details
+      default: lightweight
+    LocAccount:
+      title: Line-Of-Credit Account entity
+      description: A line-of-credit account
+      type: object
+      x-fdx-csdf-account-categories:
+      - REG_Z
+      allOf:
+      - $ref: '#/components/schemas/Account'
+      - type: object
+        properties:
+          balanceAsOf:
+            $ref: '#/components/schemas/Timestamp'
+            description: As-of date for balances
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          availableBalance:
+            type: number
+            description: Balance of funds available for use
+          creditLine:
+            type: number
+            description: Credit limit
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          availableCredit:
+            type: number
+            description: Available credit
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          nextPaymentAmount:
+            type: number
+            description: Amount of next payment
+          currentBalance:
+            type: number
+            description: Current balance of the line of credit
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          minimumPaymentAmount:
+            type: number
+            description: Minimum payment amount
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          lastPaymentAmount:
+            type: number
+            description: Last payment amount
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          lastPaymentDate:
+            $ref: '#/components/schemas/DateString'
+            description: Last payment date
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          pastDueAmount:
+            type: number
+            description: Past Due Amount
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          lastStmtBalance:
+            type: number
+            description: Last Statement Balance
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          lastStmtDate:
+            $ref: '#/components/schemas/DateString'
+            description: Last Statement Date
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          purchasesApr:
+            type: number
+            description: Annual Percentage Rate for purchases
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          advancesApr:
+            type: number
+            description: Annual Percentage Rate for cash advances
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          transfersApr:
+            type: number
+            description: Annual Percentage Rate for balance transfers
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          cashAdvanceLimit:
+            type: number
+            description: Cash advance limit
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          availableCash:
+            type: number
+            description: Available cash
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          financeCharges:
+            type: number
+            description: Finance charges
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          cardNetwork:
+            type: string
+            description: Card network, e.g. 'VISA', 'MASTERCARD', 'AMERICAN_EXPRESS', 'DISCOVER', 'INTERLINK', 'STAR' etc.
+            x-fdx-csdf-account-categories:
+            - REG_Z
+          payOffAmount:
+            type: number
+            description: Payoff amount
+          maturityDate:
+            $ref: '#/components/schemas/DateString'
+            description: Maturity date
+          interestPaidYearToDate:
+            type: number
+            description: Interest paid year to date
+          originalPrincipal:
+            type: number
+            description: Original principal of loan
+          originatingDate:
+            $ref: '#/components/schemas/DateString'
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    Security:
+      title: Security entity
+      description: A base Security entity which defines the type of this security
+      type: object
+      properties:
+        securityCategory:
+          $ref: '#/components/schemas/SecurityCategory'
+          description: The main type of this Security
+    Holding:
+      title: Holding entity
+      description: A holding in an investment account
+      type: object
+      properties:
+        holdingId:
+          type: string
+          description: Currently the CUSIP id for the holding. May not be a unique value across the account's holdings
+        securityId:
+          type: string
+          description: Unique identifier of security
+        holdingName:
+          type: string
+          description: Holding name or security name
+        holdingType:
+          $ref: '#/components/schemas/HoldingType'
+          description: ANNUITY, BOND, CD, DEBT, DIGITALASSET, MUTUALFUND, OPTION, OTHER, STOCK
+        positionType:
+          $ref: '#/components/schemas/PositionType'
+          description: LONG, SHORT
+        description:
+          type: string
+          description: The description of the holding
+        symbol:
+          type: string
+          description: Ticker / Market symbol
+        purchasedPrice:
+          type: number
+          description: Price of holding at the time of purchase
+        currentUnitPrice:
+          type: number
+          description: Current unit price
+        currentUnitPriceDate:
+          type: number
+          description: Current unit price as of date
+        units:
+          type: number
+          description: Required for stock, mutual funds. Number of shares (with decimals)
+        taxLots:
+          type: array
+          description: Breakdown by tax lot
+          items:
+            $ref: '#/components/schemas/TaxLot'
+        debtSecurity:
+          $ref: '#/components/schemas/DebtSecurity'
+          description: A debt security
+        currency:
+          $ref: '#/components/schemas/Currency'
+          description: Currency information if it is different from Account entity
+        marketValue:
+          type: number
+          description: Market value at the time of data retrieved
+    SecurityCategory:
+      title: Security Category
+      description: The type of security
+      type: string
+      enum:
+      - DEBT_SECURITY
+    ActorType:
+      title: FDX API Actor Type
+      description: Indicates whether a customer is present and has requested the operation (USER), or if a batch job has requested the operation (BATCH)
+      type: string
+      enum:
+      - BATCH
+      - USER
+    AccountCategory:
+      title: Account Category type
+      description: The category of account
+      type: string
+      x-fdx-csdf-account-categories:
+      - ANY
+      enum:
+      - DEPOSIT_ACCOUNT
+      - INVESTMENT_ACCOUNT
+      - LOAN_ACCOUNT
+      - LOC_ACCOUNT
+    AccountWithDetails:
+      title: Account With Details entity
+      description: This provides an instance of an account with full details
+      type: object
+      x-fdx-csdf-account-categories:
+      - ANY
+      oneOf:
+      - type: object
+        properties:
+          depositAccount:
+            $ref: '#/components/schemas/DepositAccount'
+            description: A deposit account
+            x-fdx-csdf-account-categories:
+            - REG_E
+      - type: object
+        properties:
+          investmentAccount:
+            $ref: '#/components/schemas/InvestmentAccount'
+            description: An investment account
+      - type: object
+        properties:
+          locAccount:
+            $ref: '#/components/schemas/LocAccount'
+            description: A line-of-credit account
+            x-fdx-csdf-account-categories:
+            - REG_Z
+      - type: object
+        properties:
+          loanAccount:
+            $ref: '#/components/schemas/LoanAccount'
+            description: A loan account
+    DateString:
+      title: Date String
+      description: ISO 8601 full-date in format 'YYYY-MM-DD' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date
+      maxLength: 10
+      example: '2021-07-15'
+      x-fdx-csdf-account-categories:
+      - ANY
+    Currency:
+      title: Currency entity
+      description: Represents an international currency
+      type: object
+      x-fdx-csdf-account-categories:
+      - ANY
+      properties:
+        currencyCode:
+          $ref: '#/components/schemas/Iso4217Code'
+          description: ISO 4217 currency code
+          x-fdx-csdf-account-categories:
+          - ANY
+    AccountHolder:
+      title: Account Holder entity
+      description: Defines the account holder's relationship with an account.
+      type: object
+      x-fdx-csdf-account-categories:
+      - ANY
+      properties:
+        relationship:
+          $ref: '#/components/schemas/AccountHolderRelationship'
+          description: Customer's relationship to the account
+          x-fdx-csdf-account-categories:
+          - ANY
   parameters:
+    FdxApiActorTypeHeader:
+      name: FDX-API-Actor-Type
+      in: header
+      description: Identifies whether the customer is present (USER) or it is a BATCH operation
+      schema:
+        $ref: '#/components/schemas/ActorType'
+      example: BATCH
     ResultTypeQuery:
       name: resultType
       in: query
@@ -2163,13 +2016,6 @@ components:
       schema:
         type: string
       example: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr
-    FdxApiActorTypeHeader:
-      name: FDX-API-Actor-Type
-      in: header
-      description: Identifies whether the customer is present (USER) or it is a BATCH operation
-      schema:
-        $ref: '#/components/schemas/ActorType'
-      example: BATCH
     FapiInteractionIdHeader:
       name: x-fapi-interaction-id
       in: header
@@ -2178,6 +2024,160 @@ components:
         $ref: '#/components/schemas/FapiInteractionId'
       required: true
       example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+  responses:
+    '422':
+      description: Unprocessable Entity
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCOUNT_TYPE:
+              value:
+                code: '704'
+                message: Account type not supported for Account Details
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: System down for maintenance
+            SUBSYSTEM_UNAVAILABLE:
+              value:
+                code: '501'
+                message: System down for maintenance
+    '409':
+      description: Business error; returned from the backend
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: Method Not Allowed
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '701'
+                message: URI does not represent a recognized resource
+            INVALID_ACCOUNT:
+              value:
+                code: '701'
+                message: Invalid account id
+            ACCOUNTID_NOT_FOUND:
+              value:
+                code: '701'
+                message: Account Id is required
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: '603'
+                message: Authentication failed
+            ACCESS_TOKEN_EXPIRED:
+              value:
+                code: '603'
+                message: Authentication failed
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '603'
+                message: Authentication failed
+            ACCESSTOKEN_NOT_APPROVED:
+              value:
+                code: '603'
+                message: Authentication failed
+            INVALID_BASICAUTHENTICATION_SOURCE:
+              value:
+                code: '603'
+                message: Authentication failed
   headers:
     x-fapi-interaction-id:
       description: Unique identifier for this interaction

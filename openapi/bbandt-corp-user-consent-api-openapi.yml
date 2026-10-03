@@ -222,132 +222,45 @@ paths:
       security:
       - BasicAuth: []
 components:
-  responses:
-    '401':
-      description: Unauthorized
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            NO_APIPRODUCT_MATCHFOUND:
-              value:
-                code: '603'
-                message: The app is not authorized for this API
-            INVALID_BASICAUTHENTICATION_SOURCE:
-              value:
-                code: '603'
-                message: Authentication failed
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: A time-out occurred connecting to an upstream server
-    '429':
-      description: Too Many Requests
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SPIKE_ARREST_VIOLATION:
-              value:
-                code: '1207'
-                message: Traffic spike, too many requests
-            QUOTA_VIOLATION:
-              value:
-                code: '1207'
-                message: Quota violation, too many requests
-    '405':
-      description: Client called an unimplemented REST method
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_METHOD:
-              value:
-                code: '1206'
-                message: Method Not Allowed
-    '404':
-      description: Not Found
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            RESOURCE_NOT_FOUND:
-              value:
-                code: '1107'
-                message: URI does not represent a recognized resource
-    '400':
-      description: Bad Request
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_PATH_PARAMETER:
-              value:
-                code: '401'
-                message: Invalid consentId
-            INVALID_JSON:
-              value:
-                code: '401'
-                message: The request payload is not in a valid JSON format
-    '500':
-      description: Internal Server Error
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INTERNAL_SERVER_ERROR:
-              value:
-                code: '500'
-                message: System down for maintenance
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: An upstream server is unavailable
   schemas:
+    ConsentGrantStatus:
+      title: Consent Grant Status
+      description: Current status of Consent Grant
+      type: string
+      enum:
+      - ACTIVE
+      - EXPIRED
+      - REVOKED
+    ConsentId:
+      title: Consent Identifier
+      description: Unique ID for a consent grant
+      $ref: '#/components/schemas/Identifier'
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code defined by FDX API Specification or Data Provider indicating the error situation which has occurred
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+    ConsentResourceType:
+      title: Consent Resource Type
+      description: Resource for which data may be permissioned; can be extended to support additional types of resources
+      type: string
+      enum:
+      - ACCOUNT
+      - CUSTOMER
+      - DOCUMENT
+    ConsentDurationType:
+      title: Consent Duration Type
+      description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
+      type: string
+      enum:
+      - ONE_TIME
+      - TIME_BOUND
     Party:
       title: Party entity
       description: FDX Participant - an entity or person that is a part of a FDX API transaction
@@ -379,6 +292,77 @@ components:
         registeredEntityId:
           description: Registered id of party
           type: string
+    Registry:
+      title: Registry
+      description: Identifies the type of a Registry
+      type: string
+      enum:
+      - PRIVATE
+    ConsentGrantResource:
+      title: Consent Grant Resource entity
+      description: Entity of permissioned resources
+      type: object
+      properties:
+        resourceType:
+          description: Type of resource to be permissioned
+          $ref: '#/components/schemas/ConsentResourceType'
+        resourceId:
+          description: Identifier of resource to be permissioned
+          $ref: '#/components/schemas/Identifier'
+        dataClusters:
+          description: Names of clusters of data elements permissioned
+          type: array
+          items:
+            $ref: '#/components/schemas/DataCluster'
+          minItems: 1
+      required:
+      - resourceType
+      - resourceId
+      - dataClusters
+    DataCluster:
+      title: Data Cluster
+      description: Name of permissioned [cluster of data elements](https://fdx.atlassian.net/wiki/spaces/FDX/pages/872906996/v1.1+Data+Clusters)
+      type: string
+      enum:
+      - ACCOUNT_BASIC
+      - ACCOUNT_DETAILED
+      - CUSTOMER_CONTACT
+      - PAYMENT_SUPPORT
+      - TRANSACTIONS
+    Timestamp:
+      title: Timestamp
+      pattern: \d{4}\-\d\d\-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ
+      description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date-time
+      example: '2021-07-15T14:46:41.375Z'
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+    ConsentRevocationRequest:
+      title: Consent revocation request entity
+      description: Details of request to revoke consent grant
+      type: object
+      properties:
+        reason:
+          description: The reason for consent revocation
+          $ref: '#/components/schemas/ConsentUpdateReason'
+        initiator:
+          description: The party initiating revocation
+          $ref: '#/components/schemas/PartyType'
+      required:
+      - reason
+      - initiator
+    ConsentDurationPeriod:
+      title: Consent Duration Period
+      description: Consent duration, in days, from day of original grant
+      type: integer
+    LookbackPeriod:
+      title: Lookback Period
+      description: Period, in days, for which historical data may be requested; period is measured from request time, not grant time
+      type: integer
     PartyType:
       title: Party Type
       description: Identifies the type of a party
@@ -390,26 +374,6 @@ components:
       - INDIVIDUAL
       - MERCHANT
       - VENDOR
-    ConsentId:
-      title: Consent Identifier
-      description: Unique ID for a consent grant
-      $ref: '#/components/schemas/Identifier'
-    LookbackPeriod:
-      title: Lookback Period
-      description: Period, in days, for which historical data may be requested; period is measured from request time, not grant time
-      type: integer
-    Identifier:
-      title: Identifier
-      description: Value for a unique identifier
-      type: string
-      maxLength: 256
-    Timestamp:
-      title: Timestamp
-      pattern: \d{4}\-\d\d\-\d\dT\d\d:\d\d:\d\d\.\d\d\dZ
-      description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
-      type: string
-      format: date-time
-      example: '2021-07-15T14:46:41.375Z'
     FapiInteractionId:
       title: FAPI Interaction ID
       description: Universally unique identifier for this interaction, used across all FDX API requests and responses
@@ -418,53 +382,13 @@ components:
       minLength: 36
       maxLength: 36
       example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses
-      type: object
-      properties:
-        code:
-          type: string
-          description: Error code defined by FDX API Specification or Data Provider indicating the error situation which has occurred
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-    ConsentGrantStatus:
-      title: Consent Grant Status
-      description: Current status of Consent Grant
+    ConsentUpdateReason:
+      title: Consent Update Reason
+      description: Reason for Updating a Consent Grant
       type: string
       enum:
-      - ACTIVE
-      - EXPIRED
-      - REVOKED
-    ConsentDurationPeriod:
-      title: Consent Duration Period
-      description: Consent duration, in days, from day of original grant
-      type: integer
-    Registry:
-      title: Registry
-      description: Identifies the type of a Registry
-      type: string
-      enum:
-      - PRIVATE
-    ConsentResourceType:
-      title: Consent Resource Type
-      description: Resource for which data may be permissioned; can be extended to support additional types of resources
-      type: string
-      enum:
-      - ACCOUNT
-      - CUSTOMER
-      - DOCUMENT
-    DataCluster:
-      title: Data Cluster
-      description: Name of permissioned [cluster of data elements](https://fdx.atlassian.net/wiki/spaces/FDX/pages/872906996/v1.1+Data+Clusters)
-      type: string
-      enum:
-      - ACCOUNT_BASIC
-      - ACCOUNT_DETAILED
-      - CUSTOMER_CONTACT
-      - PAYMENT_SUPPORT
-      - TRANSACTIONS
+      - BUSINESS_RULE
+      - USER_ACTION
     ConsentGrantParty:
       title: Consent Grant Party entity
       description: Details on the non-end user parties in the Consent Grant. Includes the legal entity operating branded products or services in the data sharing chain. Descriptive information is collected during Data Recipient registration at Data Provider, and populated during issuance by Data Provider from its registry
@@ -518,64 +442,132 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConsentGrantResource'
-    ConsentUpdateReason:
-      title: Consent Update Reason
-      description: Reason for Updating a Consent Grant
-      type: string
-      enum:
-      - BUSINESS_RULE
-      - USER_ACTION
-    ConsentRevocationRequest:
-      title: Consent revocation request entity
-      description: Details of request to revoke consent grant
-      type: object
-      properties:
-        reason:
-          description: The reason for consent revocation
-          $ref: '#/components/schemas/ConsentUpdateReason'
-        initiator:
-          description: The party initiating revocation
-          $ref: '#/components/schemas/PartyType'
-      required:
-      - reason
-      - initiator
-    ConsentDurationType:
-      title: Consent Duration Type
-      description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
-      type: string
-      enum:
-      - ONE_TIME
-      - TIME_BOUND
-    ConsentGrantResource:
-      title: Consent Grant Resource entity
-      description: Entity of permissioned resources
-      type: object
-      properties:
-        resourceType:
-          description: Type of resource to be permissioned
-          $ref: '#/components/schemas/ConsentResourceType'
-        resourceId:
-          description: Identifier of resource to be permissioned
-          $ref: '#/components/schemas/Identifier'
-        dataClusters:
-          description: Names of clusters of data elements permissioned
-          type: array
-          items:
-            $ref: '#/components/schemas/DataCluster'
-          minItems: 1
-      required:
-      - resourceType
-      - resourceId
-      - dataClusters
+  responses:
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: System down for maintenance
+    '400':
+      description: Bad Request
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_PATH_PARAMETER:
+              value:
+                code: '401'
+                message: Invalid consentId
+            INVALID_JSON:
+              value:
+                code: '401'
+                message: The request payload is not in a valid JSON format
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: Method Not Allowed
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '1107'
+                message: URI does not represent a recognized resource
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '603'
+                message: The app is not authorized for this API
+            INVALID_BASICAUTHENTICATION_SOURCE:
+              value:
+                code: '603'
+                message: Authentication failed
   parameters:
-    ConsentIdPath:
-      name: consentId
-      in: path
-      description: Consent Identifier
-      required: true
-      schema:
-        $ref: '#/components/schemas/ConsentId'
-      example: 0e67811f9c12468f
     FapiInteractionIdHeader:
       name: x-fapi-interaction-id
       in: header
@@ -584,6 +576,14 @@ components:
         $ref: '#/components/schemas/FapiInteractionId'
       required: true
       example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    ConsentIdPath:
+      name: consentId
+      in: path
+      description: Consent Identifier
+      required: true
+      schema:
+        $ref: '#/components/schemas/ConsentId'
+      example: 0e67811f9c12468f
   headers:
     x-fapi-interaction-id:
       description: Unique request identifier

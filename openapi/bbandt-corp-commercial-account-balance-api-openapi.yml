@@ -279,12 +279,17 @@ components:
           availableBalance:
             description: Amount available to be used for this line account.
             type: number
-    LineOfBusiness:
-      type: string
-      description: Truist Line of Business to which the account maps("Commercial, "Retail")
-      enum:
-      - Commercial
-      - Retail
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: Defined error type codes
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
     BalanceDetails:
       description: Balance details
       type: object
@@ -311,6 +316,47 @@ components:
           $ref: '#/components/schemas/LineOfCreditAccount'
         creditCardAccount:
           $ref: '#/components/schemas/CreditCardAccount'
+    LoanAccount:
+      title: Schema definition for commercial LoanAccount details
+      description: Loan account details.
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Account'
+      - type: object
+        properties:
+          loanAmount:
+            description: Original loan amount
+            type: number
+          nextPaymentDueAmount:
+            description: Due payment amount.
+            type: number
+          nextPaymentDueDate:
+            description: Due date for the nextPaymentDueAmount.
+            type: string
+            format: date
+          principalBalance:
+            description: Principal balance amount - Available balance
+            type: number
+          maturityDate:
+            description: Maturity date of the loan
+            type: string
+            format: date
+          originationDate:
+            description: Origination date of the loan
+            type: string
+            format: date
+          lastPaymentAmount:
+            description: Amount of last payment
+            type: number
+          interestRate:
+            description: Rate of interest
+            type: number
+          lastYearInterestPaid:
+            description: Last year interest paid
+            type: number
+          interestPaidYTD:
+            description: Interest paid year to date
+            type: number
     DepositAccount:
       title: schema definition for commercial DepositAccount details.
       description: Deposit account details
@@ -375,58 +421,12 @@ components:
           $ref: '#/components/schemas/BalanceType'
         lineOfBusiness:
           $ref: '#/components/schemas/LineOfBusiness'
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses
-      type: object
-      properties:
-        code:
-          type: string
-          description: Defined error type codes
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-    LoanAccount:
-      title: Schema definition for commercial LoanAccount details
-      description: Loan account details.
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Account'
-      - type: object
-        properties:
-          loanAmount:
-            description: Original loan amount
-            type: number
-          nextPaymentDueAmount:
-            description: Due payment amount.
-            type: number
-          nextPaymentDueDate:
-            description: Due date for the nextPaymentDueAmount.
-            type: string
-            format: date
-          principalBalance:
-            description: Principal balance amount - Available balance
-            type: number
-          maturityDate:
-            description: Maturity date of the loan
-            type: string
-            format: date
-          originationDate:
-            description: Origination date of the loan
-            type: string
-            format: date
-          lastPaymentAmount:
-            description: Amount of last payment
-            type: number
-          interestRate:
-            description: Rate of interest
-            type: number
-          lastYearInterestPaid:
-            description: Last year interest paid
-            type: number
-          interestPaidYTD:
-            description: Interest paid year to date
-            type: number
+    LineOfBusiness:
+      type: string
+      description: Truist Line of Business to which the account maps("Commercial, "Retail")
+      enum:
+      - Commercial
+      - Retail
   headers:
     x-fapi-interaction-id:
       description: Unique identifier

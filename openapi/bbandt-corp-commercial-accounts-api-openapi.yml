@@ -139,48 +139,6 @@ paths:
         - read:accounts
 components:
   schemas:
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses
-      type: object
-      properties:
-        code:
-          type: string
-          description: Defined error type codes
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-    BalanceType:
-      title: Type of account balance
-      description: Type of account balance
-      type: string
-      enum:
-      - ASSET
-      - LIABILITY
-    AccountType:
-      title: Enumeration of account types
-      description: Account type identified by the bank
-      type: string
-      enum:
-      - CHECKING
-      - SAVINGS
-      - CREDITCARD
-      - COMMERCIALLOAN
-      - COMMERCIALLINEOFCREDIT
-    Currency:
-      title: Account currency code
-      description: Currency code information
-      type: object
-      properties:
-        currencyRate:
-          description: Currency rate between original and converted currency
-          type: string
-        currencyCode:
-          description: Currency identifier. USD is the only option available at this time.
-          type: string
-        originalCurrencyCode:
-          description: Currency identifier. USD is the only option available at this time.
-          type: string
     Accounts:
       title: Commercial account eligible account list
       description: Accounts returned by API upon successful search
@@ -240,6 +198,13 @@ components:
           accountNumber: '************818114'
           balanceType: ASSET
           status: ACTIVE
+    BalanceType:
+      title: Type of account balance
+      description: Type of account balance
+      type: string
+      enum:
+      - ASSET
+      - LIABILITY
     Account:
       title: Summary data for an account
       description: Summary data for an account
@@ -271,6 +236,27 @@ components:
         status:
           description: Status of the account
           $ref: '#/components/schemas/Status'
+    AccountType:
+      title: Enumeration of account types
+      description: Account type identified by the bank
+      type: string
+      enum:
+      - CHECKING
+      - SAVINGS
+      - CREDITCARD
+      - COMMERCIALLOAN
+      - COMMERCIALLINEOFCREDIT
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: Defined error type codes
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
     Status:
       title: Status of the account
       description: Status of the account
@@ -279,6 +265,20 @@ components:
       - ACTIVE
       - CLOSED
       - DORMANT
+    Currency:
+      title: Account currency code
+      description: Currency code information
+      type: object
+      properties:
+        currencyRate:
+          description: Currency rate between original and converted currency
+          type: string
+        currencyCode:
+          description: Currency identifier. USD is the only option available at this time.
+          type: string
+        originalCurrencyCode:
+          description: Currency identifier. USD is the only option available at this time.
+          type: string
   headers:
     x-fapi-interaction-id:
       description: Unique identifier

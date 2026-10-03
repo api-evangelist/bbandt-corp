@@ -291,93 +291,96 @@ paths:
       security:
       - BasicAuth: []
 components:
+  parameters:
+    redirect_uri:
+      in: query
+      name: redirect_uri
+      description: After completing its interaction with the resource owner, the authorization server directs the resource owner's user-agent back to the client
+      required: true
+      schema:
+        type: string
+      example: https://example-app.com/callback
+    scope:
+      in: query
+      name: scope
+      description: The space-delimited string array of scopes requested. For OpenID Connect, scopes can be used to request that specific sets of information be made available as Claim Values. Scope 'offline_access' must be included to get back refresh_tokens
+      required: true
+      schema:
+        description: 'A space-delimited string containing values from the enumerated list in $ref: ''#/components/schemas/Scope'''
+        type: string
+      example: openid offline_access ACCOUNT_BASIC ACCOUNT_DETAILED
+    FdxApiActorTypeHeader:
+      name: FDX-API-Actor-Type
+      in: header
+      description: Identifies whether the customer is present (USER) or it is a BATCH operation
+      schema:
+        $ref: '#/components/schemas/ActorType'
+      example: BATCH
+    client_id:
+      in: query
+      name: client_id
+      description: The client_id parameter for `/authorize` endpoint must represent the ultimate data recipient to which customer is consenting their data sharing. For a Data Access Platform (aggregator) that will be the DR ID returned from its dynamic client registration via `POST /register` API. For a Direct Data Recipient that will be the client_id returned from creating the Staging or Production application in Truist Developer Center
+      required: true
+      schema:
+        type: string
+      example: xbyFy0fCqucBKz5jwvXMUNvoBZL4QHir
+    accountType:
+      in: query
+      name: accountType
+      description: "A space-delimited string array of the only account types which Data Recipient can support in customer consents. This value is used by Truist consent creation and management UIs to filter the customer accounts presented for selection. If not specified the default is that customer account list will not be filtered on behalf of Data Recipient.\n  | Value | Description |\n  |-----|-----|\n  | BROKERAGEPRODUCT | Investment management offered by a licensed brokerage firm that places trades on behalf of the customer, utilizing any number of investment options |\n  | CD | A certificate of deposit (CD) is a product offered by banks and credit unions that provides an interest rate premium in exchange for the customer agreeing to leave a lump-sum deposit untouched for a predetermined period of time |\n  | CHECKING | A deposit account held at a financial institution that allows withdrawals and deposits |\n  | COMMERCIALLOAN | A preset borrowing limit that can be used at any time |\n  | CREDITCARD | Allows cardholders to borrow funds with which to pay for goods and services with merchants that accept cards for payment |\n  | IRA | An individual retirement account (IRA) is a tax-advantaged account that individuals use to save and invest for retirement |\n  | LINEOFCREDIT | A credit facility extended by a bank or other financial institution to a government, business or individual customer that enables the customer to draw on the facility when the customer needs funds |\n  | MORTGAGE | A type of loan you can use to buy or refinance a home |\n  | PERSONALLOAN | A type of debt that is not protected by a guarantor, or collateralized by a lien on specific assets of the borrower |\n  | SAVINGS | An interest-bearing deposit account held at a bank or other financial institution |\n  | TRUST | A type of financial account that is opened by an individual and managed by a designated trustee for the benefit of a third party in accordance with agreed-upon terms |"
+      required: false
+      schema:
+        type: string
+      example: CHECKING CREDITCARD SAVINGS TRUST
+    state:
+      in: query
+      name: state
+      description: An opaque value used by the client to maintain state between the request and callback
+      required: true
+      schema:
+        type: string
+      example: unique_request_state_code
+    nonce:
+      in: query
+      name: nonce
+      description: nonce is an optional String value used to associate a Client session with an ID Token, and to mitigate replay attacks. It MUST be present if authorization server issues an ID Token in the Token response (openid scope included in request).
+      required: false
+      schema:
+        type: string
+    cardinality:
+      in: query
+      name: cardinality
+      description: 'Specifies whether the Data Recipient can support only one or more than one account in customer consents. SINGLE: Data Recipient can only support exactly one account. MULTIPLE: Data Recipient can support any number of accounts. This is the default if neither is specified. This value is used by Truist consent creation and management UIs to display the corresponding account selection requirement to customers.'
+      required: false
+      schema:
+        type: string
+        enum:
+        - SINGLE
+        - MULTIPLE
+      example: SINGLE
+    response_type:
+      in: query
+      name: response_type
+      description: The client informs the authorization server of the desired grant type flow using the response_type parameter
+      required: true
+      schema:
+        type: string
+        enum:
+        - code
+      example: code
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
   schemas:
-    302RequestNotSupported:
-      type: string
-      description: The request parameter is not supported
-      example: https://example-app.com/callback?error=request_not_supported&error_description=The%20request%20parameter%20is%20not%20supported&state=12345
-    TokenResponse:
-      type: object
-      properties:
-        grant_id:
-          type: string
-          description: The consent id that can be used by data recipient to view the Consent grant
-        access_token:
-          type: string
-          description: The access token issued by the authorization server
-        token_type:
-          type: string
-          description: The type of the token issued (default Bearer)
-        expires_in:
-          type: integer
-          description: The lifetime in seconds of the access token. The value "900" denotes that the access token will expire in 15 minutes from the time the response was generated. If omitted, the authorization server SHOULD provide the expiration time via other means or document the default value.
-        refresh_token:
-          type: string
-          description: OPTIONAL. The refresh token, which can be used to obtain new access tokens using the same authorization grant
-        refresh_token_expires_in:
-          type: integer
-          description: The lifetime in seconds of the refresh token. The value "7775999" denotes that the refresh token will expire in ninety days from the time the response was generated. If omitted, the authorization server SHOULD provide the expiration time via other means or document the default value.
-        scope:
-          type: string
-          description: A space-delimited array of '#/components/schemas/Scope' enum values. Scope offline_access must be included to get back refresh_tokens
-        id_token:
-          type: string
-          description: OPTIONAL, OpenID Connect ID Token
-    302MissingValidScope:
-      type: string
-      description: The requested scopes are not valid for data recipient
-      example: https://example-app.com/callback?error=invalid_scope&error_description=The%20requested%20scopes%20are%20not%20valid%20for%20data%20recipient&state=12345
-    302MissingScope:
-      type: string
-      description: 'The request is missing a required parameter: scope'
-      example: https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%scope&state=12345
-    APIErrorResponse:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: string
-          description: Enumerated value of error type
-        error_description:
-          type: string
-          description: Description of the error
     302UnsupportedResponseType:
       type: string
       description: The authorization server does not support obtaining an authorization code using this method
       example: https://example-app.com/callback?error=unsupported_response_type&error_description=The%20authorization%20server%20does%20not%20support%20obtaining%20an%20authorization%20code%20using%20this%20method&state=12345
-    302MissingNonce:
-      type: string
-      description: 'The request is missing a required parameter: nonce'
-      example: https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%nonce&state=1234
-    302RedirectURI:
-      type: string
-      description: Success Response
-      example: https://example-app.com/callback?code=fogeqqbz2xi23hvgvlu4ka2kq&state=123abc
-    302MissingResponseType:
-      type: string
-      description: Missing response type
-      example: https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%20response_type&state=12345
-    302MissingState:
-      type: string
-      description: 'The request is missing a required parameter: state'
-      example: https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%state
-    302Unavailable:
-      type: string
-      description: The authorization server is currently unable to handle the request
-      example: https://example-app.com/callback?error=temporarily_unavailable&error_description=The%20authorization%20server%20is%20currently%20unable%20to%20handle%20the%20request&state=12345
-    302RegistrationNotSupported:
-      type: string
-      description: The registration parameter is not supported
-      example: https://example-app.com/callback?error=registration_not_supported&error_description=The%20registration%20parameter%20is%20not%20supported&state=12345
-    302RequestURINotSupported:
-      type: string
-      description: The request_uri parameter is not supported
-      example: https://example-app.com/callback?error=request_uri_not_supported&error_description=The%20request_uri%20parameter%20is%20not%20supported&state=1234
-    302InvalidScope:
-      type: string
-      description: The requested scope is invalid, unknown, or malformed
-      example: https://example-app.com/callback?error=invalid_scope&error_description=The%20requested%20scope%20is%20invalid%2C%20unknown%2C%20or%20malformed&state=12345
     302ServerError:
       type: string
       description: The authorization server encountered an unexpected condition that prevented it from fulfilling the request
@@ -411,14 +414,88 @@ components:
       - grant_type
       - code
       - redirect_uri
+    APIErrorResponse:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: string
+          description: Enumerated value of error type
+        error_description:
+          type: string
+          description: Description of the error
     302UserDenied:
       type: string
       description: The user denied the request
       example: https://example-app.com/callback?error=user_denied&error_description=The%20user%20denied%20the%20request&state=12345
-    302AccountTypesNotSupported:
+    302RedirectURI:
       type: string
-      description: None of the requested accountTypes are supported
-      example: https://example-app.com/callback?error=invalid_request&error_description=None%20of%20the%20requested%20accountTypes%20are%20supported
+      description: Success Response
+      example: https://example-app.com/callback?code=fogeqqbz2xi23hvgvlu4ka2kq&state=123abc
+    302RegistrationNotSupported:
+      type: string
+      description: The registration parameter is not supported
+      example: https://example-app.com/callback?error=registration_not_supported&error_description=The%20registration%20parameter%20is%20not%20supported&state=12345
+    302InvalidCardinality:
+      type: string
+      description: The requested cardinality is unknown, use SINGLE or MULTIPLE
+      example: https://example-app.com/callback?error=invalid_request&error_description=The%20requested%20cardinality%20is%20unknown%2C%20use%20SINGLE%20or%20MULTIPLE
+    302MissingState:
+      type: string
+      description: 'The request is missing a required parameter: state'
+      example: https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%state
+    302InvalidScope:
+      type: string
+      description: The requested scope is invalid, unknown, or malformed
+      example: https://example-app.com/callback?error=invalid_scope&error_description=The%20requested%20scope%20is%20invalid%2C%20unknown%2C%20or%20malformed&state=12345
+    302MissingResponseType:
+      type: string
+      description: Missing response type
+      example: https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%20response_type&state=12345
+    302MissingScope:
+      type: string
+      description: 'The request is missing a required parameter: scope'
+      example: https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%scope&state=12345
+    302RequestURINotSupported:
+      type: string
+      description: The request_uri parameter is not supported
+      example: https://example-app.com/callback?error=request_uri_not_supported&error_description=The%20request_uri%20parameter%20is%20not%20supported&state=1234
+    TokenResponse:
+      type: object
+      properties:
+        grant_id:
+          type: string
+          description: The consent id that can be used by data recipient to view the Consent grant
+        access_token:
+          type: string
+          description: The access token issued by the authorization server
+        token_type:
+          type: string
+          description: The type of the token issued (default Bearer)
+        expires_in:
+          type: integer
+          description: The lifetime in seconds of the access token. The value "900" denotes that the access token will expire in 15 minutes from the time the response was generated. If omitted, the authorization server SHOULD provide the expiration time via other means or document the default value.
+        refresh_token:
+          type: string
+          description: OPTIONAL. The refresh token, which can be used to obtain new access tokens using the same authorization grant
+        refresh_token_expires_in:
+          type: integer
+          description: The lifetime in seconds of the refresh token. The value "7775999" denotes that the refresh token will expire in ninety days from the time the response was generated. If omitted, the authorization server SHOULD provide the expiration time via other means or document the default value.
+        scope:
+          type: string
+          description: A space-delimited array of '#/components/schemas/Scope' enum values. Scope offline_access must be included to get back refresh_tokens
+        id_token:
+          type: string
+          description: OPTIONAL, OpenID Connect ID Token
+    302MissingNonce:
+      type: string
+      description: 'The request is missing a required parameter: nonce'
+      example: https://example-app.com/callback?error=invalid_request&error_description=The%20request%20is%20missing%20a%20required%20parameter%20%3A%nonce&state=1234
+    302Unavailable:
+      type: string
+      description: The authorization server is currently unable to handle the request
+      example: https://example-app.com/callback?error=temporarily_unavailable&error_description=The%20authorization%20server%20is%20currently%20unable%20to%20handle%20the%20request&state=12345
     ActorType:
       title: FDX API Actor Type
       description: Indicates whether a customer is present and has requested the operation (USER), or if a batch job has requested the operation (BATCH)
@@ -426,95 +503,18 @@ components:
       enum:
       - BATCH
       - USER
-    302InvalidCardinality:
+    302RequestNotSupported:
       type: string
-      description: The requested cardinality is unknown, use SINGLE or MULTIPLE
-      example: https://example-app.com/callback?error=invalid_request&error_description=The%20requested%20cardinality%20is%20unknown%2C%20use%20SINGLE%20or%20MULTIPLE
-  parameters:
-    state:
-      in: query
-      name: state
-      description: An opaque value used by the client to maintain state between the request and callback
-      required: true
-      schema:
-        type: string
-      example: unique_request_state_code
-    scope:
-      in: query
-      name: scope
-      description: The space-delimited string array of scopes requested. For OpenID Connect, scopes can be used to request that specific sets of information be made available as Claim Values. Scope 'offline_access' must be included to get back refresh_tokens
-      required: true
-      schema:
-        description: 'A space-delimited string containing values from the enumerated list in $ref: ''#/components/schemas/Scope'''
-        type: string
-      example: openid offline_access ACCOUNT_BASIC ACCOUNT_DETAILED
-    redirect_uri:
-      in: query
-      name: redirect_uri
-      description: After completing its interaction with the resource owner, the authorization server directs the resource owner's user-agent back to the client
-      required: true
-      schema:
-        type: string
-      example: https://example-app.com/callback
-    nonce:
-      in: query
-      name: nonce
-      description: nonce is an optional String value used to associate a Client session with an ID Token, and to mitigate replay attacks. It MUST be present if authorization server issues an ID Token in the Token response (openid scope included in request).
-      required: false
-      schema:
-        type: string
-    response_type:
-      in: query
-      name: response_type
-      description: The client informs the authorization server of the desired grant type flow using the response_type parameter
-      required: true
-      schema:
-        type: string
-        enum:
-        - code
-      example: code
-    accountType:
-      in: query
-      name: accountType
-      description: "A space-delimited string array of the only account types which Data Recipient can support in customer consents. This value is used by Truist consent creation and management UIs to filter the customer accounts presented for selection. If not specified the default is that customer account list will not be filtered on behalf of Data Recipient.\n  | Value | Description |\n  |-----|-----|\n  | BROKERAGEPRODUCT | Investment management offered by a licensed brokerage firm that places trades on behalf of the customer, utilizing any number of investment options |\n  | CD | A certificate of deposit (CD) is a product offered by banks and credit unions that provides an interest rate premium in exchange for the customer agreeing to leave a lump-sum deposit untouched for a predetermined period of time |\n  | CHECKING | A deposit account held at a financial institution that allows withdrawals and deposits |\n  | COMMERCIALLOAN | A preset borrowing limit that can be used at any time |\n  | CREDITCARD | Allows cardholders to borrow funds with which to pay for goods and services with merchants that accept cards for payment |\n  | IRA | An individual retirement account (IRA) is a tax-advantaged account that individuals use to save and invest for retirement |\n  | LINEOFCREDIT | A credit facility extended by a bank or other financial institution to a government, business or individual customer that enables the customer to draw on the facility when the customer needs funds |\n  | MORTGAGE | A type of loan you can use to buy or refinance a home |\n  | PERSONALLOAN | A type of debt that is not protected by a guarantor, or collateralized by a lien on specific assets of the borrower |\n  | SAVINGS | An interest-bearing deposit account held at a bank or other financial institution |\n  | TRUST | A type of financial account that is opened by an individual and managed by a designated trustee for the benefit of a third party in accordance with agreed-upon terms |"
-      required: false
-      schema:
-        type: string
-      example: CHECKING CREDITCARD SAVINGS TRUST
-    FapiInteractionIdHeader:
-      name: x-fapi-interaction-id
-      in: header
-      description: Unique request identifier
-      required: true
-      schema:
-        type: string
-      example: rrt-970585410023330903-b-gce-821-23397-1
-    FdxApiActorTypeHeader:
-      name: FDX-API-Actor-Type
-      in: header
-      description: Identifies whether the customer is present (USER) or it is a BATCH operation
-      schema:
-        $ref: '#/components/schemas/ActorType'
-      example: BATCH
-    client_id:
-      in: query
-      name: client_id
-      description: The client_id parameter for `/authorize` endpoint must represent the ultimate data recipient to which customer is consenting their data sharing. For a Data Access Platform (aggregator) that will be the DR ID returned from its dynamic client registration via `POST /register` API. For a Direct Data Recipient that will be the client_id returned from creating the Staging or Production application in Truist Developer Center
-      required: true
-      schema:
-        type: string
-      example: xbyFy0fCqucBKz5jwvXMUNvoBZL4QHir
-    cardinality:
-      in: query
-      name: cardinality
-      description: 'Specifies whether the Data Recipient can support only one or more than one account in customer consents. SINGLE: Data Recipient can only support exactly one account. MULTIPLE: Data Recipient can support any number of accounts. This is the default if neither is specified. This value is used by Truist consent creation and management UIs to display the corresponding account selection requirement to customers.'
-      required: false
-      schema:
-        type: string
-        enum:
-        - SINGLE
-        - MULTIPLE
-      example: SINGLE
+      description: The request parameter is not supported
+      example: https://example-app.com/callback?error=request_not_supported&error_description=The%20request%20parameter%20is%20not%20supported&state=12345
+    302MissingValidScope:
+      type: string
+      description: The requested scopes are not valid for data recipient
+      example: https://example-app.com/callback?error=invalid_scope&error_description=The%20requested%20scopes%20are%20not%20valid%20for%20data%20recipient&state=12345
+    302AccountTypesNotSupported:
+      type: string
+      description: None of the requested accountTypes are supported
+      example: https://example-app.com/callback?error=invalid_request&error_description=None%20of%20the%20requested%20accountTypes%20are%20supported
   headers:
     x-fapi-interaction-id:
       description: Unique request identifier

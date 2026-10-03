@@ -127,67 +127,6 @@ paths:
       - OAuth:
         - read:accounts
 components:
-  responses:
-    '401':
-      description: Unauthorized
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_ACCESS_TOKEN:
-              value:
-                code: '603'
-                message: Authentication failed
-    '429':
-      description: Too Many Requests
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SPIKE_ARREST_VIOLATION:
-              value:
-                code: '1207'
-                message: Too Many Requests
-            QUOTA_VIOLATION:
-              value:
-                code: '1208'
-                message: Quota Violation
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: An unexpected error occurred while processing your request
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: We are currently unable to process your request due to a system issue
   parameters:
     AccountStatus:
       name: status
@@ -208,19 +147,6 @@ components:
         type: string
       example: rrt-970585410023330903-b-gce-821-23397-1
   schemas:
-    AccountType:
-      title: Account Type
-      description: Account type identified by the bank
-      type: string
-      enum:
-      - CHECKING
-      - SAVINGS
-    PaymentType:
-      title: Schema definition for payment type
-      description: TCH Payment type
-      type: string
-      enum:
-      - RTP
     AccountList:
       title: Commercial Account List
       description: Accounts returned by API upon successful search
@@ -230,6 +156,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Account'
+    PaymentType:
+      title: Schema definition for payment type
+      description: TCH Payment type
+      type: string
+      enum:
+      - RTP
     Account:
       title: Commercial Account
       description: List of commercial accounts for a user
@@ -261,6 +193,13 @@ components:
           enum:
           - OPEN
           - CLOSED
+    AccountType:
+      title: Account Type
+      description: Account type identified by the bank
+      type: string
+      enum:
+      - CHECKING
+      - SAVINGS
     Error:
       title: Error
       description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
@@ -272,6 +211,67 @@ components:
         message:
           type: string
           description: End user displayable information which might help the customer diagnose an error
+  responses:
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: We are currently unable to process your request due to a system issue
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: An unexpected error occurred while processing your request
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Too Many Requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1208'
+                message: Quota Violation
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: '603'
+                message: Authentication failed
   headers:
     x-fapi-interaction-id:
       description: Unique request identifier

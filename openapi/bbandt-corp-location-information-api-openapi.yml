@@ -733,30 +733,6 @@ paths:
       - BasicAuth: []
 components:
   parameters:
-    DriveThroughWindowBranches:
-      name: DriveThroughWindowBranches
-      in: query
-      required: false
-      description: Drive through window branches?
-      schema:
-        $ref: '#/components/schemas/Option'
-    CityQuery:
-      name: City
-      in: query
-      required: false
-      description: Lookup address city.
-      schema:
-        type: string
-        maxLength: 20
-    LongitudeQuery:
-      name: Lng
-      in: query
-      required: false
-      description: Lookup Longitude.
-      schema:
-        type: number
-        minimum: -180
-        maximum: 180
     SpanishSpeakingBranches:
       name: SpanishSpeakingBranches
       in: query
@@ -772,22 +748,45 @@ components:
       schema:
         type: string
         maxLength: 2
-    SaturdayHoursBranches:
-      name: SaturdayHoursBranches
+    SearchRadiusQuery:
+      name: SearchRadius
       in: query
       required: false
-      description: Saturday hours branches?
-      schema:
-        $ref: '#/components/schemas/Option'
-    LimitQuery:
-      name: limit
-      in: query
-      required: false
-      description: Number of elements that the consumer wishes to receive
+      description: Radius in miles.
       schema:
         type: integer
-        maxLength: 2
         maximum: 99
+    LatitudeQuery:
+      name: Lat
+      in: query
+      required: false
+      description: Lookup Latitude.
+      schema:
+        type: number
+        minimum: -90
+        maximum: 90
+    DriveThroughWindowBranches:
+      name: DriveThroughWindowBranches
+      in: query
+      required: false
+      description: Drive through window branches?
+      schema:
+        $ref: '#/components/schemas/Option'
+    SpanishATMs:
+      in: query
+      name: SpanishATMs
+      required: false
+      description: BB&T Spanish ATMs?
+      schema:
+        $ref: '#/components/schemas/Option'
+    Address2Query:
+      name: Address2
+      in: query
+      required: false
+      description: Lookup address continued.
+      schema:
+        type: string
+        maxLength: 126
     ZipQuery:
       name: ZIP
       in: query
@@ -797,19 +796,18 @@ components:
         type: string
         maxLength: 10
       example: '27604'
-    Address1Query:
-      name: Address1
+    SaturdayHoursBranches:
+      name: SaturdayHoursBranches
       in: query
       required: false
-      description: Lookup address.
+      description: Saturday hours branches?
       schema:
-        type: string
-        maxLength: 126
-    SpanishATMs:
+        $ref: '#/components/schemas/Option'
+    NightDepositsBranches:
+      name: NightDepositsBranches
       in: query
-      name: SpanishATMs
       required: false
-      description: BB&T Spanish ATMs?
+      description: Night deposits branches
       schema:
         $ref: '#/components/schemas/Option'
     LocationType:
@@ -820,49 +818,41 @@ components:
       schema:
         type: integer
         maxLength: 126
-    NightDepositsBranches:
-      name: NightDepositsBranches
+    LongitudeQuery:
+      name: Lng
       in: query
       required: false
-      description: Night deposits branches
-      schema:
-        $ref: '#/components/schemas/Option'
-    LatitudeQuery:
-      name: Lat
-      in: query
-      required: false
-      description: Lookup Latitude.
+      description: Lookup Longitude.
       schema:
         type: number
-        minimum: -90
-        maximum: 90
-    SearchRadiusQuery:
-      name: SearchRadius
+        minimum: -180
+        maximum: 180
+    LimitQuery:
+      name: limit
       in: query
       required: false
-      description: Radius in miles.
+      description: Number of elements that the consumer wishes to receive
       schema:
         type: integer
+        maxLength: 2
         maximum: 99
-    Address2Query:
-      name: Address2
+    CityQuery:
+      name: City
       in: query
       required: false
-      description: Lookup address continued.
+      description: Lookup address city.
+      schema:
+        type: string
+        maxLength: 20
+    Address1Query:
+      name: Address1
+      in: query
+      required: false
+      description: Lookup address.
       schema:
         type: string
         maxLength: 126
   schemas:
-    Locations:
-      title: All or ATM Locations
-      description: List of All or just ATM Locations
-      type: object
-      properties:
-        locations:
-          description: List of All or just ATM Locations
-          type: array
-          items:
-            $ref: '#/components/schemas/Location'
     ATMs:
       title: ATMs Entity
       description: searchForATMs
@@ -873,46 +863,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Location'
-    Location:
+    Locations:
+      title: All or ATM Locations
+      description: List of All or just ATM Locations
       type: object
-      description: A base ATM or branch location
       properties:
-        locationName:
-          type: string
-          description: Name of ATM or branch location
-        distance:
-          type: integer
-          description: Distance from address provided
-        locationType:
-          type: string
-          description: Type of the Location
-        phone:
-          type: string
-          description: Phone number
-        fax:
-          type: string
-          description: Fax number
-        address:
-          $ref: '#/components/schemas/Address'
-        locationServices:
+        locations:
+          description: List of All or just ATM Locations
           type: array
           items:
-            type: string
-        lobbyHours:
-          type: array
-          items:
-            type: string
-        driveupWindowHours:
-          type: array
-          items:
-            type: string
-    Option:
-      title: Option
-      description: Yes ot No
-      type: string
-      enum:
-      - Y
-      - N
+            $ref: '#/components/schemas/Location'
     Error:
       type: object
       properties:
@@ -962,6 +922,46 @@ components:
           type: number
           format: double
           description: Longitude of the location
+    Option:
+      title: Option
+      description: Yes ot No
+      type: string
+      enum:
+      - Y
+      - N
+    Location:
+      type: object
+      description: A base ATM or branch location
+      properties:
+        locationName:
+          type: string
+          description: Name of ATM or branch location
+        distance:
+          type: integer
+          description: Distance from address provided
+        locationType:
+          type: string
+          description: Type of the Location
+        phone:
+          type: string
+          description: Phone number
+        fax:
+          type: string
+          description: Fax number
+        address:
+          $ref: '#/components/schemas/Address'
+        locationServices:
+          type: array
+          items:
+            type: string
+        lobbyHours:
+          type: array
+          items:
+            type: string
+        driveupWindowHours:
+          type: array
+          items:
+            type: string
   securitySchemes:
     BasicAuth:
       type: http

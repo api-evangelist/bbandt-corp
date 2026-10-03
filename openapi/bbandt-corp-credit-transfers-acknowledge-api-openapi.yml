@@ -99,9 +99,38 @@ paths:
       - OAuth:
         - write:payments
 components:
+  schemas:
+    AcknowledgePaymentResponse:
+      title: Payment acknowledgement response
+      description: Payment acknowledgement response for credit transfer
+      type: object
+      properties:
+        acknowledgementMessage:
+          description: Acknowledgement Response message
+          type: string
+          example: success
+    AcknowledgePaymentRequest:
+      title: Payment acknowledgement request
+      description: Payment acknowledgement request for credit transfer
+      type: object
+      properties:
+        message:
+          type: string
+          description: Acknowledgement message to be sent to the sender of money.
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
+      type: object
+      properties:
+        code:
+          type: string
+          description: Long term persistent identifier which can be used to trace error condition back to log information
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
   responses:
-    '401':
-      description: Unauthorized
+    '503':
+      description: Service unavailable / system down for maintenance
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -110,12 +139,12 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            INVALID_ACCESS_TOKEN:
+            SERVICE_UNAVAILABLE:
               value:
-                code: '603'
-                message: Authentication failed
-    '429':
-      description: Too Many Requests
+                code: '503'
+                message: We are currently unable to process your request due to a system issue
+    '400':
+      description: Bad Request
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -124,14 +153,10 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            SPIKE_ARREST_VIOLATION:
+            INVALID_INPUT_OAS:
               value:
-                code: '1207'
-                message: Too Many Requests
-            QUOTA_VIOLATION:
-              value:
-                code: '1208'
-                message: Quota Violation
+                code: '7021'
+                message: Specify OAS validation error
     '500':
       description: Internal Server Error
       headers:
@@ -150,34 +175,6 @@ components:
               value:
                 code: '500'
                 message: An unexpected error occurred while processing your request
-    '405':
-      description: Method Not Allowed
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            METHOD_NOT_ALLOWED:
-              value:
-                code: '1206'
-                message: Method Not Allowed
-    '400':
-      description: Bad Request
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_INPUT_OAS:
-              value:
-                code: '7021'
-                message: Specify OAS validation error
     '504':
       description: Service Timed out
       headers:
@@ -192,8 +189,8 @@ components:
               value:
                 code: '504'
                 message: An unexpected error occurred while processing your request
-    '503':
-      description: Service unavailable / system down for maintenance
+    '429':
+      description: Too Many Requests
       headers:
         x-fapi-interaction-id:
           $ref: '#/components/headers/x-fapi-interaction-id'
@@ -202,39 +199,42 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
           examples:
-            SERVICE_UNAVAILABLE:
+            SPIKE_ARREST_VIOLATION:
               value:
-                code: '503'
-                message: We are currently unable to process your request due to a system issue
-  schemas:
-    AcknowledgePaymentRequest:
-      title: Payment acknowledgement request
-      description: Payment acknowledgement request for credit transfer
-      type: object
-      properties:
-        message:
-          type: string
-          description: Acknowledgement message to be sent to the sender of money.
-    AcknowledgePaymentResponse:
-      title: Payment acknowledgement response
-      description: Payment acknowledgement response for credit transfer
-      type: object
-      properties:
-        acknowledgementMessage:
-          description: Acknowledgement Response message
-          type: string
-          example: success
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
-      type: object
-      properties:
-        code:
-          type: string
-          description: Long term persistent identifier which can be used to trace error condition back to log information
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
+                code: '1207'
+                message: Too Many Requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1208'
+                message: Quota Violation
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: '603'
+                message: Authentication failed
+    '405':
+      description: Method Not Allowed
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            METHOD_NOT_ALLOWED:
+              value:
+                code: '1206'
+                message: Method Not Allowed
   headers:
     x-fapi-interaction-id:
       description: Unique request identifier

@@ -196,14 +196,6 @@ paths:
                     message: System Down for maintenance
 components:
   schemas:
-    PostedOrPending:
-      description: Array of posted or pending transactions for the account, or error status for the same.
-      type: object
-      properties:
-        transactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Transaction'
     Transaction:
       title: Each transaction response
       type: object
@@ -264,6 +256,14 @@ components:
         message:
           type: string
           description: End user displayable information which might help the customer diagnose an error
+    PostedOrPending:
+      description: Array of posted or pending transactions for the account, or error status for the same.
+      type: object
+      properties:
+        transactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
   headers:
     x-fapi-interaction-id:
       description: Unique identifier
@@ -272,14 +272,6 @@ components:
         type: string
       example: rrt-970585410023330903-b-gce-821-23397-1
   parameters:
-    AccountIdPath:
-      name: accountId
-      in: path
-      description: Unique identifier for account, a surrogate account key in lieu of the actual account number
-      required: true
-      schema:
-        type: string
-      example: ZZZmrmm3C3JjK
     FapiInteractionIdHeader:
       name: x-fapi-interaction-id
       in: header
@@ -288,6 +280,14 @@ components:
       schema:
         type: string
       example: rrt-9705854100-bgce-821-23397-1
+    AccountIdPath:
+      name: accountId
+      in: path
+      description: Unique identifier for account, a surrogate account key in lieu of the actual account number
+      required: true
+      schema:
+        type: string
+      example: ZZZmrmm3C3JjK
   securitySchemes:
     OAuth:
       type: oauth2
