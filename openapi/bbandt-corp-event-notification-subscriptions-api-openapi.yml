@@ -271,67 +271,14 @@ paths:
         '504':
           $ref: '#/components/responses/504'
 components:
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
   responses:
-    '500':
-      description: Internal Server Error
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INTERNAL_SERVER_ERROR:
-              value:
-                code: '500'
-                message: Internal Server Error
-            SUBSYSTEM_UNAVAILABLE_ERROR:
-              value:
-                code: '501'
-                message: Subsystem unavailable
-    '405':
-      description: Client called an unimplemented REST method
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_METHOD:
-              value:
-                code: '1206'
-                message: The request method is not supported by this resource
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: An upstream server is unavailable
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: A time-out occurred connecting to an upstream server
     '401':
       description: Unauthorized
       headers:
@@ -350,6 +297,34 @@ components:
               value:
                 code: 603-403
                 message: Data recipient connection does not include Event Notifications API
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: The request method is not supported by this resource
     '429':
       description: Too Many Requests
       headers:
@@ -368,24 +343,39 @@ components:
               value:
                 code: '1207'
                 message: Quota violation, too many requests
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: Internal Server Error
+            SUBSYSTEM_UNAVAILABLE_ERROR:
+              value:
+                code: '501'
+                message: Subsystem unavailable
   schemas:
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
-      type: object
-      properties:
-        code:
-          type: string
-          description: Long term persistent identifier which can be used to trace error condition back to log information
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-    NotificationCategory:
-      title: Notification Category
-      description: Category of Notification
-      type: string
-      enum:
-      - CONSENT
     Party:
       title: Party entity
       description: FDX Participant - an entity or person that is a part of a FDX API transaction
@@ -412,6 +402,39 @@ components:
       type: string
       enum:
       - PRIVATE
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+    NotificationType:
+      title: Notification Type
+      description: Type of notification
+      type: string
+      enum:
+      - CONSENT_REVOKED
+      - CONSENT_UPDATED
+    NotificationCategory:
+      title: Notification Category
+      description: Category of Notification
+      type: string
+      enum:
+      - CONSENT
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    DateString:
+      title: Date String
+      description: ISO 8601 full-date in format 'YYYY-MM-DD' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date
+      maxLength: 10
+      example: '2021-07-15'
     NotificationSubscription:
       title: Notification Subscription entity
       description: Provides the fields of a notification subscription
@@ -442,18 +465,6 @@ components:
       - callbackUrl
       - subscriber
       - subscriptionId
-    NotificationType:
-      title: Notification Type
-      description: Type of notification
-      type: string
-      enum:
-      - CONSENT_REVOKED
-      - CONSENT_UPDATED
-    Identifier:
-      title: Identifier
-      description: Value for a unique identifier
-      type: string
-      maxLength: 256
     PartyType:
       title: Party Type
       description: Identifies the type of a party
@@ -461,28 +472,17 @@ components:
       enum:
       - DATA_ACCESS_PLATFORM
       - DATA_RECIPIENT
-    FapiInteractionId:
-      title: FAPI Interaction ID
-      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
-      type: string
-      format: uuid
-      minLength: 36
-      maxLength: 36
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
-    DateString:
-      title: Date String
-      description: ISO 8601 full-date in format 'YYYY-MM-DD' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
-      type: string
-      format: date
-      maxLength: 10
-      example: '2021-07-15'
-  headers:
-    x-fapi-interaction-id:
-      description: Unique identifier for this interaction
-      schema:
-        $ref: '#/components/schemas/FapiInteractionId'
-      required: true
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
+      type: object
+      properties:
+        code:
+          type: string
+          description: Long term persistent identifier which can be used to trace error condition back to log information
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
   parameters:
     FapiInteractionIdHeader:
       name: x-fapi-interaction-id

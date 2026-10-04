@@ -155,29 +155,6 @@ paths:
       description: Truist Financial Retail Open Banking APIs - Production environment
 components:
   responses:
-    '204':
-      description: No Content. Successful request, account does not have or does not support contacts
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-    '404':
-      description: Not Found
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            RESOURCE_NOT_FOUND:
-              value:
-                code: 701-1206
-                message: URI does not represent a recognized resource
-            INVALID_ACCOUNT:
-              value:
-                code: '701'
-                message: Invalid account id
     '405':
       description: Client called an unimplemented REST method
       headers:
@@ -192,66 +169,6 @@ components:
               value:
                 code: '1206'
                 message: The request method is not supported by this resource
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: An upstream server is unavailable
-    '403':
-      description: Forbidden
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_SCOPE:
-              value:
-                code: '602'
-                message: Customer connection does not authorize account contact
-    '500':
-      description: Internal Server Error
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INTERNAL_SERVER_ERROR:
-              value:
-                code: '500'
-                message: Internal Server Error
-            SUBSYSTEM_UNAVAILABLE_ERROR:
-              value:
-                code: '501'
-                message: Subsystem unavailable
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: A time-out occurred connecting to an upstream server
     '429':
       description: Too Many Requests
       headers:
@@ -296,6 +213,139 @@ components:
               value:
                 code: 603-403
                 message: Data recipient connection does not include CUSTOMER_CONTACT
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: Internal Server Error
+            SUBSYSTEM_UNAVAILABLE_ERROR:
+              value:
+                code: '501'
+                message: Subsystem unavailable
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+    '403':
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_SCOPE:
+              value:
+                code: '602'
+                message: Customer connection does not authorize account contact
+    '204':
+      description: No Content. Successful request, account does not have or does not support contacts
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: 701-1206
+                message: URI does not represent a recognized resource
+            INVALID_ACCOUNT:
+              value:
+                code: '701'
+                message: Invalid account id
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server
+    '401_2':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id_2'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error_2'
+          examples:
+            AUTHENTICATION_FAILED:
+              value:
+                code: '603'
+                message: Authentication failed
+    '429_2':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id_2'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error_2'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Spike Arrest Violation
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota Violation
+    '403_2':
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id_2'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error_2'
+          examples:
+            INSUFFICIENT_SCOPE:
+              value:
+                code: '602'
+                message: Customer connection does not authorize customer data
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '403'
+                message: Data recipient connection does not include customer data
     '500_2':
       description: Internal Server Error
       headers:
@@ -324,56 +374,19 @@ components:
               value:
                 code: '1107'
                 message: URI does not represent a recognized resource
-    '403_2':
-      description: Forbidden
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id_2'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error_2'
-          examples:
-            INSUFFICIENT_SCOPE:
-              value:
-                code: '602'
-                message: Customer connection does not authorize customer data
-            NO_APIPRODUCT_MATCHFOUND:
-              value:
-                code: '403'
-                message: Data recipient connection does not include customer data
-    '429_2':
-      description: Too Many Requests
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id_2'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error_2'
-          examples:
-            SPIKE_ARREST_VIOLATION:
-              value:
-                code: '1207'
-                message: Spike Arrest Violation
-            QUOTA_VIOLATION:
-              value:
-                code: '1207'
-                message: Quota Violation
-    '401_2':
-      description: Unauthorized
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id_2'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error_2'
-          examples:
-            AUTHENTICATION_FAILED:
-              value:
-                code: '603'
-                message: Authentication failed
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    x-fapi-interaction-id_2:
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
   parameters:
     FdxApiActorTypeHeader:
       name: FDX-API-Actor-Type
@@ -428,131 +441,6 @@ components:
       minLength: 36
       maxLength: 36
       example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
-    Error_2:
-      title: Error
-      description: An error entity which can be used at the API level for error responses
-      type: object
-      x-fdx-csdf-technical: true
-      properties:
-        code:
-          type: string
-          description: Error code defined by FDX API Specification or Data Provider indicating the error situation which has occurred
-          x-fdx-csdf-technical: true
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
-          x-fdx-csdf-technical: true
-    CustomerName:
-      title: Customer Name entity
-      description: The name of an individual in their role as a customer
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      allOf:
-      - $ref: '#/components/schemas/IndividualName'
-      - type: object
-        properties:
-          company:
-            type: string
-            description: Company name
-            x-fdx-csdf-account-categories:
-            - ANY
-    DeliveryAddressType:
-      title: Delivery Address Type
-      description: The location type of an address
-      type: string
-      x-fdx-csdf-account-categories:
-      - ANY
-      enum:
-      - HOME
-      - BUSINESS
-      - MAILING
-    IndividualName:
-      title: Individual name
-      description: First name, middle initial, last name, suffix fields
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      properties:
-        first:
-          description: First name
-          type: string
-          x-fdx-csdf-account-categories:
-          - ANY
-        middle:
-          description: Middle initial
-          type: string
-          x-fdx-csdf-account-categories:
-          - ANY
-        last:
-          description: Last name
-          type: string
-          x-fdx-csdf-account-categories:
-          - ANY
-    TelephoneNumber:
-      title: Telephone Number
-      description: Standard for international phone numbers
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      properties:
-        type:
-          $ref: '#/components/schemas/TelephoneNumberType'
-          description: 'Type of phone number: HOME, BUSINESS, CELL, FAX'
-          x-fdx-csdf-account-categories:
-          - ANY
-        number:
-          type: string
-          maxLength: 15
-          pattern: \d+
-          description: Telephone subscriber number defined by ITU-T recommendation E.164
-          x-fdx-csdf-account-categories:
-          - ANY
-    Customer:
-      title: Customer entity
-      description: Represents a customer
-      type: object
-      x-fdx-csdf-account-categories:
-      - ANY
-      properties:
-        customerId:
-          $ref: '#/components/schemas/Identifier'
-          description: Long-term persistent identity of the customer. This identity must be unique to the owning institution
-          x-fdx-csdf-account-categories:
-          - ANY
-        name:
-          $ref: '#/components/schemas/CustomerName'
-          description: The customer's name
-          x-fdx-csdf-account-categories:
-          - ANY
-        email:
-          type: array
-          items:
-            type: string
-          description: An array of the customer's electronic mail addresses
-          x-fdx-csdf-account-categories:
-          - ANY
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/DeliveryAddress'
-          description: An array of the customer's physical mail addresses
-          x-fdx-csdf-account-categories:
-          - ANY
-        telephones:
-          type: array
-          items:
-            $ref: '#/components/schemas/TelephoneNumber'
-          description: An array of the customer's telephone numbers
-          x-fdx-csdf-account-categories:
-          - ANY
-    Identifier:
-      title: Identifier
-      description: Value for a unique identifier
-      type: string
-      maxLength: 256
-      x-fdx-csdf-account-categories:
-      - ANY
     Address:
       title: Address
       description: Postal address
@@ -596,6 +484,28 @@ components:
           description: Country code
           x-fdx-csdf-account-categories:
           - ANY
+    IndividualName:
+      title: Individual name
+      description: First name, middle initial, last name, suffix fields
+      type: object
+      x-fdx-csdf-account-categories:
+      - ANY
+      properties:
+        first:
+          description: First name
+          type: string
+          x-fdx-csdf-account-categories:
+          - ANY
+        middle:
+          description: Middle initial
+          type: string
+          x-fdx-csdf-account-categories:
+          - ANY
+        last:
+          description: Last name
+          type: string
+          x-fdx-csdf-account-categories:
+          - ANY
     DeliveryAddress:
       title: Delivery Address
       description: A delivery address and its location type
@@ -611,6 +521,20 @@ components:
             description: Type of address location. One of BUSINESS, HOME, MAILING
             x-fdx-csdf-account-categories:
             - ANY
+    String64:
+      title: String 64
+      description: String of maximum length 64
+      type: string
+      maxLength: 64
+      x-fdx-csdf-account-categories:
+      - ANY
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
+      x-fdx-csdf-account-categories:
+      - ANY
     TelephoneNumberType:
       title: Telephone Number Type
       description: Purpose or type of telephone number
@@ -622,6 +546,50 @@ components:
       - CELL
       - FAX
       - HOME
+    CustomerName:
+      title: Customer Name entity
+      description: The name of an individual in their role as a customer
+      type: object
+      x-fdx-csdf-account-categories:
+      - ANY
+      allOf:
+      - $ref: '#/components/schemas/IndividualName'
+      - type: object
+        properties:
+          company:
+            type: string
+            description: Company name
+            x-fdx-csdf-account-categories:
+            - ANY
+    TelephoneNumber:
+      title: Telephone Number
+      description: Standard for international phone numbers
+      type: object
+      x-fdx-csdf-account-categories:
+      - ANY
+      properties:
+        type:
+          $ref: '#/components/schemas/TelephoneNumberType'
+          description: 'Type of phone number: HOME, BUSINESS, CELL, FAX'
+          x-fdx-csdf-account-categories:
+          - ANY
+        number:
+          type: string
+          maxLength: 15
+          pattern: \d+
+          description: Telephone subscriber number defined by ITU-T recommendation E.164
+          x-fdx-csdf-account-categories:
+          - ANY
+    DeliveryAddressType:
+      title: Delivery Address Type
+      description: The location type of an address
+      type: string
+      x-fdx-csdf-account-categories:
+      - ANY
+      enum:
+      - HOME
+      - BUSINESS
+      - MAILING
     Iso3166CountryCode:
       title: ISO 3166 Country Code
       description: ISO 3166-1 alpha-2 codes as of April 5, 2023, from officially assigned Country Codes on [ISO Online Browsing Platform](https://www.iso.org/obp/ui/). Change log is at [ISO 3166 Maintenance Agency](https://www.iso.org/fr/committee/48750.html?t=3V3rukDb61p05Wd6ojyTRvE0S3Yg_fZgUjrLjHWcd9-mDmTKHOGjbX3nEJ3SqHar&view=documents#section-isodocuments-top)
@@ -878,26 +846,58 @@ components:
       - ZA
       - ZM
       - ZW
-    String64:
-      title: String 64
-      description: String of maximum length 64
-      type: string
-      maxLength: 64
+    Error_2:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      x-fdx-csdf-technical: true
+      properties:
+        code:
+          type: string
+          description: Error code defined by FDX API Specification or Data Provider indicating the error situation which has occurred
+          x-fdx-csdf-technical: true
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+          x-fdx-csdf-technical: true
+    Customer:
+      title: Customer entity
+      description: Represents a customer
+      type: object
       x-fdx-csdf-account-categories:
       - ANY
-  headers:
-    x-fapi-interaction-id:
-      description: Unique identifier for this interaction
-      schema:
-        $ref: '#/components/schemas/FapiInteractionId'
-      required: true
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
-    x-fapi-interaction-id_2:
-      description: Unique request identifier
-      required: true
-      schema:
-        type: string
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+      properties:
+        customerId:
+          $ref: '#/components/schemas/Identifier'
+          description: Long-term persistent identity of the customer. This identity must be unique to the owning institution
+          x-fdx-csdf-account-categories:
+          - ANY
+        name:
+          $ref: '#/components/schemas/CustomerName'
+          description: The customer's name
+          x-fdx-csdf-account-categories:
+          - ANY
+        email:
+          type: array
+          items:
+            type: string
+          description: An array of the customer's electronic mail addresses
+          x-fdx-csdf-account-categories:
+          - ANY
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryAddress'
+          description: An array of the customer's physical mail addresses
+          x-fdx-csdf-account-categories:
+          - ANY
+        telephones:
+          type: array
+          items:
+            $ref: '#/components/schemas/TelephoneNumber'
+          description: An array of the customer's telephone numbers
+          x-fdx-csdf-account-categories:
+          - ANY
   securitySchemes:
     OAuth:
       type: oauth2

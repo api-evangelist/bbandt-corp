@@ -225,71 +225,6 @@ paths:
         - read:accounts
 components:
   schemas:
-    CreditCardAccount:
-      title: schema definition for commercial CreditCardAccount details.
-      description: Credit card account details
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Account'
-      - type: object
-        properties:
-          paymentDueAmount:
-            description: Entire statement balance for the last month.
-            type: number
-          currentBalance:
-            description: Current balance of the card.
-            type: number
-          paymentDueDate:
-            description: Due date for the paymentDueAmount.
-            type: string
-            format: date
-            example: '2019-05-20'
-          availableCredit:
-            description: Credit amount available.
-            type: number
-          creditLimit:
-            description: Credit limit for the commercial credit card
-            type: number
-          nextPayment:
-            description: Minimum due amount for the credit card account.
-            type: number
-          pastDueAmount:
-            description: Amount due from past month.
-            type: number
-    BalanceType:
-      type: string
-      description: Type of balances on account("ASSET", "LIABILITY")
-      enum:
-      - ASSET
-      - LIABILITY
-    LineOfCreditAccount:
-      title: schema definition for commercial LineOfCreditAccount details
-      description: Line of credit Account details
-      type: object
-      allOf:
-      - $ref: '#/components/schemas/Account'
-      - type: object
-        properties:
-          originalLineAmount:
-            description: Amount committed for the Line.
-            type: number
-          outstandingBalance:
-            description: Amount already used for this line account.
-            type: number
-          availableBalance:
-            description: Amount available to be used for this line account.
-            type: number
-    Error:
-      title: Error
-      description: An error entity which can be used at the API level for error responses
-      type: object
-      properties:
-        code:
-          type: string
-          description: Defined error type codes
-        message:
-          type: string
-          description: End user displayable information which might help the customer diagnose an error
     BalanceDetails:
       description: Balance details
       type: object
@@ -303,19 +238,15 @@ components:
         asofDate:
           description: Business Date associated with the balance.
           type: string
-    AccountDetail:
-      title: Commercial account eligible account list
-      description: Accounts returned by API upon successful search
+    Account:
+      title: Base Account
+      description: Account attributes shared across all account types
       type: object
       properties:
-        depositAccount:
-          $ref: '#/components/schemas/DepositAccount'
-        loanAccount:
-          $ref: '#/components/schemas/LoanAccount'
-        lineOfCreditAccount:
-          $ref: '#/components/schemas/LineOfCreditAccount'
-        creditCardAccount:
-          $ref: '#/components/schemas/CreditCardAccount'
+        balanceType:
+          $ref: '#/components/schemas/BalanceType'
+        lineOfBusiness:
+          $ref: '#/components/schemas/LineOfBusiness'
     LoanAccount:
       title: Schema definition for commercial LoanAccount details
       description: Loan account details.
@@ -356,6 +287,37 @@ components:
             type: number
           interestPaidYTD:
             description: Interest paid year to date
+            type: number
+    CreditCardAccount:
+      title: schema definition for commercial CreditCardAccount details.
+      description: Credit card account details
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Account'
+      - type: object
+        properties:
+          paymentDueAmount:
+            description: Entire statement balance for the last month.
+            type: number
+          currentBalance:
+            description: Current balance of the card.
+            type: number
+          paymentDueDate:
+            description: Due date for the paymentDueAmount.
+            type: string
+            format: date
+            example: '2019-05-20'
+          availableCredit:
+            description: Credit amount available.
+            type: number
+          creditLimit:
+            description: Credit limit for the commercial credit card
+            type: number
+          nextPayment:
+            description: Minimum due amount for the credit card account.
+            type: number
+          pastDueAmount:
+            description: Amount due from past month.
             type: number
     DepositAccount:
       title: schema definition for commercial DepositAccount details.
@@ -412,21 +374,59 @@ components:
           pendingDebit:
             description: A total of all of the pending debits to your account that have not yet posted, but are reflected in your available balance.
             type: number
-    Account:
-      title: Base Account
-      description: Account attributes shared across all account types
-      type: object
-      properties:
-        balanceType:
-          $ref: '#/components/schemas/BalanceType'
-        lineOfBusiness:
-          $ref: '#/components/schemas/LineOfBusiness'
     LineOfBusiness:
       type: string
       description: Truist Line of Business to which the account maps("Commercial, "Retail")
       enum:
       - Commercial
       - Retail
+    Error:
+      title: Error
+      description: An error entity which can be used at the API level for error responses
+      type: object
+      properties:
+        code:
+          type: string
+          description: Defined error type codes
+        message:
+          type: string
+          description: End user displayable information which might help the customer diagnose an error
+    BalanceType:
+      type: string
+      description: Type of balances on account("ASSET", "LIABILITY")
+      enum:
+      - ASSET
+      - LIABILITY
+    LineOfCreditAccount:
+      title: schema definition for commercial LineOfCreditAccount details
+      description: Line of credit Account details
+      type: object
+      allOf:
+      - $ref: '#/components/schemas/Account'
+      - type: object
+        properties:
+          originalLineAmount:
+            description: Amount committed for the Line.
+            type: number
+          outstandingBalance:
+            description: Amount already used for this line account.
+            type: number
+          availableBalance:
+            description: Amount available to be used for this line account.
+            type: number
+    AccountDetail:
+      title: Commercial account eligible account list
+      description: Accounts returned by API upon successful search
+      type: object
+      properties:
+        depositAccount:
+          $ref: '#/components/schemas/DepositAccount'
+        loanAccount:
+          $ref: '#/components/schemas/LoanAccount'
+        lineOfCreditAccount:
+          $ref: '#/components/schemas/LineOfCreditAccount'
+        creditCardAccount:
+          $ref: '#/components/schemas/CreditCardAccount'
   headers:
     x-fapi-interaction-id:
       description: Unique identifier

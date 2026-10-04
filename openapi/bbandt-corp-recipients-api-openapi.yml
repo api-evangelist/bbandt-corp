@@ -269,38 +269,7 @@ paths:
         '504':
           $ref: '#/components/responses/504'
 components:
-  parameters:
-    ClientIdPath:
-      name: clientId
-      in: path
-      description: Client Identifier. Uniquely identifies a Client
-      required: true
-      schema:
-        $ref: '#/components/schemas/Identifier'
-      example: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tn
-    FapiInteractionIdHeader:
-      name: x-fapi-interaction-id
-      in: header
-      description: Unique request identifier
-      schema:
-        $ref: '#/components/schemas/FapiInteractionId'
-      required: true
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
   responses:
-    '404':
-      description: Not Found
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            RESOURCE_NOT_FOUND:
-              value:
-                code: 1107-1206
-                message: URI does not represent a recognized resource
     '405':
       description: Client called an unimplemented REST method
       headers:
@@ -315,62 +284,6 @@ components:
               value:
                 code: '1206'
                 message: Method Not Allowed
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: Scheduled Maintenance
-    '403':
-      description: Forbidden
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            NO_APIPRODUCT_MATCHFOUND:
-              value:
-                code: '403'
-                message: Forbidden, inadequate authorization
-    '500':
-      description: Internal Server Error
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INTERNAL_SERVER_ERROR:
-              value:
-                code: '500'
-                message: System down for maintenance
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: A time-out occurred connecting to an upstream server
     '429':
       description: Too Many Requests
       headers:
@@ -403,6 +316,34 @@ components:
               value:
                 code: '603'
                 message: Authentication failed
+    '403':
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: '403'
+                message: Forbidden, inadequate authorization
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: System down for maintenance
     '409':
       description: Conflict
       headers:
@@ -417,7 +358,83 @@ components:
               value:
                 code: '409'
                 message: Duplicate Client Name request
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: Scheduled Maintenance
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: 1107-1206
+                message: URI does not represent a recognized resource
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server
   schemas:
+    Intermediary:
+      title: Intermediary
+      description: Data Access Platform, Service Provider, or any other entity in the data sharing chain between a Data Provider to a Data Recipient. In snake case to match IETF RFC 7591 naming formats
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of intermediary party
+        description:
+          type: string
+          description: A short description of the intermediary
+        uri:
+          type: string
+          format: uri
+          description: A URL string of a web page providing information about the intermediary
+        logo_uri:
+          type: string
+          format: uri
+          description: A URL string that references a logo for this intermediary
+        contacts:
+          type: array
+          items:
+            type: string
+          description: Array of strings representing ways to contact people responsible for this intermediary
+      required:
+      - name
+      - uri
+      - contacts
+    ConsentDurationType:
+      title: Consent Duration Type
+      description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
+      type: string
+      enum:
+      - TIME_BOUND
     RecipientRequest:
       title: Recipient Request
       type: object
@@ -476,17 +493,6 @@ components:
       - contacts
       - scope
       - duration_type
-    Identifier:
-      title: Identifier
-      description: Value for a unique identifier
-      type: string
-      maxLength: 256
-    ConsentDurationType:
-      title: Consent Duration Type
-      description: Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)
-      type: string
-      enum:
-      - TIME_BOUND
     Error:
       title: Error
       description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
@@ -498,34 +504,6 @@ components:
         message:
           type: string
           description: End user displayable information which might help the customer diagnose an error
-    Intermediary:
-      title: Intermediary
-      description: Data Access Platform, Service Provider, or any other entity in the data sharing chain between a Data Provider to a Data Recipient. In snake case to match IETF RFC 7591 naming formats
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of intermediary party
-        description:
-          type: string
-          description: A short description of the intermediary
-        uri:
-          type: string
-          format: uri
-          description: A URL string of a web page providing information about the intermediary
-        logo_uri:
-          type: string
-          format: uri
-          description: A URL string that references a logo for this intermediary
-        contacts:
-          type: array
-          items:
-            type: string
-          description: Array of strings representing ways to contact people responsible for this intermediary
-      required:
-      - name
-      - uri
-      - contacts
     FapiInteractionId:
       title: FAPI Interaction ID
       description: Universally unique identifier for this interaction, used across all FDX API requests and responses
@@ -534,6 +512,11 @@ components:
       minLength: 36
       maxLength: 36
       example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    Identifier:
+      title: Identifier
+      description: Value for a unique identifier
+      type: string
+      maxLength: 256
   headers:
     x-fapi-interaction-id:
       description: Unique request identifier
@@ -541,6 +524,23 @@ components:
         $ref: '#/components/schemas/FapiInteractionId'
       required: true
       example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+  parameters:
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request identifier
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    ClientIdPath:
+      name: clientId
+      in: path
+      description: Client Identifier. Uniquely identifies a Client
+      required: true
+      schema:
+        $ref: '#/components/schemas/Identifier'
+      example: uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tn
   securitySchemes:
     BasicAuth:
       type: http

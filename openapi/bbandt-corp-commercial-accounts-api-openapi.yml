@@ -138,7 +138,45 @@ paths:
       - OAuth:
         - read:accounts
 components:
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
   schemas:
+    Account:
+      title: Summary data for an account
+      description: Summary data for an account
+      type: object
+      properties:
+        accountId:
+          description: Unique identifier for account, a surrogate account key in lieu of the actual account number
+          type: string
+        accountType:
+          description: Account type identified by the bank
+          $ref: '#/components/schemas/AccountType'
+        displayName:
+          description: Account display name (currently obfuscated account number)
+          type: string
+        bankNumber:
+          description: Bank number to identify the bank branch
+          type: string
+        description:
+          description: Account description (account title)
+          type: string
+        currency:
+          $ref: '#/components/schemas/Currency'
+        accountNumber:
+          description: Masked account number showing last 6 digits
+          type: string
+        balanceType:
+          description: Type of Account ("ASSET", "LIABILITY")
+          $ref: '#/components/schemas/BalanceType'
+        status:
+          description: Status of the account
+          $ref: '#/components/schemas/Status'
     Accounts:
       title: Commercial account eligible account list
       description: Accounts returned by API upon successful search
@@ -198,54 +236,14 @@ components:
           accountNumber: '************818114'
           balanceType: ASSET
           status: ACTIVE
-    BalanceType:
-      title: Type of account balance
-      description: Type of account balance
+    Status:
+      title: Status of the account
+      description: Status of the account
       type: string
       enum:
-      - ASSET
-      - LIABILITY
-    Account:
-      title: Summary data for an account
-      description: Summary data for an account
-      type: object
-      properties:
-        accountId:
-          description: Unique identifier for account, a surrogate account key in lieu of the actual account number
-          type: string
-        accountType:
-          description: Account type identified by the bank
-          $ref: '#/components/schemas/AccountType'
-        displayName:
-          description: Account display name (currently obfuscated account number)
-          type: string
-        bankNumber:
-          description: Bank number to identify the bank branch
-          type: string
-        description:
-          description: Account description (account title)
-          type: string
-        currency:
-          $ref: '#/components/schemas/Currency'
-        accountNumber:
-          description: Masked account number showing last 6 digits
-          type: string
-        balanceType:
-          description: Type of Account ("ASSET", "LIABILITY")
-          $ref: '#/components/schemas/BalanceType'
-        status:
-          description: Status of the account
-          $ref: '#/components/schemas/Status'
-    AccountType:
-      title: Enumeration of account types
-      description: Account type identified by the bank
-      type: string
-      enum:
-      - CHECKING
-      - SAVINGS
-      - CREDITCARD
-      - COMMERCIALLOAN
-      - COMMERCIALLINEOFCREDIT
+      - ACTIVE
+      - CLOSED
+      - DORMANT
     Error:
       title: Error
       description: An error entity which can be used at the API level for error responses
@@ -257,14 +255,23 @@ components:
         message:
           type: string
           description: End user displayable information which might help the customer diagnose an error
-    Status:
-      title: Status of the account
-      description: Status of the account
+    AccountType:
+      title: Enumeration of account types
+      description: Account type identified by the bank
       type: string
       enum:
-      - ACTIVE
-      - CLOSED
-      - DORMANT
+      - CHECKING
+      - SAVINGS
+      - CREDITCARD
+      - COMMERCIALLOAN
+      - COMMERCIALLINEOFCREDIT
+    BalanceType:
+      title: Type of account balance
+      description: Type of account balance
+      type: string
+      enum:
+      - ASSET
+      - LIABILITY
     Currency:
       title: Account currency code
       description: Currency code information
@@ -279,13 +286,6 @@ components:
         originalCurrencyCode:
           description: Currency identifier. USD is the only option available at this time.
           type: string
-  headers:
-    x-fapi-interaction-id:
-      description: Unique identifier
-      required: true
-      schema:
-        type: string
-      example: rrt-970585410023330903-b-gce-821-23397-1
   parameters:
     FapiInteractionIdHeader:
       name: x-fapi-interaction-id

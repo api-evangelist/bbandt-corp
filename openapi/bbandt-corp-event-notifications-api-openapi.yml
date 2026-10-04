@@ -91,7 +91,219 @@ paths:
         '504':
           $ref: '#/components/responses/504'
 components:
+  headers:
+    x-fapi-interaction-id:
+      description: Unique identifier for this interaction
+      schema:
+        $ref: '#/components/schemas/FapiInteractionId'
+      required: true
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+  responses:
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_BASICAUTHENTICATION_SOURCE:
+              value:
+                code: '603'
+                message: Authentication failed
+            NO_APIPRODUCT_MATCHFOUND:
+              value:
+                code: 603-403
+                message: Data recipient connection does not include Event Notifications API
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: A time-out occurred connecting to an upstream server
+    '405':
+      description: Client called an unimplemented REST method
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_METHOD:
+              value:
+                code: '1206'
+                message: The request method is not supported by this resource
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Traffic spike, too many requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1207'
+                message: Quota violation, too many requests
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: An upstream server is unavailable
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: Internal Server Error
+            SUBSYSTEM_UNAVAILABLE_ERROR:
+              value:
+                code: '501'
+                message: Subsystem unavailable
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: 1107-1206
+                message: URI does not represent a recognized resource
   schemas:
+    Party:
+      title: Party entity
+      description: FDX Participant - an entity or person that is a part of a FDX API transaction
+      type: object
+      required:
+      - name
+      - type
+      properties:
+        name:
+          description: Human recognizable common name
+          type: string
+        type:
+          description: Extensible string enum identifying the type of the party
+          $ref: '#/components/schemas/PartyType'
+        registeredEntityId:
+          description: Registered id of party
+          type: string
+    NotificationSeverity:
+      title: Notification Severity
+      description: Severity level of notification
+      type: string
+      enum:
+      - EMERGENCY
+      - ALERT
+      - WARNING
+      - NOTICE
+      - INFO
+    FiAttribute:
+      title: FI Attribute entity
+      description: Financial Institution provider-specific attribute
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of attribute, INITIATOR
+        value:
+          type: string
+          description: Value of attribute, INDIVIDUAL or DATA_RECIPIENT
+    Timestamp:
+      title: Timestamp
+      description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+      type: string
+      format: date-time
+      example: '2021-07-15T14:46:41.375Z'
+    NotificationType:
+      title: Notification Type
+      description: Type of notification
+      type: string
+      enum:
+      - CONSENT_REVOKED
+    NotificationCategory:
+      title: Notification Category
+      description: Category of Notification
+      type: string
+      enum:
+      - CONSENT
+    NotificationPayload:
+      title: Notification Payload entity
+      description: Custom key-value pairs payload for a notification
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID for the origination entity related to the notification
+          maxLength: 64
+        idType:
+          $ref: '#/components/schemas/NotificationPayloadIdType'
+          description: Type of entity causing origination of the notification with the given ID
+        customFields:
+          $ref: '#/components/schemas/FiAttribute'
+          description: Custom key-value pairs for a notification
+    FapiInteractionId:
+      title: FAPI Interaction ID
+      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
+      type: string
+      format: uuid
+      minLength: 36
+      maxLength: 36
+      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
+    NotificationPriority:
+      title: Notification Priority
+      description: Priority of notification
+      type: string
+      enum:
+      - HIGH
+      - MEDIUM
+      - LOW
+    PartyType:
+      title: Party Type
+      description: Identifies the type of a party
+      type: string
+      enum:
+      - DATA_RECIPIENT
+      - INDIVIDUAL
     Notification:
       title: Notification entity
       description: Provides the base fields of a notification. Clients will read the `type` property to determine the expected notification payload
@@ -129,12 +341,6 @@ components:
       - category
       - publisher
       - notificationPayload
-    NotificationPayloadIdType:
-      title: Notification Payload Id Type
-      description: Type of entity causing origination of a notification
-      type: string
-      enum:
-      - CONSENT
     Error:
       title: Error
       description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
@@ -146,218 +352,12 @@ components:
         message:
           type: string
           description: End user displayable information which might help the customer diagnose an error
-    NotificationCategory:
-      title: Notification Category
-      description: Category of Notification
+    NotificationPayloadIdType:
+      title: Notification Payload Id Type
+      description: Type of entity causing origination of a notification
       type: string
       enum:
       - CONSENT
-    FiAttribute:
-      title: FI Attribute entity
-      description: Financial Institution provider-specific attribute
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of attribute, INITIATOR
-        value:
-          type: string
-          description: Value of attribute, INDIVIDUAL or DATA_RECIPIENT
-    NotificationSeverity:
-      title: Notification Severity
-      description: Severity level of notification
-      type: string
-      enum:
-      - EMERGENCY
-      - ALERT
-      - WARNING
-      - NOTICE
-      - INFO
-    Party:
-      title: Party entity
-      description: FDX Participant - an entity or person that is a part of a FDX API transaction
-      type: object
-      required:
-      - name
-      - type
-      properties:
-        name:
-          description: Human recognizable common name
-          type: string
-        type:
-          description: Extensible string enum identifying the type of the party
-          $ref: '#/components/schemas/PartyType'
-        registeredEntityId:
-          description: Registered id of party
-          type: string
-    NotificationPriority:
-      title: Notification Priority
-      description: Priority of notification
-      type: string
-      enum:
-      - HIGH
-      - MEDIUM
-      - LOW
-    NotificationType:
-      title: Notification Type
-      description: Type of notification
-      type: string
-      enum:
-      - CONSENT_REVOKED
-    Timestamp:
-      title: Timestamp
-      description: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
-      type: string
-      format: date-time
-      example: '2021-07-15T14:46:41.375Z'
-    PartyType:
-      title: Party Type
-      description: Identifies the type of a party
-      type: string
-      enum:
-      - DATA_RECIPIENT
-      - INDIVIDUAL
-    NotificationPayload:
-      title: Notification Payload entity
-      description: Custom key-value pairs payload for a notification
-      type: object
-      properties:
-        id:
-          type: string
-          description: ID for the origination entity related to the notification
-          maxLength: 64
-        idType:
-          $ref: '#/components/schemas/NotificationPayloadIdType'
-          description: Type of entity causing origination of the notification with the given ID
-        customFields:
-          $ref: '#/components/schemas/FiAttribute'
-          description: Custom key-value pairs for a notification
-    FapiInteractionId:
-      title: FAPI Interaction ID
-      description: Universally unique identifier for this interaction, used across all FDX API requests and responses
-      type: string
-      format: uuid
-      minLength: 36
-      maxLength: 36
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
-  responses:
-    '500':
-      description: Internal Server Error
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INTERNAL_SERVER_ERROR:
-              value:
-                code: '500'
-                message: Internal Server Error
-            SUBSYSTEM_UNAVAILABLE_ERROR:
-              value:
-                code: '501'
-                message: Subsystem unavailable
-    '405':
-      description: Client called an unimplemented REST method
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_METHOD:
-              value:
-                code: '1206'
-                message: The request method is not supported by this resource
-    '404':
-      description: Not Found
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            RESOURCE_NOT_FOUND:
-              value:
-                code: 1107-1206
-                message: URI does not represent a recognized resource
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: An upstream server is unavailable
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: A time-out occurred connecting to an upstream server
-    '429':
-      description: Too Many Requests
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SPIKE_ARREST_VIOLATION:
-              value:
-                code: '1207'
-                message: Traffic spike, too many requests
-            QUOTA_VIOLATION:
-              value:
-                code: '1207'
-                message: Quota violation, too many requests
-    '401':
-      description: Unauthorized
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_BASICAUTHENTICATION_SOURCE:
-              value:
-                code: '603'
-                message: Authentication failed
-            NO_APIPRODUCT_MATCHFOUND:
-              value:
-                code: 603-403
-                message: Data recipient connection does not include Event Notifications API
-  headers:
-    x-fapi-interaction-id:
-      description: Unique identifier for this interaction
-      schema:
-        $ref: '#/components/schemas/FapiInteractionId'
-      required: true
-      example: c770aef3-6784-41f7-8e0e-ff5f97bddb3a
   parameters:
     FapiInteractionIdHeader:
       name: x-fapi-interaction-id

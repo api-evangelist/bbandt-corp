@@ -251,7 +251,218 @@ paths:
       - OAuth:
         - read:payments
 components:
+  headers:
+    x-fapi-interaction-id:
+      description: Unique request identifier
+      required: true
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+  parameters:
+    ToAmountQuery:
+      name: toAmount
+      in: query
+      description: To Amount
+      required: false
+      schema:
+        type: number
+      example: 2
+    PaymentToDateQuery:
+      name: paymentToDate
+      in: query
+      description: To date
+      required: false
+      schema:
+        type: string
+        format: date
+      example: '2023-09-20'
+    PaymentFromDateQuery:
+      name: paymentFromDate
+      in: query
+      description: From date
+      required: false
+      schema:
+        type: string
+        format: date
+      example: '2023-08-13'
+    FromAmountQuery:
+      name: fromAmount
+      in: query
+      description: From Amount
+      required: false
+      schema:
+        type: number
+      example: 1
+    FapiInteractionIdHeader:
+      name: x-fapi-interaction-id
+      in: header
+      description: Unique request Identifier
+      required: false
+      schema:
+        type: string
+      example: rrt-970585410023330903-b-gce-821-23397-1
+  responses:
+    '401':
+      description: Unauthorized
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INVALID_ACCESS_TOKEN:
+              value:
+                code: '603'
+                message: Authentication failed
+    '504':
+      description: Service Timed out
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            GATEWAY_TIMEOUT:
+              value:
+                code: '504'
+                message: An unexpected error occurred while processing your request
+    '405':
+      description: Method Not Allowed
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            METHOD_NOT_ALLOWED:
+              value:
+                code: '1206'
+                message: Method Not Allowed
+    '429':
+      description: Too Many Requests
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SPIKE_ARREST_VIOLATION:
+              value:
+                code: '1207'
+                message: Too Many Requests
+            QUOTA_VIOLATION:
+              value:
+                code: '1208'
+                message: Quota Violation
+    '503':
+      description: Service unavailable / system down for maintenance
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            SERVICE_UNAVAILABLE:
+              value:
+                code: '503'
+                message: We are currently unable to process your request due to a system issue
+    '403':
+      description: Forbidden
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            ENTITLEMENT_ERROR:
+              value:
+                code: '602'
+                message: Account not entitled
+            INSUFFICIENT_SCOPE:
+              value:
+                code: '403'
+                message: Invalid scope
+    '500':
+      description: Internal Server Error
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            INTERNAL_SERVER_ERROR:
+              value:
+                code: '500'
+                message: We are currently unable to process your request due to a system issue
+            UNEXPECTED_ERROR:
+              value:
+                code: '500'
+                message: An unexpected error occurred while processing your request
+    '404':
+      description: Not Found
+      headers:
+        x-fapi-interaction-id:
+          $ref: '#/components/headers/x-fapi-interaction-id'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            RESOURCE_NOT_FOUND:
+              value:
+                code: '1101'
+                message: URI does not represent a recognized resource
+            INVALID_ACCOUNTID:
+              value:
+                code: '7059'
+                message: Account not found
   schemas:
+    UpdatePaymentResponse:
+      title: Succcessful response for payment update
+      description: response for successful status update
+      type: object
+      properties:
+        message:
+          description: status of the cancellation
+          type: string
+        payments:
+          description: list of payment ids.
+          type: array
+          items:
+            type: string
+      required:
+      - message
+    UpdatePaymentRequest:
+      title: Request definition for status update
+      description: Update payment status
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/UpdateStatus'
+        payments:
+          description: Unique identifiers for payments
+          type: array
+          items:
+            type: string
+          example:
+          - 20221128053101121T1B073712193739891
+      required:
+      - status
+      - payments
     Transaction:
       title: real time payment transaction
       description: payment transaction inquiry response payload
@@ -342,13 +553,6 @@ components:
       - amount
       - description
       - payToAccountNumber
-    UpdateStatus:
-      title: Update real time payment schema
-      description: Update payment status
-      type: string
-      enum:
-      - APPROVE
-      - REJECT
     PaymentSubType:
       title: Schema definition for payment subtype type which will indicates whether its Inbound or Outbound transfers
       description: "The subtype of a submitted RTP:\n  - RTP Credit Type\n  - Request for Return of Funds\n  - Inbound Request Credit"
@@ -393,217 +597,13 @@ components:
         message:
           type: string
           description: End user displayable information which might help the customer diagnose an error
-    UpdatePaymentRequest:
-      title: Request definition for status update
+    UpdateStatus:
+      title: Update real time payment schema
       description: Update payment status
-      type: object
-      properties:
-        status:
-          $ref: '#/components/schemas/UpdateStatus'
-        payments:
-          description: Unique identifiers for payments
-          type: array
-          items:
-            type: string
-          example:
-          - 20221128053101121T1B073712193739891
-      required:
-      - status
-      - payments
-    UpdatePaymentResponse:
-      title: Succcessful response for payment update
-      description: response for successful status update
-      type: object
-      properties:
-        message:
-          description: status of the cancellation
-          type: string
-        payments:
-          description: list of payment ids.
-          type: array
-          items:
-            type: string
-      required:
-      - message
-  parameters:
-    ToAmountQuery:
-      name: toAmount
-      in: query
-      description: To Amount
-      required: false
-      schema:
-        type: number
-      example: 2
-    PaymentToDateQuery:
-      name: paymentToDate
-      in: query
-      description: To date
-      required: false
-      schema:
-        type: string
-        format: date
-      example: '2023-09-20'
-    PaymentFromDateQuery:
-      name: paymentFromDate
-      in: query
-      description: From date
-      required: false
-      schema:
-        type: string
-        format: date
-      example: '2023-08-13'
-    FromAmountQuery:
-      name: fromAmount
-      in: query
-      description: From Amount
-      required: false
-      schema:
-        type: number
-      example: 1
-    FapiInteractionIdHeader:
-      name: x-fapi-interaction-id
-      in: header
-      description: Unique request Identifier
-      required: false
-      schema:
-        type: string
-      example: rrt-970585410023330903-b-gce-821-23397-1
-  responses:
-    '500':
-      description: Internal Server Error
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INTERNAL_SERVER_ERROR:
-              value:
-                code: '500'
-                message: We are currently unable to process your request due to a system issue
-            UNEXPECTED_ERROR:
-              value:
-                code: '500'
-                message: An unexpected error occurred while processing your request
-    '405':
-      description: Method Not Allowed
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            METHOD_NOT_ALLOWED:
-              value:
-                code: '1206'
-                message: Method Not Allowed
-    '404':
-      description: Not Found
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            RESOURCE_NOT_FOUND:
-              value:
-                code: '1101'
-                message: URI does not represent a recognized resource
-            INVALID_ACCOUNTID:
-              value:
-                code: '7059'
-                message: Account not found
-    '503':
-      description: Service unavailable / system down for maintenance
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SERVICE_UNAVAILABLE:
-              value:
-                code: '503'
-                message: We are currently unable to process your request due to a system issue
-    '403':
-      description: Forbidden
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            ENTITLEMENT_ERROR:
-              value:
-                code: '602'
-                message: Account not entitled
-            INSUFFICIENT_SCOPE:
-              value:
-                code: '403'
-                message: Invalid scope
-    '504':
-      description: Service Timed out
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            GATEWAY_TIMEOUT:
-              value:
-                code: '504'
-                message: An unexpected error occurred while processing your request
-    '429':
-      description: Too Many Requests
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            SPIKE_ARREST_VIOLATION:
-              value:
-                code: '1207'
-                message: Too Many Requests
-            QUOTA_VIOLATION:
-              value:
-                code: '1208'
-                message: Quota Violation
-    '401':
-      description: Unauthorized
-      headers:
-        x-fapi-interaction-id:
-          $ref: '#/components/headers/x-fapi-interaction-id'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            INVALID_ACCESS_TOKEN:
-              value:
-                code: '603'
-                message: Authentication failed
-  headers:
-    x-fapi-interaction-id:
-      description: Unique request identifier
-      required: true
-      schema:
-        type: string
-      example: rrt-970585410023330903-b-gce-821-23397-1
+      type: string
+      enum:
+      - APPROVE
+      - REJECT
   securitySchemes:
     OAuth:
       type: oauth2

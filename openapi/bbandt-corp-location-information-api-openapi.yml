@@ -733,50 +733,19 @@ paths:
       - BasicAuth: []
 components:
   parameters:
-    SpanishSpeakingBranches:
-      name: SpanishSpeakingBranches
+    CityQuery:
+      name: City
       in: query
       required: false
-      description: Spanish-speaking branches?
-      schema:
-        $ref: '#/components/schemas/Option'
-    StateQuery:
-      name: State
-      in: query
-      required: false
-      description: Lookup State.
+      description: Lookup address city.
       schema:
         type: string
-        maxLength: 2
-    SearchRadiusQuery:
-      name: SearchRadius
-      in: query
-      required: false
-      description: Radius in miles.
-      schema:
-        type: integer
-        maximum: 99
-    LatitudeQuery:
-      name: Lat
-      in: query
-      required: false
-      description: Lookup Latitude.
-      schema:
-        type: number
-        minimum: -90
-        maximum: 90
+        maxLength: 20
     DriveThroughWindowBranches:
       name: DriveThroughWindowBranches
       in: query
       required: false
       description: Drive through window branches?
-      schema:
-        $ref: '#/components/schemas/Option'
-    SpanishATMs:
-      in: query
-      name: SpanishATMs
-      required: false
-      description: BB&T Spanish ATMs?
       schema:
         $ref: '#/components/schemas/Option'
     Address2Query:
@@ -787,27 +756,18 @@ components:
       schema:
         type: string
         maxLength: 126
-    ZipQuery:
-      name: ZIP
-      in: query
-      required: false
-      description: Lookup ZIP.
-      schema:
-        type: string
-        maxLength: 10
-      example: '27604'
-    SaturdayHoursBranches:
-      name: SaturdayHoursBranches
-      in: query
-      required: false
-      description: Saturday hours branches?
-      schema:
-        $ref: '#/components/schemas/Option'
     NightDepositsBranches:
       name: NightDepositsBranches
       in: query
       required: false
       description: Night deposits branches
+      schema:
+        $ref: '#/components/schemas/Option'
+    SpanishSpeakingBranches:
+      name: SpanishSpeakingBranches
+      in: query
+      required: false
+      description: Spanish-speaking branches?
       schema:
         $ref: '#/components/schemas/Option'
     LocationType:
@@ -818,6 +778,13 @@ components:
       schema:
         type: integer
         maxLength: 126
+    SaturdayHoursBranches:
+      name: SaturdayHoursBranches
+      in: query
+      required: false
+      description: Saturday hours branches?
+      schema:
+        $ref: '#/components/schemas/Option'
     LongitudeQuery:
       name: Lng
       in: query
@@ -836,14 +803,47 @@ components:
         type: integer
         maxLength: 2
         maximum: 99
-    CityQuery:
-      name: City
+    StateQuery:
+      name: State
       in: query
       required: false
-      description: Lookup address city.
+      description: Lookup State.
       schema:
         type: string
-        maxLength: 20
+        maxLength: 2
+    LatitudeQuery:
+      name: Lat
+      in: query
+      required: false
+      description: Lookup Latitude.
+      schema:
+        type: number
+        minimum: -90
+        maximum: 90
+    SpanishATMs:
+      in: query
+      name: SpanishATMs
+      required: false
+      description: BB&T Spanish ATMs?
+      schema:
+        $ref: '#/components/schemas/Option'
+    SearchRadiusQuery:
+      name: SearchRadius
+      in: query
+      required: false
+      description: Radius in miles.
+      schema:
+        type: integer
+        maximum: 99
+    ZipQuery:
+      name: ZIP
+      in: query
+      required: false
+      description: Lookup ZIP.
+      schema:
+        type: string
+        maxLength: 10
+      example: '27604'
     Address1Query:
       name: Address1
       in: query
@@ -853,45 +853,6 @@ components:
         type: string
         maxLength: 126
   schemas:
-    ATMs:
-      title: ATMs Entity
-      description: searchForATMs
-      type: object
-      properties:
-        atmLocations:
-          description: List of All ATM Locations
-          type: array
-          items:
-            $ref: '#/components/schemas/Location'
-    Locations:
-      title: All or ATM Locations
-      description: List of All or just ATM Locations
-      type: object
-      properties:
-        locations:
-          description: List of All or just ATM Locations
-          type: array
-          items:
-            $ref: '#/components/schemas/Location'
-    Error:
-      type: object
-      properties:
-        code:
-          type: string
-          description: standard REST HTTP status codes
-        message:
-          type: string
-          description: path of the failing element
-    Branches:
-      title: Branches Entity
-      description: List of Branch Locations
-      type: object
-      properties:
-        branchLocations:
-          description: List of Branch Locations
-          type: array
-          items:
-            $ref: '#/components/schemas/Location'
     Address:
       type: object
       description: Location of the branch
@@ -922,13 +883,26 @@ components:
           type: number
           format: double
           description: Longitude of the location
-    Option:
-      title: Option
-      description: Yes ot No
-      type: string
-      enum:
-      - Y
-      - N
+    Locations:
+      title: All or ATM Locations
+      description: List of All or just ATM Locations
+      type: object
+      properties:
+        locations:
+          description: List of All or just ATM Locations
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    ATMs:
+      title: ATMs Entity
+      description: searchForATMs
+      type: object
+      properties:
+        atmLocations:
+          description: List of All ATM Locations
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
     Location:
       type: object
       description: A base ATM or branch location
@@ -962,6 +936,32 @@ components:
           type: array
           items:
             type: string
+    Option:
+      title: Option
+      description: Yes ot No
+      type: string
+      enum:
+      - Y
+      - N
+    Branches:
+      title: Branches Entity
+      description: List of Branch Locations
+      type: object
+      properties:
+        branchLocations:
+          description: List of Branch Locations
+          type: array
+          items:
+            $ref: '#/components/schemas/Location'
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          description: standard REST HTTP status codes
+        message:
+          type: string
+          description: path of the failing element
   securitySchemes:
     BasicAuth:
       type: http
