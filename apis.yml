@@ -809,6 +809,8 @@ apis:
     url: >-
       https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
 common:
+- type: FinOps
+  url: finops/bbandt-corp-finops.yml
 - type: Overlay
   url: overlays/bbandt-corp-commercial-accounts-overlay.yaml
 - type: Overlay
