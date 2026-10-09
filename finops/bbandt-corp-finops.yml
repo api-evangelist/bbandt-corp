@@ -108,7 +108,6 @@ apis:
 unitEconomics:
   - name: Cost per Linked Account
     metric: total_partner_fees / linked_accounts
-    target: align to per-account customer LTV
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
