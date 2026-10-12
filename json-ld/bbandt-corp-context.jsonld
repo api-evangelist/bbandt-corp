@@ -1,0 +1,853 @@
+{
+  "@context": {
+    "@vocab": "https://truist.com/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "bbandt": "https://truist.com/schema#",
+    "AccountCategory": "bbandt:AccountCategory",
+    "HoldingType": "bbandt:HoldingType",
+    "Accounts": "bbandt:Accounts",
+    "accounts": {
+      "@id": "bbandt:accounts",
+      "@container": "@list"
+    },
+    "InvestmentBalance": "bbandt:InvestmentBalance",
+    "balanceName": {
+      "@id": "bbandt:balanceName",
+      "@type": "xsd:string"
+    },
+    "balanceDescription": {
+      "@id": "bbandt:balanceDescription",
+      "@type": "xsd:string"
+    },
+    "balanceType": {
+      "@id": "bbandt:balanceType",
+      "@type": "@id"
+    },
+    "balanceValue": {
+      "@id": "bbandt:balanceValue",
+      "@type": "xsd:decimal"
+    },
+    "balanceDate": {
+      "@id": "bbandt:balanceDate",
+      "@type": "@id"
+    },
+    "currency": {
+      "@id": "bbandt:currency",
+      "@type": "@id"
+    },
+    "Currency": "bbandt:Currency",
+    "currencyCode": {
+      "@id": "bbandt:currencyCode",
+      "@type": "@id"
+    },
+    "AccountContact": "bbandt:AccountContact",
+    "holders": {
+      "@id": "bbandt:holders",
+      "@container": "@list"
+    },
+    "DebtClass": "bbandt:DebtClass",
+    "PositionType": "bbandt:PositionType",
+    "AccountHolder": "bbandt:AccountHolder",
+    "relationship": {
+      "@id": "bbandt:relationship",
+      "@type": "@id"
+    },
+    "SecurityCategory": "bbandt:SecurityCategory",
+    "FiAttribute": "bbandt:FiAttribute",
+    "name": {
+      "@id": "bbandt:name",
+      "@type": "xsd:string"
+    },
+    "value": {
+      "@id": "bbandt:value",
+      "@type": "xsd:string"
+    },
+    "Holding": "bbandt:Holding",
+    "holdingId": {
+      "@id": "bbandt:holdingId",
+      "@type": "xsd:string"
+    },
+    "securityId": {
+      "@id": "bbandt:securityId",
+      "@type": "xsd:string"
+    },
+    "holdingName": {
+      "@id": "bbandt:holdingName",
+      "@type": "xsd:string"
+    },
+    "holdingType": {
+      "@id": "bbandt:holdingType",
+      "@type": "@id"
+    },
+    "positionType": {
+      "@id": "bbandt:positionType",
+      "@type": "@id"
+    },
+    "description": {
+      "@id": "bbandt:description",
+      "@type": "xsd:string"
+    },
+    "symbol": {
+      "@id": "bbandt:symbol",
+      "@type": "xsd:string"
+    },
+    "purchasedPrice": {
+      "@id": "bbandt:purchasedPrice",
+      "@type": "xsd:decimal"
+    },
+    "currentUnitPrice": {
+      "@id": "bbandt:currentUnitPrice",
+      "@type": "xsd:decimal"
+    },
+    "currentUnitPriceDate": {
+      "@id": "bbandt:currentUnitPriceDate",
+      "@type": "xsd:decimal"
+    },
+    "units": {
+      "@id": "bbandt:units",
+      "@type": "xsd:decimal"
+    },
+    "taxLots": {
+      "@id": "bbandt:taxLots",
+      "@container": "@list"
+    },
+    "debtSecurity": {
+      "@id": "bbandt:debtSecurity",
+      "@type": "@id"
+    },
+    "marketValue": {
+      "@id": "bbandt:marketValue",
+      "@type": "xsd:decimal"
+    },
+    "DebtType": "bbandt:DebtType",
+    "Iso4217Code": "bbandt:Iso4217Code",
+    "PaymentFrequency": "bbandt:PaymentFrequency",
+    "InvestmentBalanceType": "bbandt:InvestmentBalanceType",
+    "AccountHolderRelationship": "bbandt:AccountHolderRelationship",
+    "ResultType": "bbandt:ResultType",
+    "AccountStatus": "bbandt:AccountStatus",
+    "AccountDescriptor": "bbandt:AccountDescriptor",
+    "accountCategory": {
+      "@id": "bbandt:accountCategory",
+      "@type": "@id"
+    },
+    "accountId": {
+      "@id": "bbandt:accountId",
+      "@type": "@id"
+    },
+    "accountType": {
+      "@id": "bbandt:accountType",
+      "@type": "@id"
+    },
+    "accountNumber": {
+      "@id": "bbandt:accountNumber",
+      "@type": "xsd:string"
+    },
+    "accountNumberDisplay": {
+      "@id": "bbandt:accountNumberDisplay",
+      "@type": "xsd:string"
+    },
+    "productName": {
+      "@id": "bbandt:productName",
+      "@type": "xsd:string"
+    },
+    "nickname": {
+      "@id": "bbandt:nickname",
+      "@type": "xsd:string"
+    },
+    "status": {
+      "@id": "bbandt:status",
+      "@type": "@id"
+    },
+    "accountOpenDate": {
+      "@id": "bbandt:accountOpenDate",
+      "@type": "@id"
+    },
+    "fiAttributes": {
+      "@id": "bbandt:fiAttributes",
+      "@container": "@list"
+    },
+    "AccountType": "bbandt:AccountType",
+    "CompoundingPeriod": "bbandt:CompoundingPeriod",
+    "AccountBillPayStatus": "bbandt:AccountBillPayStatus",
+    "Security": "bbandt:Security",
+    "securityCategory": {
+      "@id": "bbandt:securityCategory",
+      "@type": "@id"
+    },
+    "ActorType": "bbandt:ActorType",
+    "Error": "bbandt:Error",
+    "code": {
+      "@id": "bbandt:code",
+      "@type": "xsd:string"
+    },
+    "message": {
+      "@id": "bbandt:message",
+      "@type": "xsd:string"
+    },
+    "BalanceType": "bbandt:BalanceType",
+    "TaxLot": "bbandt:TaxLot",
+    "originalPurchaseDate": {
+      "@id": "bbandt:originalPurchaseDate",
+      "@type": "@id"
+    },
+    "quantity": {
+      "@id": "bbandt:quantity",
+      "@type": "xsd:decimal"
+    },
+    "costBasis": {
+      "@id": "bbandt:costBasis",
+      "@type": "xsd:decimal"
+    },
+    "currentValue": {
+      "@id": "bbandt:currentValue",
+      "@type": "xsd:decimal"
+    },
+    "InvestmentTransactionType": "bbandt:InvestmentTransactionType",
+    "LoanTransactionType": "bbandt:LoanTransactionType",
+    "Transaction": "bbandt:Transaction",
+    "transactionId": {
+      "@id": "bbandt:transactionId",
+      "@type": "@id"
+    },
+    "referenceTransactionId": {
+      "@id": "bbandt:referenceTransactionId",
+      "@type": "@id"
+    },
+    "cardNumberDisplay": {
+      "@id": "bbandt:cardNumberDisplay",
+      "@type": "xsd:string"
+    },
+    "postedTimestamp": {
+      "@id": "bbandt:postedTimestamp",
+      "@type": "@id"
+    },
+    "transactionTimestamp": {
+      "@id": "bbandt:transactionTimestamp",
+      "@type": "@id"
+    },
+    "memo": {
+      "@id": "bbandt:memo",
+      "@type": "@id"
+    },
+    "debitCreditMemo": {
+      "@id": "bbandt:debitCreditMemo",
+      "@type": "@id"
+    },
+    "reference": {
+      "@id": "bbandt:reference",
+      "@type": "xsd:string"
+    },
+    "amount": {
+      "@id": "bbandt:amount",
+      "@type": "xsd:decimal"
+    },
+    "reward": {
+      "@id": "bbandt:reward",
+      "@type": "@id"
+    },
+    "DebitCreditMemo": "bbandt:DebitCreditMemo",
+    "DepositTransactionType": "bbandt:DepositTransactionType",
+    "RewardType": "bbandt:RewardType",
+    "Transactions": "bbandt:Transactions",
+    "paginatedArray": {
+      "@id": "bbandt:paginatedArray",
+      "@type": "@id"
+    },
+    "transactions": {
+      "@id": "bbandt:transactions",
+      "@container": "@list"
+    },
+    "PaymentDetails": "bbandt:PaymentDetails",
+    "principalAmount": {
+      "@id": "bbandt:principalAmount",
+      "@type": "xsd:decimal"
+    },
+    "interestAmount": {
+      "@id": "bbandt:interestAmount",
+      "@type": "xsd:decimal"
+    },
+    "insuranceAmount": {
+      "@id": "bbandt:insuranceAmount",
+      "@type": "xsd:decimal"
+    },
+    "escrowAmount": {
+      "@id": "bbandt:escrowAmount",
+      "@type": "xsd:decimal"
+    },
+    "pmiAmount": {
+      "@id": "bbandt:pmiAmount",
+      "@type": "xsd:decimal"
+    },
+    "feesAmount": {
+      "@id": "bbandt:feesAmount",
+      "@type": "xsd:decimal"
+    },
+    "TransactionReward": "bbandt:TransactionReward",
+    "accrued": {
+      "@id": "bbandt:accrued",
+      "@type": "xsd:decimal"
+    },
+    "adjusted": {
+      "@id": "bbandt:adjusted",
+      "@type": "xsd:decimal"
+    },
+    "type": {
+      "@id": "bbandt:type",
+      "@type": "@id"
+    },
+    "PaginatedArray": "bbandt:PaginatedArray",
+    "page": {
+      "@id": "bbandt:page",
+      "@type": "@id"
+    },
+    "links": {
+      "@id": "bbandt:links",
+      "@type": "@id"
+    },
+    "LocTransactionType": "bbandt:LocTransactionType",
+    "HateoasLink": "bbandt:HateoasLink",
+    "href": {
+      "@id": "bbandt:href",
+      "@type": "xsd:string"
+    },
+    "action": {
+      "@id": "bbandt:action",
+      "@type": "@id"
+    },
+    "UnitType": "bbandt:UnitType",
+    "TransactionStatus": "bbandt:TransactionStatus",
+    "HttpAction": "bbandt:HttpAction",
+    "SecurityIdType": "bbandt:SecurityIdType",
+    "PageMetadata": "bbandt:PageMetadata",
+    "nextOffset": {
+      "@id": "bbandt:nextOffset",
+      "@type": "xsd:string"
+    },
+    "totalElements": {
+      "@id": "bbandt:totalElements",
+      "@type": "xsd:integer"
+    },
+    "partialElements": {
+      "@id": "bbandt:partialElements",
+      "@type": "xsd:integer"
+    },
+    "PageMetadataLinks": "bbandt:PageMetadataLinks",
+    "next": {
+      "@id": "bbandt:next",
+      "@type": "@id"
+    },
+    "SecurityType": "bbandt:SecurityType",
+    "BalanceDetails": "bbandt:BalanceDetails",
+    "baiCode": {
+      "@id": "bbandt:baiCode",
+      "@type": "xsd:string"
+    },
+    "asofDate": {
+      "@id": "bbandt:asofDate",
+      "@type": "xsd:string"
+    },
+    "Account": "bbandt:Account",
+    "lineOfBusiness": {
+      "@id": "bbandt:lineOfBusiness",
+      "@type": "@id"
+    },
+    "LineOfBusiness": "bbandt:LineOfBusiness",
+    "AccountDetail": "bbandt:AccountDetail",
+    "depositAccount": {
+      "@id": "bbandt:depositAccount",
+      "@type": "@id"
+    },
+    "loanAccount": {
+      "@id": "bbandt:loanAccount",
+      "@type": "@id"
+    },
+    "lineOfCreditAccount": {
+      "@id": "bbandt:lineOfCreditAccount",
+      "@type": "@id"
+    },
+    "creditCardAccount": {
+      "@id": "bbandt:creditCardAccount",
+      "@type": "@id"
+    },
+    "TransactionType": "bbandt:TransactionType",
+    "PostedOrPending": "bbandt:PostedOrPending",
+    "PreviousDateIndicator": "bbandt:PreviousDateIndicator",
+    "Status": "bbandt:Status",
+    "PaymentType": "bbandt:PaymentType",
+    "AccountList": "bbandt:AccountList",
+    "AcknowledgePaymentResponse": "bbandt:AcknowledgePaymentResponse",
+    "acknowledgementMessage": {
+      "@id": "bbandt:acknowledgementMessage",
+      "@type": "xsd:string"
+    },
+    "AcknowledgePaymentRequest": "bbandt:AcknowledgePaymentRequest",
+    "CancelStatus": "bbandt:CancelStatus",
+    "Address": "bbandt:Address",
+    "addressLine": {
+      "@id": "bbandt:addressLine",
+      "@type": "xsd:string"
+    },
+    "city": {
+      "@id": "bbandt:city",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "bbandt:state",
+      "@type": "xsd:string"
+    },
+    "suiteNumber": {
+      "@id": "bbandt:suiteNumber",
+      "@type": "xsd:string"
+    },
+    "zipCode": {
+      "@id": "bbandt:zipCode",
+      "@type": "xsd:string"
+    },
+    "RtpPaymentDetail": "bbandt:RtpPaymentDetail",
+    "correlationId": {
+      "@id": "bbandt:correlationId",
+      "@type": "xsd:string"
+    },
+    "fromAccountId": {
+      "@id": "bbandt:fromAccountId",
+      "@type": "xsd:string"
+    },
+    "fullAmount": {
+      "@id": "bbandt:fullAmount",
+      "@type": "xsd:decimal"
+    },
+    "discountAmount": {
+      "@id": "bbandt:discountAmount",
+      "@type": "xsd:decimal"
+    },
+    "creditor": {
+      "@id": "bbandt:creditor",
+      "@type": "@id"
+    },
+    "paymentDate": {
+      "@id": "bbandt:paymentDate",
+      "@type": "@id"
+    },
+    "UpdatePaymentResponse": "bbandt:UpdatePaymentResponse",
+    "payments": {
+      "@id": "bbandt:payments",
+      "@container": "@list"
+    },
+    "PaymentAction": "bbandt:PaymentAction",
+    "MultipleRtpPaymentRequest": "bbandt:MultipleRtpPaymentRequest",
+    "PaymentSubType": "bbandt:PaymentSubType",
+    "RtpCreditor": "bbandt:RtpCreditor",
+    "routingNumber": {
+      "@id": "bbandt:routingNumber",
+      "@type": "xsd:string"
+    },
+    "birthDate": {
+      "@id": "bbandt:birthDate",
+      "@type": "xsd:date"
+    },
+    "cityOfBirth": {
+      "@id": "bbandt:cityOfBirth",
+      "@type": "xsd:string"
+    },
+    "countryOfBirth": {
+      "@id": "bbandt:countryOfBirth",
+      "@type": "@id"
+    },
+    "address": {
+      "@id": "bbandt:address",
+      "@type": "@id"
+    },
+    "contactDetails": {
+      "@id": "bbandt:contactDetails",
+      "@type": "@id"
+    },
+    "customerReference": {
+      "@id": "bbandt:customerReference",
+      "@type": "xsd:string"
+    },
+    "legalEntityId": {
+      "@id": "bbandt:legalEntityId",
+      "@type": "xsd:string"
+    },
+    "internalComments": {
+      "@id": "bbandt:internalComments",
+      "@type": "xsd:string"
+    },
+    "RtpTransactionStatus": "bbandt:RtpTransactionStatus",
+    "CancelPaymentRequest": "bbandt:CancelPaymentRequest",
+    "Iso3166CountryCode": "bbandt:Iso3166CountryCode",
+    "RtpResponse": "bbandt:RtpResponse",
+    "RtpStatus": "bbandt:RtpStatus",
+    "PaymentIds": "bbandt:PaymentIds",
+    "paymentId": {
+      "@id": "bbandt:paymentId",
+      "@type": "xsd:string"
+    },
+    "ContactDetails": "bbandt:ContactDetails",
+    "phoneNumber": {
+      "@id": "bbandt:phoneNumber",
+      "@type": "xsd:string"
+    },
+    "mobileNumber": {
+      "@id": "bbandt:mobileNumber",
+      "@type": "xsd:string"
+    },
+    "faxNumber": {
+      "@id": "bbandt:faxNumber",
+      "@type": "xsd:string"
+    },
+    "emailAddress": {
+      "@id": "bbandt:emailAddress",
+      "@type": "xsd:string"
+    },
+    "UpdatePaymentRequest": "bbandt:UpdatePaymentRequest",
+    "GetApprovalsPaymentResponse": "bbandt:GetApprovalsPaymentResponse",
+    "UpdateStatus": "bbandt:UpdateStatus",
+    "Party": "bbandt:Party",
+    "registry": {
+      "@id": "bbandt:registry",
+      "@type": "@id"
+    },
+    "registeredEntityId": {
+      "@id": "bbandt:registeredEntityId",
+      "@type": "xsd:string"
+    },
+    "Registry": "bbandt:Registry",
+    "NotificationType": "bbandt:NotificationType",
+    "NotificationCategory": "bbandt:NotificationCategory",
+    "NotificationSubscription": "bbandt:NotificationSubscription",
+    "category": {
+      "@id": "bbandt:category",
+      "@type": "@id"
+    },
+    "callbackUrl": {
+      "@id": "bbandt:callbackUrl",
+      "@type": "xsd:string"
+    },
+    "subscriber": {
+      "@id": "bbandt:subscriber",
+      "@type": "@id"
+    },
+    "effectiveDate": {
+      "@id": "bbandt:effectiveDate",
+      "@type": "@id"
+    },
+    "subscriptionId": {
+      "@id": "bbandt:subscriptionId",
+      "@type": "xsd:string"
+    },
+    "PartyType": "bbandt:PartyType",
+    "NotificationSeverity": "bbandt:NotificationSeverity",
+    "NotificationPayload": "bbandt:NotificationPayload",
+    "id": {
+      "@id": "bbandt:id",
+      "@type": "xsd:string"
+    },
+    "idType": {
+      "@id": "bbandt:idType",
+      "@type": "@id"
+    },
+    "customFields": {
+      "@id": "bbandt:customFields",
+      "@type": "@id"
+    },
+    "NotificationPriority": "bbandt:NotificationPriority",
+    "Notification": "bbandt:Notification",
+    "notificationId": {
+      "@id": "bbandt:notificationId",
+      "@type": "xsd:string"
+    },
+    "sentOn": {
+      "@id": "bbandt:sentOn",
+      "@type": "@id"
+    },
+    "severity": {
+      "@id": "bbandt:severity",
+      "@type": "@id"
+    },
+    "priority": {
+      "@id": "bbandt:priority",
+      "@type": "@id"
+    },
+    "publisher": {
+      "@id": "bbandt:publisher",
+      "@type": "@id"
+    },
+    "notificationPayload": {
+      "@id": "bbandt:notificationPayload",
+      "@type": "@id"
+    },
+    "NotificationPayloadIdType": "bbandt:NotificationPayloadIdType",
+    "Locations": "bbandt:Locations",
+    "locations": {
+      "@id": "bbandt:locations",
+      "@container": "@list"
+    },
+    "ATMs": "bbandt:ATMs",
+    "atmLocations": {
+      "@id": "bbandt:atmLocations",
+      "@container": "@list"
+    },
+    "Location": "bbandt:Location",
+    "locationName": {
+      "@id": "bbandt:locationName",
+      "@type": "xsd:string"
+    },
+    "distance": {
+      "@id": "bbandt:distance",
+      "@type": "xsd:integer"
+    },
+    "locationType": {
+      "@id": "bbandt:locationType",
+      "@type": "xsd:string"
+    },
+    "phone": {
+      "@id": "bbandt:phone",
+      "@type": "xsd:string"
+    },
+    "fax": {
+      "@id": "bbandt:fax",
+      "@type": "xsd:string"
+    },
+    "locationServices": {
+      "@id": "bbandt:locationServices",
+      "@container": "@list"
+    },
+    "lobbyHours": {
+      "@id": "bbandt:lobbyHours",
+      "@container": "@list"
+    },
+    "driveupWindowHours": {
+      "@id": "bbandt:driveupWindowHours",
+      "@container": "@list"
+    },
+    "Option": "bbandt:Option",
+    "Branches": "bbandt:Branches",
+    "branchLocations": {
+      "@id": "bbandt:branchLocations",
+      "@container": "@list"
+    },
+    "PaymentNetworkIdentifierType": "bbandt:PaymentNetworkIdentifierType",
+    "TokenResponse": "bbandt:TokenResponse",
+    "grant_id": {
+      "@id": "bbandt:grant_id",
+      "@type": "xsd:string"
+    },
+    "access_token": {
+      "@id": "bbandt:access_token",
+      "@type": "xsd:string"
+    },
+    "token_type": {
+      "@id": "bbandt:token_type",
+      "@type": "xsd:string"
+    },
+    "expires_in": {
+      "@id": "bbandt:expires_in",
+      "@type": "xsd:integer"
+    },
+    "refresh_token": {
+      "@id": "bbandt:refresh_token",
+      "@type": "xsd:string"
+    },
+    "refresh_token_expires_in": {
+      "@id": "bbandt:refresh_token_expires_in",
+      "@type": "xsd:integer"
+    },
+    "scope": {
+      "@id": "bbandt:scope",
+      "@type": "xsd:string"
+    },
+    "id_token": {
+      "@id": "bbandt:id_token",
+      "@type": "xsd:string"
+    },
+    "TokenRequest": "bbandt:TokenRequest",
+    "client_id": {
+      "@id": "bbandt:client_id",
+      "@type": "xsd:string"
+    },
+    "client_secret": {
+      "@id": "bbandt:client_secret",
+      "@type": "xsd:string"
+    },
+    "grant_type": {
+      "@id": "bbandt:grant_type",
+      "@type": "xsd:string"
+    },
+    "redirect_uri": {
+      "@id": "bbandt:redirect_uri",
+      "@type": "@id"
+    },
+    "APIErrorResponse": "bbandt:APIErrorResponse",
+    "error": {
+      "@id": "bbandt:error",
+      "@type": "xsd:string"
+    },
+    "error_description": {
+      "@id": "bbandt:error_description",
+      "@type": "xsd:string"
+    },
+    "IndividualName": "bbandt:IndividualName",
+    "first": {
+      "@id": "bbandt:first",
+      "@type": "xsd:string"
+    },
+    "middle": {
+      "@id": "bbandt:middle",
+      "@type": "xsd:string"
+    },
+    "last": {
+      "@id": "bbandt:last",
+      "@type": "xsd:string"
+    },
+    "TelephoneNumberType": "bbandt:TelephoneNumberType",
+    "TelephoneNumber": "bbandt:TelephoneNumber",
+    "number": {
+      "@id": "bbandt:number",
+      "@type": "xsd:string"
+    },
+    "DeliveryAddressType": "bbandt:DeliveryAddressType",
+    "Error_2": "bbandt:Error_2",
+    "Customer": "bbandt:Customer",
+    "customerId": {
+      "@id": "bbandt:customerId",
+      "@type": "@id"
+    },
+    "email": {
+      "@id": "bbandt:email",
+      "@container": "@list"
+    },
+    "addresses": {
+      "@id": "bbandt:addresses",
+      "@container": "@list"
+    },
+    "telephones": {
+      "@id": "bbandt:telephones",
+      "@container": "@list"
+    },
+    "Intermediary": "bbandt:Intermediary",
+    "uri": {
+      "@id": "bbandt:uri",
+      "@type": "@id"
+    },
+    "logo_uri": {
+      "@id": "bbandt:logo_uri",
+      "@type": "@id"
+    },
+    "contacts": {
+      "@id": "bbandt:contacts",
+      "@container": "@list"
+    },
+    "ConsentDurationType": "bbandt:ConsentDurationType",
+    "RecipientRequest": "bbandt:RecipientRequest",
+    "client_name": {
+      "@id": "bbandt:client_name",
+      "@type": "@id"
+    },
+    "redirect_uris": {
+      "@id": "bbandt:redirect_uris",
+      "@container": "@list"
+    },
+    "auto_connect": {
+      "@id": "bbandt:auto_connect",
+      "@type": "xsd:boolean"
+    },
+    "client_uri": {
+      "@id": "bbandt:client_uri",
+      "@type": "@id"
+    },
+    "duration_type": {
+      "@id": "bbandt:duration_type",
+      "@container": "@list"
+    },
+    "duration_period": {
+      "@id": "bbandt:duration_period",
+      "@type": "xsd:decimal"
+    },
+    "lookback_period": {
+      "@id": "bbandt:lookback_period",
+      "@type": "xsd:decimal"
+    },
+    "intermediaries": {
+      "@id": "bbandt:intermediaries",
+      "@container": "@list"
+    },
+    "ConsentRevocationRequest": "bbandt:ConsentRevocationRequest",
+    "reason": {
+      "@id": "bbandt:reason",
+      "@type": "@id"
+    },
+    "initiator": {
+      "@id": "bbandt:initiator",
+      "@type": "@id"
+    },
+    "ConsentGrantResource": "bbandt:ConsentGrantResource",
+    "resourceType": {
+      "@id": "bbandt:resourceType",
+      "@type": "@id"
+    },
+    "resourceId": {
+      "@id": "bbandt:resourceId",
+      "@type": "@id"
+    },
+    "dataClusters": {
+      "@id": "bbandt:dataClusters",
+      "@container": "@list"
+    },
+    "DataCluster": "bbandt:DataCluster",
+    "ConsentUpdateReason": "bbandt:ConsentUpdateReason",
+    "ConsentGrantStatus": "bbandt:ConsentGrantStatus",
+    "ConsentGrant": "bbandt:ConsentGrant",
+    "parties": {
+      "@id": "bbandt:parties",
+      "@container": "@list"
+    },
+    "createdTime": {
+      "@id": "bbandt:createdTime",
+      "@type": "@id"
+    },
+    "expirationTime": {
+      "@id": "bbandt:expirationTime",
+      "@type": "@id"
+    },
+    "updatedTime": {
+      "@id": "bbandt:updatedTime",
+      "@type": "@id"
+    },
+    "durationType": {
+      "@id": "bbandt:durationType",
+      "@type": "@id"
+    },
+    "durationPeriod": {
+      "@id": "bbandt:durationPeriod",
+      "@type": "@id"
+    },
+    "lookbackPeriod": {
+      "@id": "bbandt:lookbackPeriod",
+      "@type": "@id"
+    },
+    "autoConnect": {
+      "@id": "bbandt:autoConnect",
+      "@type": "xsd:boolean"
+    },
+    "resources": {
+      "@id": "bbandt:resources",
+      "@container": "@list"
+    },
+    "ConsentResourceType": "bbandt:ConsentResourceType"
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "BB&T Corp (Truist) API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects BB&T Corp (Truist)'s own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-10-12) from openapi/bbandt-corp-account-information-api-openapi.yml, openapi/bbandt-corp-account-transactions-api-openapi.yml, openapi/bbandt-corp-commercial-account-balance-api-openapi.yml.",
+  "dcterms:created": "2026-10-12",
+  "dcterms:source": [
+    "openapi/bbandt-corp-account-information-api-openapi.yml",
+    "openapi/bbandt-corp-account-transactions-api-openapi.yml",
+    "openapi/bbandt-corp-commercial-account-balance-api-openapi.yml",
+    "openapi/bbandt-corp-commercial-account-transactions-api-openapi.yml",
+    "openapi/bbandt-corp-commercial-accounts-api-openapi.yml"
+  ]
+}

@@ -1,0 +1,79 @@
+generated: '2026-10-12'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 5
+  own: 4
+  other_domain: 0
+  platform: 1
+  roles:
+  - api
+  - docs
+  - marketing
+  - other
+  - website
+hosts:
+- host: api.truist.com
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - api
+  registrable_domain: truist.com
+  role: api
+  relation: own
+- host: developer.truist.com
+  found_by:
+  - pointer
+  - apis[]
+  - vendor-detect
+  types:
+  - Portal
+  - Documentation
+  - GettingStarted
+  - APIReference
+  - Support
+  - HelpCenter
+  - SignUp
+  - Login
+  serves:
+  - docs
+  - cdn
+  vendor: akamai
+  registrable_domain: truist.com
+  role: docs
+  relation: own
+- host: media.truist.com
+  found_by:
+  - pointer
+  types:
+  - Blog
+  serves: []
+  registrable_domain: truist.com
+  role: marketing
+  relation: own
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform
+- host: www.truist.com
+  found_by:
+  - pointer
+  - vendor-detect
+  types:
+  - Leadership
+  - Website
+  - TermsOfService
+  - PrivacyPolicy
+  serves:
+  - cdn
+  vendor: cloudfront
+  registrable_domain: truist.com
+  role: website
+  relation: own

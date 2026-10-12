@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-rtp-response-schema.json",
+  "title": "Response definition for the RTP Transfer",
+  "description": "Status of the RTP Transfer",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-credit-transfers-api-openapi.yml#/components/schemas/RtpResponse",
+  "type": "object",
+  "properties": {
+    "payments": {
+      "description": "Response Payment IDs",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/PaymentIds"
+      }
+    }
+  },
+  "$defs": {
+    "PaymentIds": {
+      "title": "IDs for the submitted payment.",
+      "type": "object",
+      "description": "Correlation and payment IDs for the payment",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "description": "The Correlation ID is unique ID made by removing hyphens from a standard UUID to make it 32 characters long."
+        },
+        "paymentId": {
+          "type": "string",
+          "description": "UUID for payment. Ex. 20230515053101121T1BCPSX00000000096"
+        }
+      }
+    }
+  }
+}

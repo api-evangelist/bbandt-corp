@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-token-response-schema.json",
+  "title": "TokenResponse",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-oauth-2-0-api-openapi.yml#/components/schemas/TokenResponse",
+  "type": "object",
+  "properties": {
+    "grant_id": {
+      "type": "string",
+      "description": "The consent id that can be used by data recipient to view the Consent grant"
+    },
+    "access_token": {
+      "type": "string",
+      "description": "The access token issued by the authorization server"
+    },
+    "token_type": {
+      "type": "string",
+      "description": "The type of the token issued (default Bearer)"
+    },
+    "expires_in": {
+      "type": "integer",
+      "description": "The lifetime in seconds of the access token. The value \"900\" denotes that the access token will expire in 15 minutes from the time the response was generated. If omitted, the authorization server SHOULD provide the expiration time via other means or document the default value."
+    },
+    "refresh_token": {
+      "type": "string",
+      "description": "OPTIONAL. The refresh token, which can be used to obtain new access tokens using the same authorization grant"
+    },
+    "refresh_token_expires_in": {
+      "type": "integer",
+      "description": "The lifetime in seconds of the refresh token. The value \"7775999\" denotes that the refresh token will expire in ninety days from the time the response was generated. If omitted, the authorization server SHOULD provide the expiration time via other means or document the default value."
+    },
+    "scope": {
+      "type": "string",
+      "description": "A space-delimited array of '#/components/schemas/Scope' enum values. Scope offline_access must be included to get back refresh_tokens"
+    },
+    "id_token": {
+      "type": "string",
+      "description": "OPTIONAL, OpenID Connect ID Token"
+    }
+  }
+}

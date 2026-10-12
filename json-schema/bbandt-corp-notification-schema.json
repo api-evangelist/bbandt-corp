@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-notification-schema.json",
+  "title": "Notification entity",
+  "description": "Provides the base fields of a notification. Clients will read the `type` property to determine the expected notification payload",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-event-notifications-api-openapi.yml#/components/schemas/Notification",
+  "type": "object",
+  "properties": {
+    "notificationId": {
+      "type": "string",
+      "description": "Id of notification",
+      "maxLength": 64
+    },
+    "type": {
+      "$ref": "#/$defs/NotificationType",
+      "description": "Type of notification"
+    },
+    "sentOn": {
+      "$ref": "#/$defs/Timestamp",
+      "description": "Time notification was sent"
+    },
+    "category": {
+      "$ref": "#/$defs/NotificationCategory",
+      "description": "Category of notification"
+    },
+    "severity": {
+      "$ref": "#/$defs/NotificationSeverity",
+      "description": "Notification severity"
+    },
+    "priority": {
+      "$ref": "#/$defs/NotificationPriority",
+      "description": "Notification priority"
+    },
+    "publisher": {
+      "$ref": "#/$defs/Party",
+      "description": "Publisher of notification"
+    },
+    "notificationPayload": {
+      "$ref": "#/$defs/NotificationPayload",
+      "description": "Notification-specific key-value paired data"
+    }
+  },
+  "required": [
+    "notificationId",
+    "type",
+    "sentOn",
+    "category",
+    "publisher",
+    "notificationPayload"
+  ],
+  "$defs": {
+    "FiAttribute": {
+      "title": "FI Attribute entity",
+      "description": "Financial Institution provider-specific attribute",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of attribute, INITIATOR"
+        },
+        "value": {
+          "type": "string",
+          "description": "Value of attribute, INDIVIDUAL or DATA_RECIPIENT"
+        }
+      }
+    },
+    "NotificationCategory": {
+      "title": "Notification Category",
+      "description": "Category of Notification",
+      "type": "string",
+      "enum": [
+        "CONSENT"
+      ]
+    },
+    "NotificationPayload": {
+      "title": "Notification Payload entity",
+      "description": "Custom key-value pairs payload for a notification",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "ID for the origination entity related to the notification",
+          "maxLength": 64
+        },
+        "idType": {
+          "$ref": "#/$defs/NotificationPayloadIdType",
+          "description": "Type of entity causing origination of the notification with the given ID"
+        },
+        "customFields": {
+          "$ref": "#/$defs/FiAttribute",
+          "description": "Custom key-value pairs for a notification"
+        }
+      }
+    },
+    "NotificationPayloadIdType": {
+      "title": "Notification Payload Id Type",
+      "description": "Type of entity causing origination of a notification",
+      "type": "string",
+      "enum": [
+        "CONSENT"
+      ]
+    },
+    "NotificationPriority": {
+      "title": "Notification Priority",
+      "description": "Priority of notification",
+      "type": "string",
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+      ]
+    },
+    "NotificationSeverity": {
+      "title": "Notification Severity",
+      "description": "Severity level of notification",
+      "type": "string",
+      "enum": [
+        "EMERGENCY",
+        "ALERT",
+        "WARNING",
+        "NOTICE",
+        "INFO"
+      ]
+    },
+    "NotificationType": {
+      "title": "Notification Type",
+      "description": "Type of notification",
+      "type": "string",
+      "enum": [
+        "CONSENT_REVOKED"
+      ]
+    },
+    "Party": {
+      "title": "Party entity",
+      "description": "FDX Participant - an entity or person that is a part of a FDX API transaction",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "description": "Human recognizable common name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Extensible string enum identifying the type of the party",
+          "$ref": "#/$defs/PartyType"
+        },
+        "registeredEntityId": {
+          "description": "Registered id of party",
+          "type": "string"
+        }
+      }
+    },
+    "PartyType": {
+      "title": "Party Type",
+      "description": "Identifies the type of a party",
+      "type": "string",
+      "enum": [
+        "DATA_RECIPIENT",
+        "INDIVIDUAL"
+      ]
+    },
+    "Timestamp": {
+      "title": "Timestamp",
+      "description": "ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)",
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

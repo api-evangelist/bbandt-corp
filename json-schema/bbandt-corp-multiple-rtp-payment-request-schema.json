@@ -1,0 +1,436 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-multiple-rtp-payment-request-schema.json",
+  "title": "MultipleRtpPaymentRequest.",
+  "description": "Object for holding multiple payment transfers.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-credit-transfers-api-openapi.yml#/components/schemas/MultipleRtpPaymentRequest",
+  "type": "object",
+  "properties": {
+    "payments": {
+      "type": "array",
+      "description": "Payments object for RTP",
+      "items": {
+        "$ref": "#/$defs/RtpPaymentRequest"
+      }
+    }
+  },
+  "$defs": {
+    "Address": {
+      "title": "Address information",
+      "type": "object",
+      "properties": {
+        "addressLine": {
+          "type": "string"
+        },
+        "city": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "suiteNumber": {
+          "type": "string"
+        },
+        "zipCode": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "addressLine",
+        "city",
+        "state",
+        "zipCode"
+      ]
+    },
+    "ContactDetails": {
+      "title": "Contact details address",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "mobileNumber": {
+          "type": "string"
+        },
+        "faxNumber": {
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "string"
+        }
+      }
+    },
+    "Iso3166CountryCode": {
+      "title": "ISO 3166 Country Code",
+      "description": "ISO 3166-1 alpha-2 codes as of April 5, 2023, from officially assigned Country Codes on [ISO Online Browsing Platform](https://www.iso.org/obp/ui/)",
+      "type": "string",
+      "enum": [
+        "AD",
+        "AE",
+        "AF",
+        "AG",
+        "AI",
+        "AL",
+        "AM",
+        "AO",
+        "AQ",
+        "AR",
+        "AS",
+        "AT",
+        "AU",
+        "AW",
+        "AX",
+        "AZ",
+        "BA",
+        "BB",
+        "BD",
+        "BE",
+        "BF",
+        "BG",
+        "BH",
+        "BI",
+        "BJ",
+        "BL",
+        "BM",
+        "BN",
+        "BO",
+        "BQ",
+        "BR",
+        "BS",
+        "BT",
+        "BV",
+        "BW",
+        "BY",
+        "BZ",
+        "CA",
+        "CC",
+        "CD",
+        "CF",
+        "CG",
+        "CH",
+        "CI",
+        "CK",
+        "CL",
+        "CM",
+        "CN",
+        "CO",
+        "CR",
+        "CU",
+        "CV",
+        "CW",
+        "CX",
+        "CY",
+        "CZ",
+        "DE",
+        "DJ",
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EC",
+        "EE",
+        "EG",
+        "EH",
+        "ER",
+        "ES",
+        "ET",
+        "FI",
+        "FJ",
+        "FK",
+        "FM",
+        "FO",
+        "FR",
+        "GA",
+        "GB",
+        "GD",
+        "GE",
+        "GF",
+        "GG",
+        "GH",
+        "GI",
+        "GL",
+        "GM",
+        "GN",
+        "GP",
+        "GQ",
+        "GR",
+        "GS",
+        "GT",
+        "GU",
+        "GW",
+        "GY",
+        "HK",
+        "HM",
+        "HN",
+        "HR",
+        "HT",
+        "HU",
+        "ID",
+        "IE",
+        "IL",
+        "IM",
+        "IN",
+        "IO",
+        "IQ",
+        "IR",
+        "IS",
+        "IT",
+        "JE",
+        "JM",
+        "JO",
+        "JP",
+        "KE",
+        "KG",
+        "KH",
+        "KI",
+        "KM",
+        "KN",
+        "KP",
+        "KR",
+        "KW",
+        "KY",
+        "KZ",
+        "LA",
+        "LB",
+        "LC",
+        "LI",
+        "LK",
+        "LR",
+        "LS",
+        "LT",
+        "LU",
+        "LV",
+        "LY",
+        "MA",
+        "MC",
+        "MD",
+        "ME",
+        "MF",
+        "MG",
+        "MH",
+        "MK",
+        "ML",
+        "MM",
+        "MN",
+        "MO",
+        "MP",
+        "MQ",
+        "MR",
+        "MS",
+        "MT",
+        "MU",
+        "MV",
+        "MW",
+        "MX",
+        "MY",
+        "MZ",
+        "NA",
+        "NC",
+        "NE",
+        "NF",
+        "NG",
+        "NI",
+        "NL",
+        "NO",
+        "NP",
+        "NR",
+        "NU",
+        "NZ",
+        "OM",
+        "PA",
+        "PE",
+        "PF",
+        "PG",
+        "PH",
+        "PK",
+        "PL",
+        "PM",
+        "PN",
+        "PR",
+        "PS",
+        "PT",
+        "PW",
+        "PY",
+        "QA",
+        "RE",
+        "RO",
+        "RS",
+        "RU",
+        "RW",
+        "SA",
+        "SB",
+        "SC",
+        "SD",
+        "SE",
+        "SG",
+        "SH",
+        "SI",
+        "SJ",
+        "SK",
+        "SL",
+        "SM",
+        "SN",
+        "SO",
+        "SR",
+        "SS",
+        "ST",
+        "SV",
+        "SX",
+        "SY",
+        "SZ",
+        "TC",
+        "TD",
+        "TF",
+        "TG",
+        "TH",
+        "TJ",
+        "TK",
+        "TL",
+        "TM",
+        "TN",
+        "TO",
+        "TR",
+        "TT",
+        "TV",
+        "TW",
+        "TZ",
+        "UA",
+        "UG",
+        "UM",
+        "US",
+        "UY",
+        "UZ",
+        "VA",
+        "VC",
+        "VE",
+        "VG",
+        "VI",
+        "VN",
+        "VU",
+        "WF",
+        "WS",
+        "YE",
+        "YT",
+        "ZA",
+        "ZM",
+        "ZW"
+      ]
+    },
+    "PaymentDate": {
+      "type": "string",
+      "description": "Date to dispatch the payment. ISO 8601 date as \"yyyy-mm-dd\". Only applicable for future dated(OTFD) and One time payments.",
+      "format": "date"
+    },
+    "RtpCreditor": {
+      "title": "Payer or Recipient Information",
+      "description": "Common details for RtpCreditor",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Payer or Recipient name"
+        },
+        "accountNumber": {
+          "type": "string",
+          "description": "Requested source or destination account number"
+        },
+        "routingNumber": {
+          "type": "string",
+          "description": "Payer or Recipient routing number"
+        },
+        "birthDate": {
+          "type": "string",
+          "description": "Individual payer or recipient birth date represented in ISO 8601 date as \"yyyy-mm-dd\"",
+          "pattern": "\\d{4}\\-\\d\\d\\-\\d\\d",
+          "format": "date"
+        },
+        "cityOfBirth": {
+          "type": "string",
+          "description": "City of birth of the individual payer or recipient"
+        },
+        "countryOfBirth": {
+          "description": "The birth country code for the individual payer or recipient",
+          "$ref": "#/$defs/Iso3166CountryCode"
+        },
+        "address": {
+          "$ref": "#/$defs/Address"
+        },
+        "contactDetails": {
+          "$ref": "#/$defs/ContactDetails"
+        },
+        "customerReference": {
+          "description": "Transaction reference",
+          "type": "string"
+        },
+        "legalEntityId": {
+          "description": "LEI for business",
+          "type": "string",
+          "pattern": "[A-Z0-9]{18}[0-9]{2}"
+        },
+        "internalComments": {
+          "description": "Memo",
+          "type": "string"
+        }
+      },
+      "required": [
+        "accountNumber",
+        "routingNumber"
+      ]
+    },
+    "RtpPaymentDetail": {
+      "title": "Individual real-time payment information for each recipient",
+      "description": "Payment and recipient information",
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "type": "string",
+          "description": "The Correlation ID is unique ID made by removing hyphens from a standard UUID to make it 32 characters long."
+        },
+        "fromAccountId": {
+          "type": "string",
+          "description": "Unique identifier for the account"
+        },
+        "amount": {
+          "type": "number",
+          "description": "The payment amount to be transferred"
+        },
+        "fullAmount": {
+          "description": "Full amount is amount + discount amount",
+          "type": "number"
+        },
+        "discountAmount": {
+          "description": "The discount amount",
+          "type": "number"
+        },
+        "description": {
+          "type": "string",
+          "description": "Payment memo information"
+        },
+        "creditor": {
+          "$ref": "#/$defs/RtpCreditor"
+        },
+        "paymentDate": {
+          "$ref": "#/$defs/PaymentDate"
+        }
+      },
+      "required": [
+        "correlationId",
+        "amount",
+        "creditor",
+        "fromAccountId"
+      ]
+    },
+    "RtpPaymentRequest": {
+      "title": "RTP Credit Transfer Request",
+      "description": "Real-Time payment, pacs.008, Intiate Transfer from one account number to several recipients",
+      "type": "object",
+      "$ref": "#/$defs/RtpPaymentDetail"
+    }
+  }
+}

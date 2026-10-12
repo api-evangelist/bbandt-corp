@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-branches-schema.json",
+  "title": "Branches Entity",
+  "description": "List of Branch Locations",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-location-information-api-openapi.yml#/components/schemas/Branches",
+  "type": "object",
+  "properties": {
+    "branchLocations": {
+      "description": "List of Branch Locations",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Location"
+      }
+    }
+  },
+  "$defs": {
+    "Address": {
+      "type": "object",
+      "description": "Location of the branch",
+      "properties": {
+        "address1": {
+          "type": "string",
+          "description": "Address line 1"
+        },
+        "address2": {
+          "type": "string",
+          "description": "Address line 2"
+        },
+        "city": {
+          "type": "string",
+          "description": "City of branch location"
+        },
+        "state": {
+          "type": "string",
+          "description": "State of branch location"
+        },
+        "zip": {
+          "type": "string",
+          "description": "Zip code of branch location"
+        },
+        "searchRadius": {
+          "type": "string",
+          "description": "Radius in miles of branch location"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "double",
+          "description": "Latitude of the location"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "double",
+          "description": "Longitude of the location"
+        }
+      }
+    },
+    "Location": {
+      "type": "object",
+      "description": "A base ATM or branch location",
+      "properties": {
+        "locationName": {
+          "type": "string",
+          "description": "Name of ATM or branch location"
+        },
+        "distance": {
+          "type": "integer",
+          "description": "Distance from address provided"
+        },
+        "locationType": {
+          "type": "string",
+          "description": "Type of the Location"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number"
+        },
+        "fax": {
+          "type": "string",
+          "description": "Fax number"
+        },
+        "address": {
+          "$ref": "#/$defs/Address"
+        },
+        "locationServices": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lobbyHours": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "driveupWindowHours": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

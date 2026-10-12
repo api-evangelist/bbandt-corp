@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-acknowledge-payment-request-schema.json",
+  "title": "Payment acknowledgement request",
+  "description": "Payment acknowledgement request for credit transfer",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-credit-transfers-acknowledge-api-openapi.yml#/components/schemas/AcknowledgePaymentRequest",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "Acknowledgement message to be sent to the sender of money."
+    }
+  }
+}

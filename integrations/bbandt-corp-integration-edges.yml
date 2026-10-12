@@ -1,0 +1,26 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/bbandt-corp/integrations
+- https://zapier.com/apps/bb-t-corp-truist/integrations
+- https://n8n.io/integrations/bbandt-corp/
+- https://composio.dev/toolkits/bbandt-corp
+- https://monid.ai/tools/bbandt-corp
+checked:
+- https://composio.dev/toolkits/bbandt-corp
+- https://developer.truist.com/partners
+- https://monid.ai/tools/bbandt-corp
+- https://n8n.io/integrations/bbandt-corp/
+- https://n8n.io/integrations/truist
+- https://www.make.com/en/integrations/truist
+- https://www.truist.com/partners
+- https://www.workato.com/integrations/truist
+- https://zapier.com/apps/bb-t-corp-truist/integrations
+- https://zapier.com/apps/bbandt-corp/integrations
+- https://zapier.com/apps/truist/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
+note: No marketplace listing or partner page found (Zapier/n8n/Workato 404, make.com 403, truist.com/partners 404,
+  developer.truist.com 403 to curl). FDX open-banking aggregator connections are not published as a partner list.

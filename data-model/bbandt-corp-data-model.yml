@@ -1,19 +1,14 @@
 generated: '2026-09-04'
 method: derived
-source: openapi/_original/*.yaml — components.schemas $ref graph plus id-reference fields across all 15 published Truist
-  specs
+source: openapi/_original/*.yaml — components.schemas $ref graph plus id-reference fields across all 15 published Truist specs
 specification: API Commons Data Model
 specificationVersion: '0.1'
 provider: BB&T Corp (Truist)
 providerId: bbandt-corp
-description: Entity graph of the Truist open-banking estate. The retail side is the FDX Core data model (Account and
-  its subclasses DepositAccount / LoanAccount / LocAccount / InvestmentAccount, AccountHolder, Holding, Security, TaxLot),
-  the commercial side is a lighter account + transaction model, and Credit Transfers carries an ISO 20022-flavoured RTP
-  payment model.
+description: Entity graph of the Truist open-banking estate. The retail side is the FDX Core data model (Account and its subclasses DepositAccount / LoanAccount / LocAccount / InvestmentAccount, AccountHolder, Holding, Security, TaxLot), the commercial side is a lighter account + transaction model, and Credit Transfers carries an ISO 20022-flavoured RTP payment model.
 identifier_conventions:
 - field: accountId
-  description: Opaque tokenized account identifier — Truist explicitly positions this as "stop storing the full account
-    number". Example uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr.
+  description: Opaque tokenized account identifier — Truist explicitly positions this as "stop storing the full account number". Example uYrD4LD7P9948lzy3UCPHLWljGqcRWx06Tr.
 - field: consentId
   description: Identifier for a customer consent grant.
 - field: clientId
@@ -188,8 +183,7 @@ entities:
 - name: AccountBillPayStatus
   kind: enum
   title: Account Bill Pay Status
-  description: 'Indicates bill pay capabilities for an account.   * `ACTIVE`: Can be used for bill payment   * `AVAILABLE`:
-    Account can be requested for bill payment   * `NOT_AVAILABLE`: Account cannot participate in bill payment   * `P'
+  description: 'Indicates bill pay capabilities for an account.   * `ACTIVE`: Can be used for bill payment   * `AVAILABLE`: Account can be requested for bill payment   * `NOT_AVAILABLE`: Account cannot participate in bill payment   * `P'
   apis:
   - Personal and Small Business Accounts
   specs:
@@ -329,8 +323,7 @@ entities:
 - name: ActorType
   kind: enum
   title: FDX API Actor Type
-  description: Indicates whether a customer is present and has requested the operation (USER), or if a batch job has
-    requested the operation (BATCH)
+  description: Indicates whether a customer is present and has requested the operation (USER), or if a batch job has requested the operation (BATCH)
   apis:
   - Personal and Small Business Accounts
   - Personal and Small Business Transactions
@@ -448,8 +441,7 @@ entities:
 - name: ConsentGrantParty
   kind: object
   title: Consent Grant Party entity
-  description: Details on the non-end user parties in the Consent Grant. Includes the legal entity operating branded
-    products or services in the data sharing chain. Descriptive information is collected during Data Recipient registratio
+  description: Details on the non-end user parties in the Consent Grant. Includes the legal entity operating branded products or services in the data sharing chain. Descriptive information is collected during Data Recipient registratio
   apis:
   - User Consent
   specs:
@@ -513,8 +505,7 @@ entities:
 - name: CorrelationId
   kind: scalar
   title: null
-  description: The Correlation ID is unique ID made by removing hyphens from a standard UUID to make it 32 characters
-    long.
+  description: The Correlation ID is unique ID made by removing hyphens from a standard UUID to make it 32 characters long.
   apis:
   - Credit Transfers
   specs:
@@ -754,8 +745,7 @@ entities:
 - name: HoldingType
   kind: enum
   title: Holding Type
-  description: The type of an investment holding    | Value | Description |   |-----|-----|   | ANNUITY | Financial product
-    that pays out a fixed stream of payments |   | BOND | Debt security as a loan to a government, agency or compan
+  description: The type of an investment holding    | Value | Description |   |-----|-----|   | ANNUITY | Financial product that pays out a fixed stream of payments |   | BOND | Debt security as a loan to a government, agency or compan
   apis:
   - Personal and Small Business Accounts
   specs:
@@ -803,8 +793,7 @@ entities:
 - name: Intermediary
   kind: object
   title: Intermediary
-  description: Data Access Platform, Service Provider, or any other entity in the data sharing chain between a Data Provider
-    to a Data Recipient. In snake case to match IETF RFC 7591 naming formats
+  description: Data Access Platform, Service Provider, or any other entity in the data sharing chain between a Data Provider to a Data Recipient. In snake case to match IETF RFC 7591 naming formats
   apis:
   - Retail Dynamic Client Registration
   specs:
@@ -852,8 +841,7 @@ entities:
 - name: Iso3166CountryCode
   kind: enum
   title: ISO 3166 Country Code
-  description: ISO 3166-1 alpha-2 codes as of April 5, 2023, from officially assigned Country Codes on [ISO Online Browsing
-    Platform](https://www.iso.org/obp/ui/). Change log is at [ISO 3166 Maintenance Agency](https://www.iso.org/fr/c
+  description: ISO 3166-1 alpha-2 codes as of April 5, 2023, from officially assigned Country Codes on [ISO Online Browsing Platform](https://www.iso.org/obp/ui/). Change log is at [ISO 3166 Maintenance Agency](https://www.iso.org/fr/c
   apis:
   - Personal and Small Business Client Contact
   - Account Address
@@ -865,8 +853,7 @@ entities:
 - name: Iso4217Code
   kind: enum
   title: ISO 4217 Code
-  description: Currency, fund and precious metal codes effective from May 12, 2025 and ISO 4217 amendment 179 per [ISO
-    4217 Currency Code Maintenance](https://www.six-group.com/en/products-services/financial-information/data-standards.
+  description: Currency, fund and precious metal codes effective from May 12, 2025 and ISO 4217 amendment 179 per [ISO 4217 Currency Code Maintenance](https://www.six-group.com/en/products-services/financial-information/data-standards.
   apis:
   - Personal and Small Business Accounts
   specs:
@@ -908,8 +895,7 @@ entities:
 - name: LoanTransactionType
   kind: enum
   title: Loan Transaction Type
-  description: 'Defines the type of a loan transaction:   * `FEE`: Fee charge. For example, a late payment fee   * `INTEREST`:
-    Interest charge   * `PAYMENT`: Required payment that satisfies the minimum payment (e.g. principal + interest'
+  description: 'Defines the type of a loan transaction:   * `FEE`: Fee charge. For example, a late payment fee   * `INTEREST`: Interest charge   * `PAYMENT`: Required payment that satisfies the minimum payment (e.g. principal + interest'
   apis:
   - Personal and Small Business Transactions
   specs:
@@ -957,8 +943,7 @@ entities:
 - name: LookbackPeriod
   kind: scalar
   title: Lookback Period
-  description: Period, in days, for which historical data may be requested; period is measured from request time, not
-    grant time
+  description: Period, in days, for which historical data may be requested; period is measured from request time, not grant time
   apis:
   - User Consent
   specs:
@@ -974,8 +959,7 @@ entities:
 - name: Notification
   kind: object
   title: Notification entity
-  description: Provides the base fields of a notification. Clients will read the `type` property to determine the expected
-    notification payload
+  description: Provides the base fields of a notification. Clients will read the `type` property to determine the expected notification payload
   apis:
   - Personal and Small Business Event Notifications
   specs:
@@ -1109,8 +1093,7 @@ entities:
 - name: PaymentDate
   kind: scalar
   title: null
-  description: Date to dispatch the payment. ISO 8601 date as "yyyy-mm-dd". Only applicable for future dated(OTFD) and
-    One time payments.
+  description: Date to dispatch the payment. ISO 8601 date as "yyyy-mm-dd". Only applicable for future dated(OTFD) and One time payments.
   apis:
   - Credit Transfers
   specs:
@@ -1142,9 +1125,7 @@ entities:
 - name: PaymentNetworkIdentifierType
   kind: enum
   title: Payment Network Identifier Type
-  description: Enumerated values for type of account `identifier` used on a payment network.    | Value | Description
-    |   |-------|-------------|   | ACCOUNT_NUMBER | The 'real' account number, which is sensitive data and should only
-    b
+  description: Enumerated values for type of account `identifier` used on a payment network.    | Value | Description |   |-------|-------------|   | ACCOUNT_NUMBER | The 'real' account number, which is sensitive data and should only b
   apis:
   - Personal and Small Business Account Payment Networks
   specs:
@@ -1152,8 +1133,7 @@ entities:
 - name: PaymentNetworkType
   kind: enum
   title: Payment Network Type
-  description: Suggested values for Payment Network Type.   | Value | Description |   |-----|-----|   | US_ACH | Automated
-    Clearing House |   | US_RTP| US Real Time Payments System |
+  description: Suggested values for Payment Network Type.   | Value | Description |   |-----|-----|   | US_ACH | Automated Clearing House |   | US_RTP| US Real Time Payments System |
   apis:
   - Personal and Small Business Account Payment Networks
   specs:
@@ -1161,8 +1141,7 @@ entities:
 - name: PaymentSubType
   kind: enum
   title: Schema definition for payment subtype type which will indicates whether its Inbound or Outbound transfers
-  description: 'The subtype of a submitted RTP:   - RTP Credit Type   - Request for Return of Funds   - Inbound Request
-    Credit'
+  description: 'The subtype of a submitted RTP:   - RTP Credit Type   - Request for Return of Funds   - Inbound Request Credit'
   apis:
   - Credit Transfers
   specs:
@@ -1218,8 +1197,7 @@ entities:
 - name: RecipientStatus
   kind: enum
   title: Status
-  description: Status of Recipient creation through dynamic client registration per FDX RFC 0117 and FDX Recipient Registration
-    Guidelines document
+  description: Status of Recipient creation through dynamic client registration per FDX RFC 0117 and FDX Recipient Registration Guidelines document
   apis:
   - Retail Dynamic Client Registration
   specs:
@@ -1237,9 +1215,7 @@ entities:
 - name: ResultType
   kind: enum
   title: Result Type
-  description: 'Flag to indicate if you want a lightweight array of metadata (AccountDescriptor or Tax or Operations)
-    or full item details (Account or a Tax subclass or Availability details). If set to ''lightweight'', should only
-    return '
+  description: 'Flag to indicate if you want a lightweight array of metadata (AccountDescriptor or Tax or Operations) or full item details (Account or a Tax subclass or Availability details). If set to ''lightweight'', should only return '
   apis:
   - Personal and Small Business Accounts
   specs:
@@ -1247,8 +1223,7 @@ entities:
 - name: RewardType
   kind: enum
   title: Reward Type
-  description: 'The type of the reward balance. Example: a reward program awarding "Stars" for purchases would use the
-    `POINTS` reward type.   * `CASHBACK`: Rewards balances enumerated using a monetary amount   * `MILES`: Rewards balanc'
+  description: 'The type of the reward balance. Example: a reward program awarding "Stars" for purchases would use the `POINTS` reward type.   * `CASHBACK`: Rewards balances enumerated using a monetary amount   * `MILES`: Rewards balanc'
   apis:
   - Personal and Small Business Transactions
   specs:
@@ -1288,8 +1263,7 @@ entities:
 - name: RtpStatus
   kind: enum
   title: RTP Submitted Status
-  description: 'The status of a submitted RTP:   - needsApproval   - rejected   - approved   - completed   - canceled   -
-    scheduled   - processing   - rejectedByApprover   - failed   - expired   - all'
+  description: 'The status of a submitted RTP:   - needsApproval   - rejected   - approved   - completed   - canceled   - scheduled   - processing   - rejectedByApprover   - failed   - expired   - all'
   apis:
   - Credit Transfers
   specs:
@@ -1297,8 +1271,7 @@ entities:
 - name: RtpTransactionStatus
   kind: enum
   title: RTP Status of Transaction
-  description: 'The status of a submitted RTP:   - needsApproval   - rejected   - approved   - completed   - canceled   -
-    scheduled   - processing   - rejectedByApprover   - failed   - expired'
+  description: 'The status of a submitted RTP:   - needsApproval   - rejected   - approved   - completed   - canceled   - scheduled   - processing   - rejectedByApprover   - failed   - expired'
   apis:
   - Credit Transfers
   specs:
@@ -1330,9 +1303,7 @@ entities:
 - name: SecurityIdType
   kind: enum
   title: Security Id Type
-  description: The source of the identifier for a security   | Value | Description |   |-----|-----|   | CINS | CUSIP
-    International Numbering System) is a global securities identification numbering system that provides |   | CMC |
-    Coin
+  description: The source of the identifier for a security   | Value | Description |   |-----|-----|   | CINS | CUSIP International Numbering System) is a global securities identification numbering system that provides |   | CMC | Coin
   apis:
   - Personal and Small Business Transactions
   specs:
@@ -1340,9 +1311,7 @@ entities:
 - name: SecurityType
   kind: enum
   title: Security Type
-  description: The type of a security   | Value | Description |   |-----|-----|   | ANNUITY | Financial product that
-    pays out a fixed stream of payments. Added by Truist per RFC 0394 with FDX v6.5 |   | BOND | Debt security as a loan
-    t
+  description: The type of a security   | Value | Description |   |-----|-----|   | ANNUITY | Financial product that pays out a fixed stream of payments. Added by Truist per RFC 0394 with FDX v6.5 |   | BOND | Debt security as a loan t
   apis:
   - Personal and Small Business Transactions
   specs:
@@ -1521,489 +1490,583 @@ relationships:
   cardinality: has_many
   via: accounts
   spec: commercial-accounts.yaml
+  type: has_many
 - from: Account
   to: account
   cardinality: belongs_to
   via: accountId
   spec: commercial-accounts.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: Account
   to: Currency
   cardinality: has_one
   via: currency
   spec: commercial-accounts.yaml
+  type: has_one
 - from: AccountDetail
   to: DepositAccount
   cardinality: has_one
   via: depositAccount
   spec: commercial-account-balance.yaml
+  type: has_one
 - from: AccountDetail
   to: LoanAccount
   cardinality: has_one
   via: loanAccount
   spec: commercial-account-balance.yaml
+  type: has_one
 - from: AccountDetail
   to: LineOfCreditAccount
   cardinality: has_one
   via: lineOfCreditAccount
   spec: commercial-account-balance.yaml
+  type: has_one
 - from: AccountDetail
   to: CreditCardAccount
   cardinality: has_one
   via: creditCardAccount
   spec: commercial-account-balance.yaml
+  type: has_one
 - from: PostedOrPending
   to: Transaction
   cardinality: has_many
   via: transactions
   spec: commercial-account-transactions.yaml
+  type: has_many
 - from: Transaction
   to: transaction
   cardinality: belongs_to
   via: transactionid
   spec: commercial-account-transactions.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: TransactionDetail
   to: account
   cardinality: belongs_to
   via: accountId
   spec: commercial-account-transactions.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: TransactionDetail
   to: transaction
   cardinality: belongs_to
   via: transactionId
   spec: commercial-account-transactions.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: AccountContact
   to: AccountHolder
   cardinality: has_many
   via: holders
   spec: retail-accounts.yaml
+  type: has_many
 - from: AccountDescriptor
   to: Identifier
   cardinality: has_one
   via: accountId
   spec: retail-accounts.yaml
+  type: has_one
 - from: AccountDescriptor
   to: DateString
   cardinality: has_one
   via: accountOpenDate
   spec: retail-accounts.yaml
+  type: has_one
 - from: AccountDescriptor
   to: Currency
   cardinality: has_one
   via: currency
   spec: retail-accounts.yaml
+  type: has_one
 - from: AccountDescriptor
   to: FiAttribute
   cardinality: has_many
   via: fiAttributes
   spec: retail-accounts.yaml
+  type: has_many
 - from: Accounts
   to: AccountWithDetails
   cardinality: has_many
   via: accounts
   spec: retail-accounts.yaml
+  type: has_many
 - from: Holding
   to: holding
   cardinality: belongs_to
   via: holdingId
   spec: retail-accounts.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: Holding
   to: security
   cardinality: belongs_to
   via: securityId
   spec: retail-accounts.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: Holding
   to: TaxLot
   cardinality: has_many
   via: taxLots
   spec: retail-accounts.yaml
+  type: has_many
 - from: Holding
   to: DebtSecurity
   cardinality: has_one
   via: debtSecurity
   spec: retail-accounts.yaml
+  type: has_one
 - from: Holding
   to: Currency
   cardinality: has_one
   via: currency
   spec: retail-accounts.yaml
+  type: has_one
 - from: InvestmentBalance
   to: DateString
   cardinality: has_one
   via: balanceDate
   spec: retail-accounts.yaml
+  type: has_one
 - from: InvestmentBalance
   to: Currency
   cardinality: has_one
   via: currency
   spec: retail-accounts.yaml
+  type: has_one
 - from: TaxLot
   to: DateString
   cardinality: has_one
   via: originalPurchaseDate
   spec: retail-accounts.yaml
+  type: has_one
 - from: Location
   to: Address
   cardinality: has_one
   via: address
   spec: retail-locator.yaml
+  type: has_one
 - from: Branches
   to: Location
   cardinality: has_many
   via: branchLocations
   spec: retail-locator.yaml
+  type: has_many
 - from: ATMs
   to: Location
   cardinality: has_many
   via: atmLocations
   spec: retail-locator.yaml
+  type: has_many
 - from: Locations
   to: Location
   cardinality: has_many
   via: locations
   spec: retail-locator.yaml
+  type: has_many
 - from: PaginatedArray
   to: PageMetadata
   cardinality: has_one
   via: page
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: PaginatedArray
   to: PageMetadataLinks
   cardinality: has_one
   via: links
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: PageMetadataLinks
   to: HateoasLink
   cardinality: has_one
   via: next
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Transaction
   to: Identifier
   cardinality: has_one
   via: accountId
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Transaction
   to: Identifier
   cardinality: has_one
   via: transactionId
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Transaction
   to: Identifier
   cardinality: has_one
   via: referenceTransactionId
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Transaction
   to: Timestamp
   cardinality: has_one
   via: postedTimestamp
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Transaction
   to: Timestamp
   cardinality: has_one
   via: transactionTimestamp
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Transaction
   to: String255
   cardinality: has_one
   via: memo
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Transaction
   to: TransactionReward
   cardinality: has_one
   via: reward
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Transaction
   to: FiAttribute
   cardinality: has_many
   via: fiAttributes
   spec: retail-accounts-transaction.yaml
+  type: has_many
 - from: Transactions
   to: PaginatedArray
   cardinality: has_one
   via: paginatedArray
   spec: retail-accounts-transaction.yaml
+  type: has_one
 - from: Address
   to: String64
   cardinality: has_one
   via: line1
   spec: retail-customers.yaml
+  type: has_one
 - from: Address
   to: String64
   cardinality: has_one
   via: line2
   spec: retail-customers.yaml
+  type: has_one
 - from: Address
   to: String64
   cardinality: has_one
   via: line3
   spec: retail-customers.yaml
+  type: has_one
 - from: Address
   to: String64
   cardinality: has_one
   via: city
   spec: retail-customers.yaml
+  type: has_one
 - from: Address
   to: String64
   cardinality: has_one
   via: region
   spec: retail-customers.yaml
+  type: has_one
 - from: Customer
   to: Identifier
   cardinality: has_one
   via: customerId
   spec: retail-customers.yaml
+  type: has_one
 - from: Customer
   to: CustomerName
   cardinality: has_one
   via: name
   spec: retail-customers.yaml
+  type: has_one
 - from: Customer
   to: DeliveryAddress
   cardinality: has_many
   via: addresses
   spec: retail-customers.yaml
+  type: has_many
 - from: Customer
   to: TelephoneNumber
   cardinality: has_many
   via: telephones
   spec: retail-customers.yaml
+  type: has_many
 - from: TokenRequest
   to: client_
   cardinality: belongs_to
   via: client_id
   spec: retail-auth-oauth.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: TokenResponse
   to: grant_
   cardinality: belongs_to
   via: grant_id
   spec: retail-auth-oauth.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: ConsentGrant
   to: Identifier
   cardinality: has_one
   via: id
   spec: retail-consents.yaml
+  type: has_one
 - from: ConsentGrant
   to: ConsentGrantParty
   cardinality: has_many
   via: parties
   spec: retail-consents.yaml
+  type: has_many
 - from: ConsentGrant
   to: Timestamp
   cardinality: has_one
   via: createdTime
   spec: retail-consents.yaml
+  type: has_one
 - from: ConsentGrant
   to: Timestamp
   cardinality: has_one
   via: expirationTime
   spec: retail-consents.yaml
+  type: has_one
 - from: ConsentGrant
   to: Timestamp
   cardinality: has_one
   via: updatedTime
   spec: retail-consents.yaml
+  type: has_one
 - from: ConsentGrant
   to: ConsentDurationPeriod
   cardinality: has_one
   via: durationPeriod
   spec: retail-consents.yaml
+  type: has_one
 - from: ConsentGrant
   to: LookbackPeriod
   cardinality: has_one
   via: lookbackPeriod
   spec: retail-consents.yaml
+  type: has_one
 - from: ConsentGrant
   to: ConsentGrantResource
   cardinality: has_many
   via: resources
   spec: retail-consents.yaml
+  type: has_many
 - from: ConsentGrantResource
   to: Identifier
   cardinality: has_one
   via: resourceId
   spec: retail-consents.yaml
+  type: has_one
 - from: Party
   to: registeredEntity
   cardinality: belongs_to
   via: registeredEntityId
   spec: retail-consents.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: RecipientRequest
   to: Identifier
   cardinality: has_one
   via: client_name
   spec: retail-register-recipient.yaml
+  type: has_one
 - from: RecipientRequest
   to: Intermediary
   cardinality: has_many
   via: intermediaries
   spec: retail-register-recipient.yaml
+  type: has_many
 - from: AccountPaymentNetwork
   to: bank
   cardinality: belongs_to
   via: bankId
   spec: retail-payment-networks.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: AccountPaymentNetworkList
   to: AccountPaymentNetwork
   cardinality: has_many
   via: paymentNetworks
   spec: retail-payment-networks.yaml
+  type: has_many
 - from: AccountList
   to: Account
   cardinality: has_many
   via: accounts
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_many
 - from: PaymentIds
   to: correlation
   cardinality: belongs_to
   via: correlationId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: PaymentIds
   to: payment
   cardinality: belongs_to
   via: paymentId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: RtpPaymentDetail
   to: correlation
   cardinality: belongs_to
   via: correlationId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: RtpPaymentDetail
   to: fromAccount
   cardinality: belongs_to
   via: fromAccountId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: RtpPaymentDetail
   to: RtpCreditor
   cardinality: has_one
   via: creditor
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_one
 - from: RtpPaymentDetail
   to: PaymentDate
   cardinality: has_one
   via: paymentDate
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_one
 - from: RtpResponse
   to: PaymentIds
   cardinality: has_many
   via: payments
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_many
 - from: GetApprovalsPaymentResponse
   to: Transaction
   cardinality: has_many
   via: transactions
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_many
 - from: RtpCreditor
   to: Address
   cardinality: has_one
   via: address
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_one
 - from: RtpCreditor
   to: ContactDetails
   cardinality: has_one
   via: contactDetails
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_one
 - from: RtpCreditor
   to: legalEntity
   cardinality: belongs_to
   via: legalEntityId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: Transactions
   to: PageMetadata
   cardinality: has_one
   via: pageMetadata
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_one
 - from: Transactions
   to: Transaction
   cardinality: has_many
   via: transactions
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_many
 - from: Transaction
   to: correlation
   cardinality: belongs_to
   via: correlationId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: Transaction
   to: payment
   cardinality: belongs_to
   via: paymentId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: Transaction
   to: Frequency
   cardinality: has_one
   via: frequency
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_one
 - from: Transaction
   to: payFromAccount
   cardinality: belongs_to
   via: payFromAccountId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: Transaction
   to: payToAccount
   cardinality: belongs_to
   via: payToAccountId
   spec: commercial-credit-transfers-oas-v2.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: MultipleRtpPaymentRequest
   to: RtpPaymentRequest
   cardinality: has_many
   via: payments
   spec: commercial-credit-transfers-oas-v2.yaml
+  type: has_many
 - from: Notification
   to: notification
   cardinality: belongs_to
   via: notificationId
   spec: retail-event-notifications.yaml
   inferred_from: id-reference field name
+  type: belongs_to
 - from: Notification
   to: Timestamp
   cardinality: has_one
   via: sentOn
   spec: retail-event-notifications.yaml
+  type: has_one
 - from: Notification
   to: Party
   cardinality: has_one
   via: publisher
   spec: retail-event-notifications.yaml
+  type: has_one
 - from: Notification
   to: NotificationPayload
   cardinality: has_one
   via: notificationPayload
   spec: retail-event-notifications.yaml
+  type: has_one
 - from: NotificationPayload
   to: FiAttribute
   cardinality: has_one
   via: customFields
   spec: retail-event-notifications.yaml
+  type: has_one
 - from: NotificationSubscription
   to: Party
   cardinality: has_one
   via: subscriber
   spec: retail-event-subscriptions.yaml
+  type: has_one
 - from: NotificationSubscription
   to: DateString
   cardinality: has_one
   via: effectiveDate
   spec: retail-event-subscriptions.yaml
+  type: has_one
 - from: NotificationSubscription
   to: subscription
   cardinality: belongs_to
   via: subscriptionId
   spec: retail-event-subscriptions.yaml
   inferred_from: id-reference field name
+  type: belongs_to

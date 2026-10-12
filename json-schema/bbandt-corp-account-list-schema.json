@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-account-list-schema.json",
+  "title": "Commercial Account List",
+  "description": "Accounts returned by API upon successful search",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-credit-transfers-account-list-api-openapi.yml#/components/schemas/AccountList",
+  "type": "object",
+  "properties": {
+    "accounts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Account"
+      }
+    }
+  },
+  "$defs": {
+    "Account": {
+      "title": "Commercial Account",
+      "description": "List of commercial accounts for a user",
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "description": "Unique identifier for account",
+          "type": "string"
+        },
+        "accountType": {
+          "$ref": "#/$defs/AccountType"
+        },
+        "displayName": {
+          "description": "Obfuscated account number for display purpose ex. client app screen",
+          "type": "string"
+        },
+        "bankNumber": {
+          "description": "Bank number to identify the bank branch",
+          "type": "string"
+        },
+        "description": {
+          "description": "Customer created nick name linked to the account",
+          "type": "string"
+        },
+        "eligibilityType": {
+          "description": "Payment type allowed for this account",
+          "$ref": "#/$defs/PaymentType"
+        },
+        "currentAvailableBalance": {
+          "description": "current available balance",
+          "type": "number"
+        },
+        "status": {
+          "description": "Status of the account",
+          "type": "string",
+          "enum": [
+            "OPEN",
+            "CLOSED"
+          ]
+        }
+      }
+    },
+    "AccountType": {
+      "title": "Account Type",
+      "description": "Account type identified by the bank",
+      "type": "string",
+      "enum": [
+        "CHECKING",
+        "SAVINGS"
+      ]
+    },
+    "PaymentType": {
+      "title": "Schema definition for payment type",
+      "description": "TCH Payment type",
+      "type": "string",
+      "enum": [
+        "RTP"
+      ]
+    }
+  }
+}

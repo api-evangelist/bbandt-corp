@@ -7,11 +7,7 @@ provider: BB&T Corp (Truist)
 providerId: bbandt-corp
 format: vendor
 rfc9457: false
-description: 'Truist open-banking APIs return a flat vendor error envelope, not RFC 9457 problem+json. Every error
-  body is the FDX `Error` entity: an object with a string `code` (an FDX or Truist-assigned code) and a human-readable
-  `message`. The OAuth API uses a separate `APIErrorResponse` envelope. Every error response also carries the `x-fapi-interaction-id`
-  correlation header (the retail Branch/ATM Locator returns `x-RqUID` instead), which is the value to quote to Truist
-  support.'
+description: 'Truist open-banking APIs return a flat vendor error envelope, not RFC 9457 problem+json. Every error body is the FDX `Error` entity: an object with a string `code` (an FDX or Truist-assigned code) and a human-readable `message`. The OAuth API uses a separate `APIErrorResponse` envelope. Every error response also carries the `x-fapi-interaction-id` correlation header (the retail Branch/ATM Locator returns `x-RqUID` instead), which is the value to quote to Truist support.'
 envelope:
   media_type: application/json
   schema: '#/components/schemas/Error'
@@ -474,8 +470,7 @@ errors:
 - name: MISSING_MANDOTORY_PARAMS
   code: '7027'
   status: 400
-  message: Bad request, mandatory query param is missing. PaymentId, correlationId or accountId and paymentAction
-    should be present
+  message: Bad request, mandatory query param is missing. PaymentId, correlationId or accountId and paymentAction should be present
   meaning: Bad Request
   apis:
   - Credit Transfers
@@ -864,8 +859,7 @@ errors:
 - name: MISSING_REQUIRED_PARAMETER
   code: '401'
   status: 400
-  message: Following required parameters are missing - {notificationId, type, sentOn, category, publisher, publisher
-    name, publisher type, notificationPayload}
+  message: Following required parameters are missing - {notificationId, type, sentOn, category, publisher, publisher name, publisher type, notificationPayload}
   meaning: Bad Request
   apis:
   - Personal and Small Business Event Notifications
@@ -988,12 +982,485 @@ errors:
 - name: UPDATE_NOT_YET_IMPLEMENTED
   code: '401'
   status: 400
-  message: Following requested field updates are not yet supported by Truist - {client_name, auto_connect, duration_type,
-    duration_period}
+  message: Following requested field updates are not yet supported by Truist - {client_name, auto_connect, duration_type, duration_period}
   meaning: Bad Request
   apis:
   - Retail Dynamic Client Registration
-notes: 'Codes are harvested verbatim from the `examples` blocks of each published spec. Truist mixes two code spaces:
-  HTTP-mirroring codes (401/404/500) in the commercial account APIs, and numeric FDX/gateway codes (603, 602, 1101,
-  1206, 1207, 1208, 7xxx, 8xxx) in the retail and Credit Transfers APIs. No consolidated error reference is published
-  outside the specs.'
+notes: 'Codes are harvested verbatim from the `examples` blocks of each published spec. Truist mixes two code spaces: HTTP-mirroring codes (401/404/500) in the commercial account APIs, and numeric FDX/gateway codes (603, 602, 1101, 1206, 1207, 1208, 7xxx, 8xxx) in the retail and Credit Transfers APIs. No consolidated error reference is published outside the specs.'
+problems:
+- status: 401
+  title: INVALID_ACCESS_TOKEN
+  type: '401'
+  description: The access token is invalid
+- status: 401
+  title: ACCESS_TOKEN_EXPIRED
+  type: '401'
+  description: The access token expired
+- status: 403
+  title: NO_ENTITLEMENT
+  type: '403'
+  description: Account Id not entitled for Balance Inquiry
+- status: 404
+  title: RESOURCE_NOT_FOUND
+  type: '404'
+  description: Resource Not Found
+- status: 404
+  title: ACCOUNTINFO_NOT_FOUND
+  type: '404'
+  description: Account details information is not available for the account id
+- status: 405
+  title: RESOURCE_NOT_FOUND
+  type: '405'
+  description: Requested Method is not found
+- status: 500
+  title: SYSTEM_DOWN_MAINTENANCE
+  type: '500'
+  description: System Down for maintenance
+- status: 400
+  title: PREVCURR_MISSING
+  type: '400'
+  description: Bad request. previousDateIndicator can be C or P
+- status: 400
+  title: TRANSDATE_MISSING
+  type: '400'
+  description: Bad request. transactionDate should be passed as a mandatory field
+- status: 400
+  title: INVALID_DATE
+  type: '400'
+  description: Bad request. The date does not match ISO 8601
+- status: 403
+  title: NO_ENTITLMENT
+  type: '403'
+  description: Account is not entitled for transactions
+- status: 404
+  title: ACCOUNT_NOT_FOUND
+  type: '404'
+  description: Account Number not found
+- status: 404
+  title: NO_TRANSACTIONS
+  type: '404'
+  description: No Transactions available for the given input
+- status: 405
+  title: METHOD_NOT_ALLOWED
+  type: '405'
+  description: The request method is not supported by this resource
+- status: 500
+  title: SYSTEM_DOWN
+  type: '500'
+  description: System Down for maintenance
+- status: 400
+  title: INVALID_ACCOUNTTYPE
+  type: '400'
+  description: Bad Request. Invalid accountType
+- status: 404
+  title: ACCOUNT_NOT_AVAILABLE
+  type: '404'
+  description: Accounts not available for the given onlineId
+- status: 404
+  title: DATA_NOT_AVAILABLE
+  type: '404'
+  description: Data Not Found for the OnlineId
+- status: 500
+  title: SYSTEM_UNAVAILABLE
+  type: '500'
+  description: System unavailable
+- status: 400
+  title: INVALID_INPUT_OAS
+  type: '7021'
+  description: Specify OAS validation error
+- status: 401
+  title: INVALID_ACCESS_TOKEN
+  type: '603'
+  description: Authentication failed
+- status: 403
+  title: ENTITLEMENT_ERROR
+  type: '602'
+  description: Account not entitled
+- status: 403
+  title: INSUFFICIENT_SCOPE
+  type: '403'
+  description: Invalid scope
+- status: 404
+  title: RESOURCE_NOT_FOUND
+  type: '1101'
+  description: URI does not represent a recognized resource
+- status: 404
+  title: INVALID_ACCOUNTID
+  type: '7059'
+  description: Account not found
+- status: 405
+  title: METHOD_NOT_ALLOWED
+  type: '1206'
+  description: Method Not Allowed
+- status: 409
+  title: DUPLICATE_PAYMENT_REQUEST
+  type: '908'
+  description: Duplicate payment request
+- status: 429
+  title: SPIKE_ARREST_VIOLATION
+  type: '1207'
+  description: Too Many Requests
+- status: 429
+  title: QUOTA_VIOLATION
+  type: '1208'
+  description: Quota Violation
+- status: 500
+  title: INTERNAL_SERVER_ERROR
+  type: '500'
+  description: We are currently unable to process your request due to a system issue
+- status: 500
+  title: UNEXPECTED_ERROR
+  type: '500'
+  description: An unexpected error occurred while processing your request
+- status: 503
+  title: SERVICE_UNAVAILABLE
+  type: '503'
+  description: We are currently unable to process your request due to a system issue
+- status: 504
+  title: GATEWAY_TIMEOUT
+  type: '504'
+  description: An unexpected error occurred while processing your request
+- status: 400
+  title: MISSING_AMOUNT
+  type: '7000'
+  description: Bad request, amount is missing, null or blank
+- status: 400
+  title: INVALID_AMOUNT
+  type: '8001'
+  description: Bad request, amount is invalid
+- status: 400
+  title: MISSING_FROMACCID
+  type: '7001'
+  description: Bad request, fromAccountId is missing, null or blank
+- status: 400
+  title: MISSING_PAYMENTDATE
+  type: '7002'
+  description: Bad request, paymentDate is missing, null or blank
+- status: 400
+  title: MISSING_CORRELATIONID
+  type: '7003'
+  description: Bad request, correlationId is missing, null or blank
+- status: 400
+  title: MISSING_CREDITOR
+  type: '7004'
+  description: Bad request, creditor is missing
+- status: 400
+  title: MISSING_CREDITOR_ACCOUNTNUMBER
+  type: '7005'
+  description: Bad request, creditor account number is missing, null or blank
+- status: 400
+  title: MISSING_CREDITOR_ROUTINGNUMBER
+  type: '7006'
+  description: Bad request, creditor routing number is missing, null or blank
+- status: 400
+  title: MISSING_CREDITOR_ADDRESS_LINE
+  type: '7008'
+  description: Bad request, creditor address line is missing, null or blank
+- status: 400
+  title: MISSING_CREDITOR_ADDRESS_STATE
+  type: '7009'
+  description: Bad request, creditor address's state is missing, null or blank
+- status: 400
+  title: MISSING_CREDITOR_ADDRESS_CITY
+  type: '7010'
+  description: Bad request, creditor address's city is missing, null or blank
+- status: 400
+  title: MISSING_CREDITOR_ZIPCODE
+  type: '7011'
+  description: Bad request, creditor address's zipcode is missing, null or blank
+- status: 400
+  title: INVALID_CORRELATIONID
+  type: '7024'
+  description: Bad request, correlationId is invalid
+- status: 400
+  title: AMOUNT_MORE_THAN_10MILLION
+  type: '8002'
+  description: Amount shouldn't be more than 10 million
+- status: 400
+  title: INVALID_FULL_AMOUNT
+  type: '8023'
+  description: Bad request, full amount is amount + discount amount
+- status: 400
+  title: TRANSACTION_LIMIT_EXCEEDED
+  type: '8027'
+  description: Transaction limit is exceeded
+- status: 400
+  title: DAILY_LIMIT_EXCEEDED
+  type: '8026'
+  description: Daily limit is exceeded
+- status: 400
+  title: USER_DAILY_LIMIT_EXCEEDED
+  type: '8029'
+  description: Exceeded user's daily limit
+- status: 400
+  title: ROUTING_NUMBER_SERVICE_UNAVAILABLE
+  type: '8031'
+  description: Routing number service is unavailable
+- status: 400
+  title: CLOSED_ACCOUNT
+  type: '8037'
+  description: Payment initiation is not allowed on closed account
+- status: 400
+  title: MISSING_MANDOTORY_PARAMS
+  type: '7027'
+  description: Bad request, mandatory query param is missing. PaymentId, correlationId or accountId and paymentAction should be present
+- status: 400
+  title: INVALID_LIMIT
+  type: '7013'
+  description: Bad request, limit has invalid values
+- status: 400
+  title: INVALID_INPUT_PARAM_CORRELATIONID
+  type: '7023'
+  description: Bad request, either correlationId or paymentId should be present. Invalid search parameters"
+- status: 400
+  title: INVALID_OFFSET
+  type: '7014'
+  description: Bad request, offset has invalid values
+- status: 400
+  title: MISSING_PAYMENTFROMDATE
+  type: '7015'
+  description: Bad request, paymentFromDate is missing, null or blank
+- status: 400
+  title: INVALID_PAYMENTFROMDATE
+  type: '7016'
+  description: Bad request, paymentFromDate is invalid
+- status: 400
+  title: MISSING_FROMAMOUNT
+  type: '7017'
+  description: Bad request, fromAmount is missing, null or blank
+- status: 400
+  title: INVALID_FROMAMOUNT
+  type: '7018'
+  description: Bad request, fromAmount is invalid
+- status: 400
+  title: MISSING_TOAMOUNT
+  type: '7019'
+  description: Bad request, toAmount is missing, null or blank
+- status: 400
+  title: INVALID_TOAMOUNT
+  type: '7020'
+  description: Bad request, toAmount is invalid
+- status: 404
+  title: DATA_NOT_FOUND
+  type: '1107'
+  description: Data not found for request parameters
+- status: 404
+  title: ACCOUNT_NOT_AVAILABLE
+  type: '8000'
+  description: Accounts not available for the given OnlineId
+- status: 400
+  title: INVALID_STATUS
+  type: '7167'
+  description: Bad request, status is invalid
+- status: 400
+  title: MISSING_PAYMENTTODATE
+  type: '7029'
+  description: Bad request, paymentToDate is missing, null or blank
+- status: 400
+  title: INVALID_PAYMENTTODATE
+  type: '7030'
+  description: Bad request, paymentToDate is invalid
+- status: 400
+  title: GREATER_PAYMENTTODATE
+  type: '7164'
+  description: Bad request, paymentToDate should be greater than paymentFromDate
+- status: 401
+  title: ACCESS_TOKEN_EXPIRED
+  type: '603'
+  description: Authentication failed
+- status: 401
+  title: ACCESSTOKEN_NOT_APPROVED
+  type: '603'
+  description: Authentication failed
+- status: 401
+  title: NO_APIPRODUCT_MATCHFOUND
+  type: 603-403
+  description: Data recipient connection does not include CUSTOMER_CONTACT
+- status: 403
+  title: INVALID_SCOPE
+  type: '602'
+  description: Customer connection does not authorize account contact
+- status: 404
+  title: RESOURCE_NOT_FOUND
+  type: 701-1206
+  description: URI does not represent a recognized resource
+- status: 404
+  title: INVALID_ACCOUNT
+  type: '701'
+  description: Invalid account id
+- status: 405
+  title: INVALID_METHOD
+  type: '1206'
+  description: The request method is not supported by this resource
+- status: 429
+  title: QUOTA_VIOLATION
+  type: '1207'
+  description: Quota violation, too many requests
+- status: 500
+  title: SUBSYSTEM_UNAVAILABLE_ERROR
+  type: '501'
+  description: Subsystem unavailable
+- status: 400
+  title: INVALID_DATE_RANGE
+  type: '703'
+  description: Invalid date range
+- status: 400
+  title: INVALID_START_OR_END_DATE
+  type: '702'
+  description: Invalid start or end date
+- status: 400
+  title: START_TIME_MISSING
+  type: '401'
+  description: Bad request. startTime is required
+- status: 422
+  title: INVALID_ACCOUNT_TYPE
+  type: '704'
+  description: Account type not supported for Transactions
+- status: 401
+  title: NO_APIPRODUCT_MATCHFOUND
+  type: '603'
+  description: Authentication failed
+- status: 401
+  title: INVALID_BASICAUTHENTICATION_SOURCE
+  type: '603'
+  description: Authentication failed
+- status: 404
+  title: RESOURCE_NOT_FOUND
+  type: '701'
+  description: URI does not represent a recognized resource
+- status: 404
+  title: ACCOUNTID_NOT_FOUND
+  type: '701'
+  description: Account Id is required
+- status: 500
+  title: SUBSYSTEM_UNAVAILABLE
+  type: '501'
+  description: System down for maintenance
+- status: 400
+  title: INVALID_RESULTTYPE
+  type: '401'
+  description: Bad request. resultType must either be lightweight or details
+- status: 400
+  title: INVALID_SCOPE
+  type: '401'
+  description: missing or invalid scope
+- status: 400
+  title: INVALID_JSON
+  type: '401'
+  description: The request payload is not in a valid JSON format
+- status: 403
+  title: INVALID_COUNTRY_ID
+  type: '403'
+  description: Service is not whitelisted for this country
+- status: 403
+  title: INVALID_ORIGIN
+  type: '403'
+  description: Invalid origin
+- status: 403
+  title: INVALID_IP
+  type: '403'
+  description: Invalid IP
+- status: 403
+  title: NO_APIPRODUCT_MATCHFOUND
+  type: '403'
+  description: Data recipient connection does not include account basic or account details
+- status: 404
+  title: ACCOUNT_NOT_FOUND
+  type: '701'
+  description: Account not found
+- status: 404
+  title: CUSTOMER_NOT_FOUND
+  type: '601'
+  description: Customer not found
+- status: 400
+  title: INVALID_PATH_PARAMETER
+  type: '401'
+  description: Invalid consentId
+- status: 404
+  title: RESOURCE_NOT_FOUND
+  type: '1107'
+  description: URI does not represent a recognized resource
+- status: 401
+  title: AUTHENTICATION_FAILED
+  type: '603'
+  description: Authentication failed
+- status: 403
+  title: INSUFFICIENT_SCOPE
+  type: '602'
+  description: Customer connection does not authorize customer data
+- status: 404
+  title: RESOURCE_NOT_FOUND
+  type: 1107-1206
+  description: URI does not represent a recognized resource
+- status: 400
+  title: MISSING_REQUIRED_PARAMETER
+  type: '401'
+  description: Following required parameters are missing - {notificationId, type, sentOn, category, publisher, publisher name, publisher type, notificationPayload}
+- status: 400
+  title: INVALID_CLIENT_METADATA
+  type: '401'
+  description: Following request fields have invalid values - {type, sentOn, category, publisher type}
+- status: 400
+  title: SUBSCRIPTION_ID_REQUIRED
+  type: '401'
+  description: Unique Subscription ID is required
+- status: 400
+  title: INVALID_SUBSCRIPTION_ID
+  type: '401'
+  description: Following request fields have invalid values - {subscriptionId}
+- status: 404
+  title: INVALID_SUBSCRIPTION_ID
+  type: '1107'
+  description: Invalid subscription id
+- status: 400
+  title: INVALID_ZIP_CODE
+  type: '401'
+  description: Invalid Input
+- status: 400
+  title: INVALID_Lat_Lng
+  type: '401'
+  description: If either Lat or Lng is specified, the other must also be sent
+- status: 400
+  title: INVALID_CITY_STATE
+  type: '401'
+  description: Requested City was not found, please add State or Zip
+- status: 400
+  title: ACCOUNTID_REQUIRED
+  type: '401'
+  description: Account ID is required
+- status: 400
+  title: FDX_API_DATA_RECIPIENT_ID_REQUIRED
+  type: '401'
+  description: Invalid input, FDX-API-Data-Recipient-Id is required
+- status: 400
+  title: FDX_API_DATA_RECIPIENT_ID_INVALID
+  type: '401'
+  description: Invalid input, FDX-API-Data-Recipient-Id does not match customer consent
+- status: 400
+  title: IDENTIFIER_TYPES_INVALID
+  type: '401'
+  description: Invalid Input - Query parameter 'identifierTypes' is invalid
+- status: 403
+  title: DATA_RECIPIENT_TEMPORARY_SUSPENSION
+  type: '480'
+  description: Forbidden due to temporary suspension of Data Recipient connections
+- status: 404
+  title: FDX_API_DATA_RECIPIENT_ID_RECORD_NOT_FOUND
+  type: '1001'
+  description: Data Recipient ID is not found
+- status: 409
+  title: DATA_RECIPIENT_NOT_YET_INITIALIZED
+  type: '409'
+  description: Data Recipient not yet initialized for tokenized account numbers
+- status: 409
+  title: DUPLICATE_CLIENT
+  type: '409'
+  description: Duplicate Client Name request
+- status: 400
+  title: OUT_OF_CONTRACT_METADATA
+  type: '401'
+  description: Following request fields have out of contract metadata - {scope, duration_type, duration_period, lookback_period}
+- status: 400
+  title: UPDATE_NOT_YET_IMPLEMENTED
+  type: '401'
+  description: Following requested field updates are not yet supported by Truist - {client_name, auto_connect, duration_type, duration_period}

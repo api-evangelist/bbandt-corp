@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-get-approvals-payment-response-schema.json",
+  "title": "All reported transactions",
+  "description": "Real time payment transaction list",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-credit-transfers-approval-reject-api-openapi.yml#/components/schemas/GetApprovalsPaymentResponse",
+  "type": "object",
+  "properties": {
+    "transactions": {
+      "type": "array",
+      "description": "An array of Credit Transfer Transaction inquiry responses",
+      "items": {
+        "$ref": "#/$defs/Transaction"
+      }
+    }
+  },
+  "$defs": {
+    "PaymentSubType": {
+      "title": "Schema definition for payment subtype type which will indicates whether its Inbound or Outbound transfers",
+      "description": "The subtype of a submitted RTP:\n  - RTP Credit Type\n  - Request for Return of Funds\n  - Inbound Request Credit",
+      "type": "string",
+      "enum": [
+        "CRDT",
+        "RFRF",
+        "IBRTP"
+      ]
+    },
+    "RtpTransactionStatus": {
+      "title": "RTP Status of Transaction",
+      "description": "The status of a submitted RTP:\n  - needsApproval\n  - rejected\n  - approved\n  - completed\n  - canceled\n  - scheduled\n  - processing\n  - rejectedByApprover\n  - failed\n  - expired",
+      "type": "string",
+      "enum": [
+        "needsApproval",
+        "rejected",
+        "approved",
+        "completed",
+        "canceled",
+        "scheduled",
+        "processing",
+        "rejectedByApprover",
+        "failed",
+        "expired"
+      ]
+    },
+    "Transaction": {
+      "title": "real time payment transaction",
+      "description": "payment transaction inquiry response payload",
+      "type": "object",
+      "properties": {
+        "correlationId": {
+          "description": "The Correlation ID is unique ID made by removing hyphens from a standard UUID to make it 32 characters long.",
+          "type": "string"
+        },
+        "paymentId": {
+          "description": "unique payment id.",
+          "type": "string"
+        },
+        "submittedBy": {
+          "description": "initiator id or name.",
+          "type": "string"
+        },
+        "paymentType": {
+          "description": "type of the payment.",
+          "type": "string"
+        },
+        "paymentTypeCode": {
+          "$ref": "#/$defs/PaymentSubType"
+        },
+        "frequency": {
+          "$ref": "#/$defs/Frequency"
+        },
+        "paymentDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "payment execution date time."
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "expiration date after which the payment is invalid."
+        },
+        "amount": {
+          "description": "amount of transaction",
+          "type": "number"
+        },
+        "payFromAccountNumber": {
+          "description": "debtor account number",
+          "type": "string"
+        },
+        "payFromAccountId": {
+          "description": "debtor account id.",
+          "type": "string"
+        },
+        "payFromRoutingNumber": {
+          "description": "debtor routing number",
+          "type": "string"
+        },
+        "payToAccountNumber": {
+          "description": "creditor account number",
+          "type": "string"
+        },
+        "payToAccountId": {
+          "description": "creditor account id.",
+          "type": "string"
+        },
+        "payToRoutingNumber": {
+          "description": "creditor routing number",
+          "type": "string"
+        },
+        "status": {
+          "description": "status of the rtp transaction",
+          "$ref": "#/$defs/RtpTransactionStatus"
+        },
+        "statusReasonCode": {
+          "description": "NARR",
+          "type": "string"
+        },
+        "statusReasonDescription": {
+          "description": "Defines status of the RTP request",
+          "type": "string"
+        },
+        "description": {
+          "description": "transaction memo",
+          "type": "string"
+        },
+        "recipient": {
+          "type": "string",
+          "description": "recipient name or any identifying information."
+        },
+        "requiredApprovals": {
+          "type": "number",
+          "description": "required number of approvals."
+        },
+        "alreadyApproved": {
+          "type": "number",
+          "description": "current number of approvals granted."
+        },
+        "approvedBy": {
+          "type": "array",
+          "description": "desc",
+          "items": {
+            "type": "object",
+            "properties": {
+              "approverName": {
+                "type": "string",
+                "description": "Name of the approver"
+              },
+              "approvedDate": {
+                "type": "string",
+                "format": "date-time",
+                "description": "approved date and time"
+              }
+            }
+          }
+        }
+      },
+      "required": [
+        "paymentId",
+        "paymentType",
+        "amount",
+        "description",
+        "payToAccountNumber"
+      ]
+    }
+  }
+}

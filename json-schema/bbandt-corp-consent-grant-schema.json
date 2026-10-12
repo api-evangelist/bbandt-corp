@@ -1,0 +1,235 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-consent-grant-schema.json",
+  "title": "Consent Grant entity",
+  "description": "Record of user consent",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-user-consent-api-openapi.yml#/components/schemas/ConsentGrant",
+  "type": "object",
+  "properties": {
+    "id": {
+      "description": "The persistent identifier of the consent",
+      "$ref": "#/$defs/Identifier"
+    },
+    "status": {
+      "description": "The current status of the consent",
+      "$ref": "#/$defs/ConsentGrantStatus"
+    },
+    "parties": {
+      "description": "The non-end user parties participating in the Consent Grant",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ConsentGrantParty"
+      }
+    },
+    "createdTime": {
+      "description": "When the consent was initially granted",
+      "$ref": "#/$defs/Timestamp"
+    },
+    "expirationTime": {
+      "description": "When the consent grant will become expired",
+      "$ref": "#/$defs/Timestamp"
+    },
+    "updatedTime": {
+      "description": "When the consent grant was updated",
+      "$ref": "#/$defs/Timestamp"
+    },
+    "durationType": {
+      "description": "The type of duration of the consent",
+      "$ref": "#/$defs/ConsentDurationType"
+    },
+    "durationPeriod": {
+      "description": "The consent duration in days from day of original grant",
+      "$ref": "#/$defs/ConsentDurationPeriod"
+    },
+    "lookbackPeriod": {
+      "description": "Period, in days, for which historical data may be requested; measured from request time, not grant time",
+      "$ref": "#/$defs/LookbackPeriod"
+    },
+    "autoConnect": {
+      "description": "Truist flag for whether to automatically extend this consent to a customer account which was newly opened or became newly visible in online banking",
+      "type": "boolean"
+    },
+    "resources": {
+      "description": "The permissioned resource entities",
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ConsentGrantResource"
+      }
+    }
+  },
+  "$defs": {
+    "ConsentDurationPeriod": {
+      "title": "Consent Duration Period",
+      "description": "Consent duration, in days, from day of original grant",
+      "type": "integer"
+    },
+    "ConsentDurationType": {
+      "title": "Consent Duration Type",
+      "description": "Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)",
+      "type": "string",
+      "enum": [
+        "ONE_TIME",
+        "TIME_BOUND"
+      ]
+    },
+    "ConsentGrantParty": {
+      "title": "Consent Grant Party entity",
+      "description": "Details on the non-end user parties in the Consent Grant. Includes the legal entity operating branded products or services in the data sharing chain. Descriptive information is collected during Data Recipient registration at Data Provider, and populated during issuance by Data Provider from its registry",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Party"
+        }
+      ],
+      "required": [
+        "homeUri",
+        "registry",
+        "registeredEntityName",
+        "registeredEntityId"
+      ]
+    },
+    "ConsentGrantResource": {
+      "title": "Consent Grant Resource entity",
+      "description": "Entity of permissioned resources",
+      "type": "object",
+      "properties": {
+        "resourceType": {
+          "description": "Type of resource to be permissioned",
+          "$ref": "#/$defs/ConsentResourceType"
+        },
+        "resourceId": {
+          "description": "Identifier of resource to be permissioned",
+          "$ref": "#/$defs/Identifier"
+        },
+        "dataClusters": {
+          "description": "Names of clusters of data elements permissioned",
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DataCluster"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "resourceType",
+        "resourceId",
+        "dataClusters"
+      ]
+    },
+    "ConsentGrantStatus": {
+      "title": "Consent Grant Status",
+      "description": "Current status of Consent Grant",
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "EXPIRED",
+        "REVOKED"
+      ]
+    },
+    "ConsentResourceType": {
+      "title": "Consent Resource Type",
+      "description": "Resource for which data may be permissioned; can be extended to support additional types of resources",
+      "type": "string",
+      "enum": [
+        "ACCOUNT",
+        "CUSTOMER",
+        "DOCUMENT"
+      ]
+    },
+    "DataCluster": {
+      "title": "Data Cluster",
+      "description": "Name of permissioned [cluster of data elements](https://fdx.atlassian.net/wiki/spaces/FDX/pages/872906996/v1.1+Data+Clusters)",
+      "type": "string",
+      "enum": [
+        "ACCOUNT_BASIC",
+        "ACCOUNT_DETAILED",
+        "CUSTOMER_CONTACT",
+        "PAYMENT_SUPPORT",
+        "TRANSACTIONS"
+      ]
+    },
+    "Identifier": {
+      "title": "Identifier",
+      "description": "Value for a unique identifier",
+      "type": "string",
+      "maxLength": 256
+    },
+    "LookbackPeriod": {
+      "title": "Lookback Period",
+      "description": "Period, in days, for which historical data may be requested; period is measured from request time, not grant time",
+      "type": "integer"
+    },
+    "Party": {
+      "title": "Party entity",
+      "description": "FDX Participant - an entity or person that is a part of a FDX API transaction",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "description": "Human recognizable common name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Extensible string enum identifying the type of the party",
+          "$ref": "#/$defs/PartyType"
+        },
+        "homeUri": {
+          "description": "URI for party, where an end user could learn more about the company or application involved in the data sharing chain",
+          "type": "string",
+          "format": "uri"
+        },
+        "logoUri": {
+          "description": "URI for a logo asset to be displayed to the end user",
+          "type": "string",
+          "format": "uri"
+        },
+        "registry": {
+          "description": "The Truist registry containing the party's registration with name and id: PRIVATE",
+          "$ref": "#/$defs/Registry"
+        },
+        "registeredEntityName": {
+          "description": "Registered name of party",
+          "type": "string"
+        },
+        "registeredEntityId": {
+          "description": "Registered id of party",
+          "type": "string"
+        }
+      }
+    },
+    "PartyType": {
+      "title": "Party Type",
+      "description": "Identifies the type of a party",
+      "type": "string",
+      "enum": [
+        "DATA_ACCESS_PLATFORM",
+        "DATA_PROVIDER",
+        "DATA_RECIPIENT",
+        "INDIVIDUAL",
+        "MERCHANT",
+        "VENDOR"
+      ]
+    },
+    "Registry": {
+      "title": "Registry",
+      "description": "Identifies the type of a Registry",
+      "type": "string",
+      "enum": [
+        "PRIVATE"
+      ]
+    },
+    "Timestamp": {
+      "title": "Timestamp",
+      "pattern": "\\d{4}\\-\\d\\d\\-\\d\\dT\\d\\d:\\d\\d:\\d\\d\\.\\d\\d\\dZ",
+      "description": "ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)",
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

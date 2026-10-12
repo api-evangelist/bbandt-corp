@@ -1,18 +1,21 @@
 aid: bbandt-corp
+
 url: https://raw.githubusercontent.com/api-evangelist/bbandt-corp/refs/heads/main/apis.yml
+
 name: BB&T Corp (Truist)
-description: BB&T Corporation merged with SunTrust Banks in December 2019 to form Truist Financial Corporation,
-  the sixth-largest US commercial bank. Truist runs an open-banking API program at developer.truist.com
-  and publishes fifteen first-party OpenAPI contracts covering 31 operations — personal and small-business
-  accounts, transactions, client contact, account address and payment networks; commercial accounts, balances
-  and transactions; RTP real-time credit transfers; OAuth 2.0 authentication, customer consent, RFC 7591
-  dynamic client registration, event subscriptions and notifications, and a branch/ATM locator. The retail
-  surface is built to the Financial Data Exchange (FDX) API (V5.4.1, V6.4.1 and v6.5) and every API carries
-  the FAPI x-fapi-interaction-id correlation header. Access is OAuth 2.0 authorization_code with per-customer
-  consent; sandbox is self-serve after registration, production requires manual approval by a Truist engagement
-  team.
+
+description: BB&T Corporation merged with SunTrust Banks in December 2019 to form Truist Financial Corporation, the sixth-largest US commercial
+  bank. Truist runs an open-banking API program at developer.truist.com and publishes fifteen first-party OpenAPI contracts covering 31 operations
+  — personal and small-business accounts, transactions, client contact, account address and payment networks; commercial accounts, balances and
+  transactions; RTP real-time credit transfers; OAuth 2.0 authentication, customer consent, RFC 7591 dynamic client registration, event subscriptions
+  and notifications, and a branch/ATM locator. The retail surface is built to the Financial Data Exchange (FDX) API (V5.4.1, V6.4.1 and v6.5)
+  and every API carries the FAPI x-fapi-interaction-id correlation header. Access is OAuth 2.0 authorization_code with per-customer consent; sandbox
+  is self-serve after registration, production requires manual approval by a Truist engagement team.
+
 type: Index
+
 kind: company
+
 deliveryModel:
   model: saas
   open_source: false
@@ -24,6 +27,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+
 accessModel:
   pricing: free
   onboarding: unknown
@@ -36,7 +40,9 @@ accessModel:
   - plans
   generated: '2026-07-22'
   method: derived
+
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/bbandt-corp.png
+
 tags:
 - Banking
 - Financial Services
@@ -44,6 +50,7 @@ tags:
 - Truist
 - BB&T
 - Fortune 500
+
 tags_raw:
 - Banking
 - Financial Services
@@ -52,763 +59,38 @@ tags_raw:
 - BB&T
 - Fortune 500
 - Financial-Services
+
 access: 3rd-Party
+
 created: '2026-03-23'
+
 modified: '2026-09-04'
+
 position: Producing
+
 specificationVersion: '0.23'
-apis:
-- aid: bbandt-corp:bbandt-corp-account-information-api
-  name: BB&T Corp (Truist) Account Information API
-  description: Search and view customer accounts
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Account Information
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-account-information-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-account-transactions-api
-  name: BB&T Corp (Truist) Account Transactions API
-  description: Search and view account transactions
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Account Transactions
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-account-transactions-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-commercial-account-balance-api
-  name: BB&T Corp (Truist) Commercial Account Balance API
-  description: Returns account balances for a specific account
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Commercial Account Balance
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-commercial-account-balance-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-commercial-account-transactions-api
-  name: BB&T Corp (Truist) Commercial Account Transactions API
-  description: Returns account transactions for a specific account
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Commercial Account Transactions
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-commercial-account-transactions-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-commercial-accounts-api
-  name: BB&T Corp (Truist) Commercial Accounts API
-  description: Retrieves the list of accounts
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Commercial Accounts
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-commercial-accounts-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-credit-transfers-account-list-api
-  name: BB&T Corp (Truist) Credit Transfers Account List API
-  description: Eligible accounts for Real Time Payment Credit Transfer
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Credit Transfers Account List
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-credit-transfers-account-list-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-credit-transfers-acknowledge-api
-  name: BB&T Corp (Truist) Credit Transfers Acknowledge API
-  description: Credit Transfer Acknowledge for an inbound credit transfer
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Credit Transfers Acknowledge
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-credit-transfers-acknowledge-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-credit-transfers-api
-  name: BB&T Corp (Truist) Credit Transfers API
-  description: Credit Transfers for a Real Time Payment
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Credit Transfers
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-credit-transfers-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-credit-transfers-approval-reject-api
-  name: BB&T Corp (Truist) Credit Transfers Approval/Reject API
-  description: Approvals for Real Time Payment Credit Transfer
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Credit Transfers Approval/Reject
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-credit-transfers-approval-reject-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-event-notification-subscriptions-api
-  name: BB&T Corp (Truist) Event Notification Subscriptions API
-  description: Manage Event Notification Subscriptions
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Event Notification Subscriptions
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-event-notification-subscriptions-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-event-notifications-api
-  name: BB&T Corp (Truist) Event Notifications API
-  description: Manage Event Notifications
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Event Notifications
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-event-notifications-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-location-information-api
-  name: BB&T Corp (Truist) Location Information API
-  description: Get ATM and branch location info - latitude, longitude, address, phone and fax
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Location Information
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-location-information-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-money-movement-api
-  name: BB&T Corp (Truist) Money Movement API
-  description: View account money movement details
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Money Movement
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-money-movement-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-oauth-2-0-api
-  name: BB&T Corp (Truist) OAuth 2.0 API
-  description: OAuth 2.0 authorize and token services
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Authentication
-  tags_raw:
-  - OAuth 2.0
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-oauth-2-0-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-personal-information-api
-  name: BB&T Corp (Truist) Personal Information API
-  description: Search and view customer or customers
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Personal Information
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-personal-information-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-recipients-api
-  name: BB&T Corp (Truist) Recipients API
-  description: Manage recipients
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - Recipients
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-recipients-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
-- aid: bbandt-corp:bbandt-corp-user-consent-api
-  name: BB&T Corp (Truist) User Consent API
-  description: Request a customer consent grant
-  humanURL: https://developer.truist.com/api/commercial-accounts/overview
-  baseURL: https://api.truist.com/commercial
-  tags:
-  - User Consent
-  properties:
-  - type: OpenAPI
-    url: openapi/bbandt-corp-user-consent-api-openapi.yml
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-balance/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/commercial-account-transactions/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/branch-atm-locator/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/user-consent/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/account-address/documentation
-  - type: Documentation
-    url: https://developer.truist.com/api/credit-transfers/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
-  - type: Documentation
-    url: >-
-      https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+
 common:
+- type: AgenticAccess
+  url: agentic-access/bbandt-corp-agentic-access.yml
+- type: Spectral
+  url: rules/bbandt-spectral-rules.yml
+- type: Spectral
+  url: rules/bbandt-corp-rules.yml
+- type: JSONLD
+  url: json-ld/bbandt-corp-context.jsonld
+- type: Vocabulary
+  url: vocabulary/bbandt-corp-vocabulary.yml
+- type: Hosts
+  url: hosts/bbandt-corp-hosts.yml
+- type: Vendors
+  url: vendors/bbandt-corp-vendors.yml
+- type: Leadership
+  url: https://www.truist.com/wealth/work-with-us/leadership
 - type: FinOps
   url: finops/bbandt-corp-finops.yml
 - type: Overlay
@@ -868,31 +150,25 @@ common:
 - type: Features
   data:
   - name: Open Banking APIs
-    description: REST APIs enabling fintech applications to access account and transaction data with customer
-      consent.
+    description: REST APIs enabling fintech applications to access account and transaction data with customer consent.
   - name: Personal Banking APIs
-    description: APIs for personal and small business banking account access including balances and transaction
-      history.
+    description: APIs for personal and small business banking account access including balances and transaction history.
   - name: Commercial Banking APIs
     description: APIs for commercial account management, treasury operations, and enterprise banking integrations.
   - name: Association Services
-    description: Specialized APIs for association management companies to handle dues, payments, and financial
-      reporting.
+    description: Specialized APIs for association management companies to handle dues, payments, and financial reporting.
   - name: OAuth 2.0 Authentication
     description: Secure OAuth 2.0 based authentication for customer data access with proper consent flows.
 - type: UseCases
   data:
   - name: Personal Finance Apps
-    description: Build personal finance management apps that aggregate account and transaction data for
-      Truist customers.
+    description: Build personal finance management apps that aggregate account and transaction data for Truist customers.
   - name: Accounting Software Integration
     description: Integrate Truist commercial accounts with accounting software like QuickBooks or Xero.
   - name: Treasury Management
-    description: Enable enterprise treasury teams to access real-time commercial account balances and
-      transaction data.
+    description: Enable enterprise treasury teams to access real-time commercial account balances and transaction data.
   - name: Association Management
-    description: Automate dues collection and financial reporting for homeowners associations and membership
-      organizations.
+    description: Automate dues collection and financial reporting for homeowners associations and membership organizations.
 - type: Integrations
   data:
   - name: Plaid
@@ -931,23 +207,759 @@ common:
   url: asyncapi/bbandt-corp-event-notifications-webhooks.yml
 - type: AgentSkill
   url: skills/_index.yml
-- type: LLMsTxt
-  url: llms/bbandt-corp-llms.txt
 - type: X-MCPServerCandidate
   url: mcp/bbandt-corp-mcp.yml
-- type: Packages
-  url: packages/bbandt-corp-packages.yml
 - type: Plans
   url: plans/bbandt-corp-plans-pricing.yml
 - type: RateLimits
   url: rate-limits/bbandt-corp-rate-limits.yml
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+
+apis:
+- aid: bbandt-corp:bbandt-corp-account-information-api
+  name: BB&T Corp (Truist) Account Information API
+  description: Search and view customer accounts
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Account Information
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-account-information-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-account-with-details-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-accounts-schema.json
+- aid: bbandt-corp:bbandt-corp-account-transactions-api
+  name: BB&T Corp (Truist) Account Transactions API
+  description: Search and view account transactions
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Account Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-account-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-transactions-schema.json
+- aid: bbandt-corp:bbandt-corp-commercial-account-balance-api
+  name: BB&T Corp (Truist) Commercial Account Balance API
+  description: Returns account balances for a specific account
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Commercial Account Balance
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-commercial-account-balance-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-account-detail-schema.json
+- aid: bbandt-corp:bbandt-corp-commercial-account-transactions-api
+  name: BB&T Corp (Truist) Commercial Account Transactions API
+  description: Returns account transactions for a specific account
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Commercial Account Transactions
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-commercial-account-transactions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-posted-or-pending-schema.json
+- aid: bbandt-corp:bbandt-corp-commercial-accounts-api
+  name: BB&T Corp (Truist) Commercial Accounts API
+  description: Retrieves the list of accounts
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Commercial Accounts
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-commercial-accounts-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-accounts-schema.json
+- aid: bbandt-corp:bbandt-corp-credit-transfers-account-list-api
+  name: BB&T Corp (Truist) Credit Transfers Account List API
+  description: Eligible accounts for Real Time Payment Credit Transfer
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Credit Transfers Account List
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-credit-transfers-account-list-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-account-list-schema.json
+- aid: bbandt-corp:bbandt-corp-credit-transfers-acknowledge-api
+  name: BB&T Corp (Truist) Credit Transfers Acknowledge API
+  description: Credit Transfer Acknowledge for an inbound credit transfer
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Credit Transfers Acknowledge
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-credit-transfers-acknowledge-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-acknowledge-payment-response-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-acknowledge-payment-request-schema.json
+- aid: bbandt-corp:bbandt-corp-credit-transfers-api
+  name: BB&T Corp (Truist) Credit Transfers API
+  description: Credit Transfers for a Real Time Payment
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Credit Transfers
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-credit-transfers-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-cancel-payment-request-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-transactions-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-update-payment-response-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-multiple-rtp-payment-request-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-rtp-response-schema.json
+- aid: bbandt-corp:bbandt-corp-credit-transfers-approval-reject-api
+  name: BB&T Corp (Truist) Credit Transfers Approval/Reject API
+  description: Approvals for Real Time Payment Credit Transfer
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Credit Transfers Approval/Reject
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-credit-transfers-approval-reject-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-update-payment-request-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-update-payment-response-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-get-approvals-payment-response-schema.json
+- aid: bbandt-corp:bbandt-corp-event-notification-subscriptions-api
+  name: BB&T Corp (Truist) Event Notification Subscriptions API
+  description: Manage Event Notification Subscriptions
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Event Notification Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-event-notification-subscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-notification-subscription-schema.json
+- aid: bbandt-corp:bbandt-corp-event-notifications-api
+  name: BB&T Corp (Truist) Event Notifications API
+  description: Manage Event Notifications
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Event Notifications
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-event-notifications-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-notification-schema.json
+- aid: bbandt-corp:bbandt-corp-location-information-api
+  name: BB&T Corp (Truist) Location Information API
+  description: Get ATM and branch location info - latitude, longitude, address, phone and fax
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Location Information
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-location-information-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-locations-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-branches-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-atms-schema.json
+- aid: bbandt-corp:bbandt-corp-money-movement-api
+  name: BB&T Corp (Truist) Money Movement API
+  description: View account money movement details
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Money Movement
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-money-movement-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+- aid: bbandt-corp:bbandt-corp-oauth-2-0-api
+  name: BB&T Corp (Truist) OAuth 2.0 API
+  description: OAuth 2.0 authorize and token services
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Authentication
+  tags_raw:
+  - OAuth 2.0
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-oauth-2-0-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-token-response-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-token-request-schema.json
+- aid: bbandt-corp:bbandt-corp-personal-information-api
+  name: BB&T Corp (Truist) Personal Information API
+  description: Search and view customer or customers
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Personal Information
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-personal-information-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-customer-schema.json
+- aid: bbandt-corp:bbandt-corp-recipients-api
+  name: BB&T Corp (Truist) Recipients API
+  description: Manage recipients
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - Recipients
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-recipients-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-recipient-request-schema.json
+- aid: bbandt-corp:bbandt-corp-user-consent-api
+  name: BB&T Corp (Truist) User Consent API
+  description: Request a customer consent grant
+  humanURL: https://developer.truist.com/api/commercial-accounts/overview
+  baseURL: https://api.truist.com/commercial
+  tags:
+  - User Consent
+  properties:
+  - type: OpenAPI
+    url: openapi/bbandt-corp-user-consent-api-openapi.yml
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-balance/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/commercial-account-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-accounts/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/branch-atm-locator/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-transactions/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-client-contact/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-oauth-authentication/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/user-consent/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/retail-dynamic-client-registration/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-account-payment-networks/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/account-address/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/credit-transfers/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-notifications/documentation
+  - type: Documentation
+    url: https://developer.truist.com/api/personal-and-small-business-event-subscriptions/documentation
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-consent-grant-schema.json
+  - type: JSONSchema
+    url: json-schema/bbandt-corp-consent-revocation-request-schema.json
+
 x-enrichment:
-  date: '2026-09-04'
+  date: '2026-10-12'
   status: enriched
-  artifacts_added: 65
-  pass: local-v3
+  artifacts_added: 2
+  pass: local-v5
+
 x-parent: truist-financial
+
 x-relationship: merger

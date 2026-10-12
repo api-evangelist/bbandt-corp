@@ -347,7 +347,8 @@ paths:
                 MISSING_MANDOTORY_PARAMS:
                   value:
                     code: '7027'
-                    message: Bad request, mandatory query param is missing. PaymentId, correlationId or accountId and paymentAction should be present
+                    message: Bad request, mandatory query param is missing. PaymentId, correlationId or accountId and paymentAction should be
+                      present
                 INVALID_LIMIT:
                   value:
                     code: '7013'
@@ -747,7 +748,8 @@ components:
       $ref: '#/components/schemas/RtpPaymentDetail'
     RtpTransactionStatus:
       title: RTP Status of Transaction
-      description: "The status of a submitted RTP:\n  - needsApproval\n  - rejected\n  - approved\n  - completed\n  - canceled\n  - scheduled\n  - processing\n  - rejectedByApprover\n  - failed\n  - expired"
+      description: "The status of a submitted RTP:\n  - needsApproval\n  - rejected\n  - approved\n  - completed\n  - canceled\n  - scheduled\n\
+        \  - processing\n  - rejectedByApprover\n  - failed\n  - expired"
       type: string
       enum:
       - needsApproval
@@ -1060,7 +1062,8 @@ components:
             $ref: '#/components/schemas/PaymentIds'
     Error:
       title: Error
-      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
+      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific
+        to a particular account
       type: object
       properties:
         code:
@@ -1071,7 +1074,8 @@ components:
           description: End user displayable information which might help the customer diagnose an error
     RtpStatus:
       title: RTP Submitted Status
-      description: "The status of a submitted RTP:\n  - needsApproval\n  - rejected\n  - approved\n  - completed\n  - canceled\n  - scheduled\n  - processing\n  - rejectedByApprover\n  - failed\n  - expired\n  - all"
+      description: "The status of a submitted RTP:\n  - needsApproval\n  - rejected\n  - approved\n  - completed\n  - canceled\n  - scheduled\n\
+        \  - processing\n  - rejectedByApprover\n  - failed\n  - expired\n  - all"
       type: string
       enum:
       - needsApproval
@@ -1110,6 +1114,11 @@ components:
           type: string
         emailAddress:
           type: string
+    Frequency:
+      type: object
+      description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder so the document resolves;
+        the shape is unknown and is NOT a claim about the API.
+      x-ae-placeholder: true
   responses:
     '404':
       description: Not Found
@@ -1304,7 +1313,8 @@ components:
     StatusQuery:
       name: status
       in: query
-      description: Specify the current status of RTPs to include, one of needsApproval, rejected, approved, completed, canceled, scheduled, processing, rejectedByApprover, failed, expired, all
+      description: Specify the current status of RTPs to include, one of needsApproval, rejected, approved, completed, canceled, scheduled, processing,
+        rejectedByApprover, failed, expired, all
       required: false
       schema:
         $ref: '#/components/schemas/RtpStatus'
@@ -1321,7 +1331,8 @@ components:
     PaymentActionQuery:
       name: paymentAction
       in: query
-      description: Payment sent or received to/from Truist accounts. Sent retrieves all the payments sent from provided Truist accounts. Received retrieves the payments received to Truist accounts, ignored when paymentId is passed. It is required when accountId is passed in search
+      description: Payment sent or received to/from Truist accounts. Sent retrieves all the payments sent from provided Truist accounts. Received
+        retrieves the payments received to Truist accounts, ignored when paymentId is passed. It is required when accountId is passed in search
       required: false
       schema:
         $ref: '#/components/schemas/PaymentAction'

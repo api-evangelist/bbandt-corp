@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-posted-or-pending-schema.json",
+  "title": "PostedOrPending",
+  "description": "Array of posted or pending transactions for the account, or error status for the same.",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-commercial-account-transactions-api-openapi.yml#/components/schemas/PostedOrPending",
+  "type": "object",
+  "properties": {
+    "transactions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Transaction"
+      }
+    }
+  },
+  "$defs": {
+    "Transaction": {
+      "title": "Each transaction response",
+      "type": "object",
+      "properties": {
+        "transactionid": {
+          "description": "Transaction's Bank Reference number",
+          "type": "string"
+        },
+        "postedDate": {
+          "description": "Transactions posted date",
+          "type": "string"
+        },
+        "description": {
+          "description": "Descriptions for transaction",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/TransactionStatus",
+          "description": "Status of transaction, cleared or pending"
+        },
+        "amount": {
+          "description": "Amount of the Transaction in USD.",
+          "type": "number"
+        },
+        "baiCode": {
+          "description": "Bank administration code (BAI Code)",
+          "type": "string"
+        },
+        "transactionType": {
+          "$ref": "#/$defs/TransactionType",
+          "description": "Type of transaction, Debit (DB) or Credit (CR)"
+        },
+        "transactionDate": {
+          "description": "Transactions date. Applicable only for credit card accounts",
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "TransactionStatus": {
+      "description": "Status of transaction, cleared or pending",
+      "type": "string",
+      "enum": [
+        "cleared",
+        "pending"
+      ]
+    },
+    "TransactionType": {
+      "description": "Type of transaction, Debit (DB) or Credit (CR)",
+      "type": "string",
+      "enum": [
+        "DB",
+        "CR"
+      ]
+    }
+  }
+}

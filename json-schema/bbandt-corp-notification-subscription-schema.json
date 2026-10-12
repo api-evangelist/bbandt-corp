@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-notification-subscription-schema.json",
+  "title": "Notification Subscription entity",
+  "description": "Provides the fields of a notification subscription",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-event-notification-subscriptions-api-openapi.yml#/components/schemas/NotificationSubscription",
+  "type": "object",
+  "properties": {
+    "type": {
+      "$ref": "#/$defs/NotificationType",
+      "description": "Type of notification"
+    },
+    "category": {
+      "$ref": "#/$defs/NotificationCategory",
+      "description": "Category of notification"
+    },
+    "callbackUrl": {
+      "type": "string",
+      "description": "Callback URL. Previous callback URL will be updated with latest."
+    },
+    "subscriber": {
+      "$ref": "#/$defs/Party",
+      "description": "The Party who is subscribing to the notification"
+    },
+    "effectiveDate": {
+      "$ref": "#/$defs/DateString",
+      "description": "Effective date of notification"
+    },
+    "subscriptionId": {
+      "type": "string",
+      "description": "Subscription id of notification",
+      "maxLength": 64
+    }
+  },
+  "required": [
+    "type",
+    "category",
+    "callbackUrl",
+    "subscriber",
+    "subscriptionId"
+  ],
+  "$defs": {
+    "DateString": {
+      "title": "Date String",
+      "description": "ISO 8601 full-date in format 'YYYY-MM-DD' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)",
+      "type": "string",
+      "format": "date",
+      "maxLength": 10
+    },
+    "NotificationCategory": {
+      "title": "Notification Category",
+      "description": "Category of Notification",
+      "type": "string",
+      "enum": [
+        "CONSENT"
+      ]
+    },
+    "NotificationType": {
+      "title": "Notification Type",
+      "description": "Type of notification",
+      "type": "string",
+      "enum": [
+        "CONSENT_REVOKED",
+        "CONSENT_UPDATED"
+      ]
+    },
+    "Party": {
+      "title": "Party entity",
+      "description": "FDX Participant - an entity or person that is a part of a FDX API transaction",
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "description": "Human recognizable common name",
+          "type": "string"
+        },
+        "type": {
+          "description": "Extensible string enum identifying the type of the party",
+          "$ref": "#/$defs/PartyType"
+        },
+        "registry": {
+          "description": "The registry containing the party's registration with name and id, PRIVATE",
+          "$ref": "#/$defs/Registry"
+        },
+        "registeredEntityId": {
+          "description": "Registered id of party",
+          "type": "string"
+        }
+      }
+    },
+    "PartyType": {
+      "title": "Party Type",
+      "description": "Identifies the type of a party",
+      "type": "string",
+      "enum": [
+        "DATA_ACCESS_PLATFORM",
+        "DATA_RECIPIENT"
+      ]
+    },
+    "Registry": {
+      "title": "Registry",
+      "description": "Identifies the type of a Registry",
+      "type": "string",
+      "enum": [
+        "PRIVATE"
+      ]
+    }
+  }
+}

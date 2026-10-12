@@ -1,0 +1,280 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-account-detail-schema.json",
+  "title": "Commercial account eligible account list",
+  "description": "Accounts returned by API upon successful search",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-commercial-account-balance-api-openapi.yml#/components/schemas/AccountDetail",
+  "type": "object",
+  "properties": {
+    "depositAccount": {
+      "$ref": "#/$defs/DepositAccount"
+    },
+    "loanAccount": {
+      "$ref": "#/$defs/LoanAccount"
+    },
+    "lineOfCreditAccount": {
+      "$ref": "#/$defs/LineOfCreditAccount"
+    },
+    "creditCardAccount": {
+      "$ref": "#/$defs/CreditCardAccount"
+    }
+  },
+  "$defs": {
+    "Account": {
+      "title": "Base Account",
+      "description": "Account attributes shared across all account types",
+      "type": "object",
+      "properties": {
+        "balanceType": {
+          "$ref": "#/$defs/BalanceType"
+        },
+        "lineOfBusiness": {
+          "$ref": "#/$defs/LineOfBusiness"
+        }
+      }
+    },
+    "BalanceDetails": {
+      "description": "Balance details",
+      "type": "object",
+      "properties": {
+        "baiCode": {
+          "description": "Bank administration code (BAI Code) for the balance",
+          "type": "string"
+        },
+        "value": {
+          "description": "Balance value in USD",
+          "type": "number"
+        },
+        "asofDate": {
+          "description": "Business Date associated with the balance.",
+          "type": "string"
+        }
+      }
+    },
+    "BalanceType": {
+      "type": "string",
+      "description": "Type of balances on account(\"ASSET\", \"LIABILITY\")",
+      "enum": [
+        "ASSET",
+        "LIABILITY"
+      ]
+    },
+    "CreditCardAccount": {
+      "title": "schema definition for commercial CreditCardAccount details.",
+      "description": "Credit card account details",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Account"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "paymentDueAmount": {
+              "description": "Entire statement balance for the last month.",
+              "type": "number"
+            },
+            "currentBalance": {
+              "description": "Current balance of the card.",
+              "type": "number"
+            },
+            "paymentDueDate": {
+              "description": "Due date for the paymentDueAmount.",
+              "type": "string",
+              "format": "date"
+            },
+            "availableCredit": {
+              "description": "Credit amount available.",
+              "type": "number"
+            },
+            "creditLimit": {
+              "description": "Credit limit for the commercial credit card",
+              "type": "number"
+            },
+            "nextPayment": {
+              "description": "Minimum due amount for the credit card account.",
+              "type": "number"
+            },
+            "pastDueAmount": {
+              "description": "Amount due from past month.",
+              "type": "number"
+            }
+          }
+        }
+      ]
+    },
+    "DepositAccount": {
+      "title": "schema definition for commercial DepositAccount details.",
+      "description": "Deposit account details",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Account"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "balanceAsOf": {
+              "description": "Business Date associated with the following balances.",
+              "type": "string"
+            },
+            "currentAvailableBalance": {
+              "description": "Current available balance",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "openingAvailableBalance": {
+              "description": "Opening available balances",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "currentLedgerBalance": {
+              "description": "Current ledger balance",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "openingLedgerBalance": {
+              "description": "Opening ledger balances",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "closingLedgerBalance": {
+              "description": "Closing ledger balances",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "closingAvailableBalance": {
+              "description": "Closing available balances",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "totalCredits": {
+              "description": "Total amount of all posted credits.",
+              "type": "number",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "totalDebits": {
+              "description": "Total amount of all posted debits.",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "oneDayFloat": {
+              "description": "Amount of the account ledger balance that is not available, for the account holder to draw for one business day.",
+              "type": "number",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "twoOrMoreDaysFloat": {
+              "description": "Amount of the account ledger balance that is not available, for the account holder to draw for two or more days",
+              "$ref": "#/$defs/BalanceDetails"
+            },
+            "collectedBalance": {
+              "description": "Collected available balances. Your current balance minus the amount of check deposits that are still processing",
+              "type": "number"
+            },
+            "totalCollectedBalance": {
+              "description": "Total balances available for disbursement. Total Collected Balance for account computed by Total Available Balance plus NSF Float minus 2+ days Float. (Current Day)",
+              "type": "number"
+            },
+            "pendingCredit": {
+              "description": "Total of all of the pending credits to your account",
+              "type": "number"
+            },
+            "pendingDebit": {
+              "description": "A total of all of the pending debits to your account that have not yet posted, but are reflected in your available balance.",
+              "type": "number"
+            }
+          }
+        }
+      ]
+    },
+    "LineOfBusiness": {
+      "type": "string",
+      "description": "Truist Line of Business to which the account maps(\"Commercial, \"Retail\")",
+      "enum": [
+        "Commercial",
+        "Retail"
+      ]
+    },
+    "LineOfCreditAccount": {
+      "title": "schema definition for commercial LineOfCreditAccount details",
+      "description": "Line of credit Account details",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Account"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "originalLineAmount": {
+              "description": "Amount committed for the Line.",
+              "type": "number"
+            },
+            "outstandingBalance": {
+              "description": "Amount already used for this line account.",
+              "type": "number"
+            },
+            "availableBalance": {
+              "description": "Amount available to be used for this line account.",
+              "type": "number"
+            }
+          }
+        }
+      ]
+    },
+    "LoanAccount": {
+      "title": "Schema definition for commercial LoanAccount details",
+      "description": "Loan account details.",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Account"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "loanAmount": {
+              "description": "Original loan amount",
+              "type": "number"
+            },
+            "nextPaymentDueAmount": {
+              "description": "Due payment amount.",
+              "type": "number"
+            },
+            "nextPaymentDueDate": {
+              "description": "Due date for the nextPaymentDueAmount.",
+              "type": "string",
+              "format": "date"
+            },
+            "principalBalance": {
+              "description": "Principal balance amount - Available balance",
+              "type": "number"
+            },
+            "maturityDate": {
+              "description": "Maturity date of the loan",
+              "type": "string",
+              "format": "date"
+            },
+            "originationDate": {
+              "description": "Origination date of the loan",
+              "type": "string",
+              "format": "date"
+            },
+            "lastPaymentAmount": {
+              "description": "Amount of last payment",
+              "type": "number"
+            },
+            "interestRate": {
+              "description": "Rate of interest",
+              "type": "number"
+            },
+            "lastYearInterestPaid": {
+              "description": "Last year interest paid",
+              "type": "number"
+            },
+            "interestPaidYTD": {
+              "description": "Interest paid year to date",
+              "type": "number"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

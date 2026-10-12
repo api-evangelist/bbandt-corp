@@ -1,0 +1,533 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-customer-schema.json",
+  "title": "Customer entity",
+  "description": "Represents a customer",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-personal-information-api-openapi.yml#/components/schemas/Customer",
+  "type": "object",
+  "x-fdx-csdf-account-categories": [
+    "ANY"
+  ],
+  "properties": {
+    "customerId": {
+      "$ref": "#/$defs/Identifier",
+      "description": "Long-term persistent identity of the customer. This identity must be unique to the owning institution",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ]
+    },
+    "name": {
+      "$ref": "#/$defs/CustomerName",
+      "description": "The customer's name",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ]
+    },
+    "email": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array of the customer's electronic mail addresses",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ]
+    },
+    "addresses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/DeliveryAddress"
+      },
+      "description": "An array of the customer's physical mail addresses",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ]
+    },
+    "telephones": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/TelephoneNumber"
+      },
+      "description": "An array of the customer's telephone numbers",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ]
+    }
+  },
+  "$defs": {
+    "Address": {
+      "title": "Address",
+      "description": "Postal address",
+      "type": "object",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ],
+      "properties": {
+        "line1": {
+          "$ref": "#/$defs/String64",
+          "description": "Address line 1",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "line2": {
+          "$ref": "#/$defs/String64",
+          "description": "Address line 2",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "line3": {
+          "$ref": "#/$defs/String64",
+          "description": "Address line 3",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "city": {
+          "$ref": "#/$defs/String64",
+          "description": "City",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "region": {
+          "$ref": "#/$defs/String64",
+          "description": "State or province or territory. Replaces \"state\" property. From [Universal Postal Union](https://www.upu.int/en/Postal-Solutions/Programmes-Services/Addressing-Solutions#addressing-s42-standard) as of 2-26-2020, [S42 International Address Standards](https://www.upu.int/UPU/media/upu/documents/PostCode/S42_International-Addressing-Standards.pdf). For U.S. addresses can be 2-character code from '#/components/schemas/StateCode'",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "postalCode": {
+          "type": "string",
+          "maxLength": 16,
+          "description": "Postal code",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "country": {
+          "$ref": "#/$defs/Iso3166CountryCode",
+          "description": "Country code",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        }
+      }
+    },
+    "CustomerName": {
+      "title": "Customer Name entity",
+      "description": "The name of an individual in their role as a customer",
+      "type": "object",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/$defs/IndividualName"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "company": {
+              "type": "string",
+              "description": "Company name",
+              "x-fdx-csdf-account-categories": [
+                "ANY"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "DeliveryAddress": {
+      "title": "Delivery Address",
+      "description": "A delivery address and its location type",
+      "type": "object",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ],
+      "allOf": [
+        {
+          "$ref": "#/$defs/Address"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "$ref": "#/$defs/DeliveryAddressType",
+              "description": "Type of address location. One of BUSINESS, HOME, MAILING",
+              "x-fdx-csdf-account-categories": [
+                "ANY"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "DeliveryAddressType": {
+      "title": "Delivery Address Type",
+      "description": "The location type of an address",
+      "type": "string",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ],
+      "enum": [
+        "HOME",
+        "BUSINESS",
+        "MAILING"
+      ]
+    },
+    "Identifier": {
+      "title": "Identifier",
+      "description": "Value for a unique identifier",
+      "type": "string",
+      "maxLength": 256,
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ]
+    },
+    "IndividualName": {
+      "title": "Individual name",
+      "description": "First name, middle initial, last name, suffix fields",
+      "type": "object",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ],
+      "properties": {
+        "first": {
+          "description": "First name",
+          "type": "string",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "middle": {
+          "description": "Middle initial",
+          "type": "string",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "last": {
+          "description": "Last name",
+          "type": "string",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        }
+      }
+    },
+    "Iso3166CountryCode": {
+      "title": "ISO 3166 Country Code",
+      "description": "ISO 3166-1 alpha-2 codes as of April 5, 2023, from officially assigned Country Codes on [ISO Online Browsing Platform](https://www.iso.org/obp/ui/). Change log is at [ISO 3166 Maintenance Agency](https://www.iso.org/fr/committee/48750.html?t=3V3rukDb61p05Wd6ojyTRvE0S3Yg_fZgUjrLjHWcd9-mDmTKHOGjbX3nEJ3SqHar&view=documents#section-isodocuments-top)",
+      "type": "string",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ],
+      "enum": [
+        "AD",
+        "AE",
+        "AF",
+        "AG",
+        "AI",
+        "AL",
+        "AM",
+        "AO",
+        "AQ",
+        "AR",
+        "AS",
+        "AT",
+        "AU",
+        "AW",
+        "AX",
+        "AZ",
+        "BA",
+        "BB",
+        "BD",
+        "BE",
+        "BF",
+        "BG",
+        "BH",
+        "BI",
+        "BJ",
+        "BL",
+        "BM",
+        "BN",
+        "BO",
+        "BQ",
+        "BR",
+        "BS",
+        "BT",
+        "BV",
+        "BW",
+        "BY",
+        "BZ",
+        "CA",
+        "CC",
+        "CD",
+        "CF",
+        "CG",
+        "CH",
+        "CI",
+        "CK",
+        "CL",
+        "CM",
+        "CN",
+        "CO",
+        "CR",
+        "CU",
+        "CV",
+        "CW",
+        "CX",
+        "CY",
+        "CZ",
+        "DE",
+        "DJ",
+        "DK",
+        "DM",
+        "DO",
+        "DZ",
+        "EC",
+        "EE",
+        "EG",
+        "EH",
+        "ER",
+        "ES",
+        "ET",
+        "FI",
+        "FJ",
+        "FK",
+        "FM",
+        "FO",
+        "FR",
+        "GA",
+        "GB",
+        "GD",
+        "GE",
+        "GF",
+        "GG",
+        "GH",
+        "GI",
+        "GL",
+        "GM",
+        "GN",
+        "GP",
+        "GQ",
+        "GR",
+        "GS",
+        "GT",
+        "GU",
+        "GW",
+        "GY",
+        "HK",
+        "HM",
+        "HN",
+        "HR",
+        "HT",
+        "HU",
+        "ID",
+        "IE",
+        "IL",
+        "IM",
+        "IN",
+        "IO",
+        "IQ",
+        "IR",
+        "IS",
+        "IT",
+        "JE",
+        "JM",
+        "JO",
+        "JP",
+        "KE",
+        "KG",
+        "KH",
+        "KI",
+        "KM",
+        "KN",
+        "KP",
+        "KR",
+        "KW",
+        "KY",
+        "KZ",
+        "LA",
+        "LB",
+        "LC",
+        "LI",
+        "LK",
+        "LR",
+        "LS",
+        "LT",
+        "LU",
+        "LV",
+        "LY",
+        "MA",
+        "MC",
+        "MD",
+        "ME",
+        "MF",
+        "MG",
+        "MH",
+        "MK",
+        "ML",
+        "MM",
+        "MN",
+        "MO",
+        "MP",
+        "MQ",
+        "MR",
+        "MS",
+        "MT",
+        "MU",
+        "MV",
+        "MW",
+        "MX",
+        "MY",
+        "MZ",
+        "NA",
+        "NC",
+        "NE",
+        "NF",
+        "NG",
+        "NI",
+        "NL",
+        "NO",
+        "NP",
+        "NR",
+        "NU",
+        "NZ",
+        "OM",
+        "PA",
+        "PE",
+        "PF",
+        "PG",
+        "PH",
+        "PK",
+        "PL",
+        "PM",
+        "PN",
+        "PR",
+        "PS",
+        "PT",
+        "PW",
+        "PY",
+        "QA",
+        "RE",
+        "RO",
+        "RS",
+        "RU",
+        "RW",
+        "SA",
+        "SB",
+        "SC",
+        "SD",
+        "SE",
+        "SG",
+        "SH",
+        "SI",
+        "SJ",
+        "SK",
+        "SL",
+        "SM",
+        "SN",
+        "SO",
+        "SR",
+        "SS",
+        "ST",
+        "SV",
+        "SX",
+        "SY",
+        "SZ",
+        "TC",
+        "TD",
+        "TF",
+        "TG",
+        "TH",
+        "TJ",
+        "TK",
+        "TL",
+        "TM",
+        "TN",
+        "TO",
+        "TR",
+        "TT",
+        "TV",
+        "TW",
+        "TZ",
+        "UA",
+        "UG",
+        "UM",
+        "US",
+        "UY",
+        "UZ",
+        "VA",
+        "VC",
+        "VE",
+        "VG",
+        "VI",
+        "VN",
+        "VU",
+        "WF",
+        "WS",
+        "YE",
+        "YT",
+        "ZA",
+        "ZM",
+        "ZW"
+      ]
+    },
+    "String64": {
+      "title": "String 64",
+      "description": "String of maximum length 64",
+      "type": "string",
+      "maxLength": 64,
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ]
+    },
+    "TelephoneNumber": {
+      "title": "Telephone Number",
+      "description": "Standard for international phone numbers",
+      "type": "object",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ],
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/TelephoneNumberType",
+          "description": "Type of phone number: HOME, BUSINESS, CELL, FAX",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        },
+        "number": {
+          "type": "string",
+          "maxLength": 15,
+          "pattern": "\\d+",
+          "description": "Telephone subscriber number defined by ITU-T recommendation E.164",
+          "x-fdx-csdf-account-categories": [
+            "ANY"
+          ]
+        }
+      }
+    },
+    "TelephoneNumberType": {
+      "title": "Telephone Number Type",
+      "description": "Purpose or type of telephone number",
+      "type": "string",
+      "x-fdx-csdf-account-categories": [
+        "ANY"
+      ],
+      "enum": [
+        "BUSINESS",
+        "CELL",
+        "FAX",
+        "HOME"
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-cancel-payment-request-schema.json",
+  "title": "Request definition for status update",
+  "description": "Update payment status",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-credit-transfers-api-openapi.yml#/components/schemas/CancelPaymentRequest",
+  "type": "object",
+  "properties": {
+    "status": {
+      "$ref": "#/$defs/CancelStatus"
+    },
+    "payments": {
+      "description": "Unique identifiers for payments",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "payments"
+  ],
+  "$defs": {
+    "CancelStatus": {
+      "title": "Update real time payment schema",
+      "description": "Update payment status",
+      "type": "string",
+      "enum": [
+        "CANCEL"
+      ]
+    }
+  }
+}

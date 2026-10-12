@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/bbandt-corp/main/json-schema/bbandt-corp-recipient-request-schema.json",
+  "title": "Recipient Request",
+  "description": "Used to request a recipient registration. In snake case to match IETF RFC 7591 naming formats",
+  "x-generated": "2026-10-12",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/bbandt-corp-recipients-api-openapi.yml#/components/schemas/RecipientRequest",
+  "type": "object",
+  "properties": {
+    "client_name": {
+      "$ref": "#/$defs/Identifier",
+      "description": "The Data Recipient or Data Recipient Application name displayed by Data Provider during the consent Flow as well as in the Consent Dashboard. Must be unique from all previously registered client names. Truist allows alphanumeric, spaces and these special characters: underscore (_), hyphen (-), period (.), pound sign (#), dollar sign ($), percent (%), ampersand (&) and comma (,). Prior name value must be sent in Truist PUT /register/{id} update call, even though functionality to permit update of name field is still being built."
+    },
+    "description": {
+      "type": "string",
+      "description": "A short description of the Data Recipient application. If not sent in an update request the prior value will be cleared"
+    },
+    "redirect_uris": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "An array of eligible Redirect URI targets"
+    },
+    "logo_uri": {
+      "type": "string",
+      "description": "Data Recipient Logo URL location. If not sent in an update request the prior value will be cleared",
+      "format": "uri"
+    },
+    "auto_connect": {
+      "type": "boolean",
+      "description": "Flag which provides information whether Data Recipient customers can auto-connect new accounts. Prior auto_connect value, if true, must be sent in Truist PUT /register/{id} update call, even though functionality to permit update of auto_connect field is still being built"
+    },
+    "client_uri": {
+      "type": "string",
+      "description": "The URI which provides additional information about the Data Recipient",
+      "format": "uri"
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Array of strings representing ways to contact individuals responsible for the Data Recipient application"
+    },
+    "scope": {
+      "type": "string",
+      "description": "String form field with a list of data clusters. Prior or updated scope value must be sent in Truist PUT /register/{id} update call, Data Recipient scope will be set to the value in PUT request"
+    },
+    "duration_type": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ConsentDurationType"
+      },
+      "description": "The type of consent duration for the Data Recipient consumers. Only value of duration_type which Truist currently supports and accepts is ['TIME_BOUND']"
+    },
+    "duration_period": {
+      "type": "number",
+      "description": "The maximum consent duration in days that can be requested for a Recipient consumer. Maximum value is 365. Prior duration_period value must be sent in Truist PUT /register/{id} update call, even though functionality to permit update of duration_period field is still being built"
+    },
+    "lookback_period": {
+      "type": "number",
+      "description": "The maximum number of days allowed for Data Recipient consumers to obtain in transaction history, effective from the current date. If not sent in an update request the prior value will be left unchanged"
+    },
+    "intermediaries": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Intermediary"
+      },
+      "description": "An array of the intermediaries for this data recipient. If not sent in an update request the prior values will be cleared"
+    }
+  },
+  "required": [
+    "client_name",
+    "redirect_uris",
+    "client_uri",
+    "contacts",
+    "scope",
+    "duration_type"
+  ],
+  "$defs": {
+    "ConsentDurationType": {
+      "title": "Consent Duration Type",
+      "description": "Duration of the Consent Grant, per FDX UX Guidelines v1.0 (pp 18 - 20)",
+      "type": "string",
+      "enum": [
+        "TIME_BOUND"
+      ]
+    },
+    "Identifier": {
+      "title": "Identifier",
+      "description": "Value for a unique identifier",
+      "type": "string",
+      "maxLength": 256
+    },
+    "Intermediary": {
+      "title": "Intermediary",
+      "description": "Data Access Platform, Service Provider, or any other entity in the data sharing chain between a Data Provider to a Data Recipient. In snake case to match IETF RFC 7591 naming formats",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of intermediary party"
+        },
+        "description": {
+          "type": "string",
+          "description": "A short description of the intermediary"
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "A URL string of a web page providing information about the intermediary"
+        },
+        "logo_uri": {
+          "type": "string",
+          "format": "uri",
+          "description": "A URL string that references a logo for this intermediary"
+        },
+        "contacts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Array of strings representing ways to contact people responsible for this intermediary"
+        }
+      },
+      "required": [
+        "name",
+        "uri",
+        "contacts"
+      ]
+    }
+  }
+}

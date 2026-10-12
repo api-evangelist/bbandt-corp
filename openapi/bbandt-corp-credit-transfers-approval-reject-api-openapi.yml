@@ -573,7 +573,8 @@ components:
             $ref: '#/components/schemas/Transaction'
     RtpTransactionStatus:
       title: RTP Status of Transaction
-      description: "The status of a submitted RTP:\n  - needsApproval\n  - rejected\n  - approved\n  - completed\n  - canceled\n  - scheduled\n  - processing\n  - rejectedByApprover\n  - failed\n  - expired"
+      description: "The status of a submitted RTP:\n  - needsApproval\n  - rejected\n  - approved\n  - completed\n  - canceled\n  - scheduled\n\
+        \  - processing\n  - rejectedByApprover\n  - failed\n  - expired"
       type: string
       enum:
       - needsApproval
@@ -588,7 +589,8 @@ components:
       - expired
     Error:
       title: Error
-      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific to a particular account
+      description: An error entity which can be used at the API level for error responses or at the account level to indicate a problem specific
+        to a particular account
       type: object
       properties:
         code:
@@ -604,6 +606,11 @@ components:
       enum:
       - APPROVE
       - REJECT
+    Frequency:
+      type: object
+      description: Referenced by this document but never defined in it. API Evangelist added this empty placeholder so the document resolves;
+        the shape is unknown and is NOT a claim about the API.
+      x-ae-placeholder: true
   securitySchemes:
     OAuth:
       type: oauth2

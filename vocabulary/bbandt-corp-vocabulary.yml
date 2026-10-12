@@ -1,0 +1,432 @@
+generated: '2026-10-12'
+method: derived
+generator: derive-vocabulary.py
+source:
+- openapi/bbandt-corp-account-information-api-openapi.yml
+- openapi/bbandt-corp-account-transactions-api-openapi.yml
+- openapi/bbandt-corp-commercial-account-balance-api-openapi.yml
+- openapi/bbandt-corp-commercial-account-transactions-api-openapi.yml
+- openapi/bbandt-corp-commercial-accounts-api-openapi.yml
+vocabulary:
+  name: BB&T Corp (Truist) Domain Vocabulary
+  description: 'Terms declared by BB&T Corp (Truist)''s own API contract: its resource groups, objects and enumerations, with the contract''s
+    definitions. Derived, not authored.'
+  version: '2026-10-12'
+  terms:
+  - term: Account Information
+    definition: Search and view customer accounts
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-account-information-api-openapi.yml
+  - term: Account Transactions
+    definition: Search and view account transactions
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml
+  - term: Commercial Account Balance
+    definition: Returns account balances for a specific account
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-commercial-account-balance-api-openapi.yml
+  - term: Commercial Account Transactions
+    definition: Returns account transactions for a specific account
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-commercial-account-transactions-api-openapi.yml
+  - term: Commercial Accounts
+    definition: Retrieves the list of accounts
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-commercial-accounts-api-openapi.yml
+  - term: Credit Transfers Account List
+    definition: Eligible accounts for Real Time Payment Credit Transfer
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-credit-transfers-account-list-api-openapi.yml
+  - term: Credit Transfers Acknowledge
+    definition: Credit Transfer Acknowledge for an inbound credit transfer
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-credit-transfers-acknowledge-api-openapi.yml
+  - term: Credit Transfers
+    definition: Credit Transfers for a Real Time Payment
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-credit-transfers-api-openapi.yml
+  - term: Credit Transfers Approval/Reject
+    definition: Approvals for Real Time Payment Credit Transfer
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-credit-transfers-approval-reject-api-openapi.yml
+  - term: Event Notification Subscriptions
+    definition: Manage Event Notification Subscriptions
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-event-notification-subscriptions-api-openapi.yml
+  - term: Event Notifications
+    definition: Manage Event Notifications
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-event-notifications-api-openapi.yml
+  - term: Location Information
+    definition: Get ATM and branch location info - latitude, longitude, address, phone and fax
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-location-information-api-openapi.yml
+  - term: Money Movement
+    definition: View account money movement details
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-money-movement-api-openapi.yml
+  - term: OAuth 2.0
+    definition: OAuth 2.0 authorize and token services
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-oauth-2-0-api-openapi.yml
+  - term: Personal Information
+    definition: Search and view customer or customers
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-personal-information-api-openapi.yml
+  - term: Recipients
+    definition: Manage recipients
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-recipients-api-openapi.yml
+  - term: User Consent
+    definition: Request a customer consent grant
+    tags:
+    - Resource Group
+    source: openapi/bbandt-corp-user-consent-api-openapi.yml
+  - term: Account Category type
+    definition: The category of account
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountCategory
+  - term: Holding Type
+    definition: 'The type of an investment holding | Value | Description | |-----|-----| | ANNUITY | Financial product that pays out a fixed stream
+      of payments | | BOND | Debt security as a loan to a government, agency or company, repaid with interest | | CD | Certificate of Deposit,
+      a savings account with a fixed rate and term | | DEBT | Any type of security that must be paid back in full along with interest | | '
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/HoldingType
+  - term: Accounts entity
+    definition: An optionally paginated array of accounts
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Accounts
+  - term: Investment Balance entity
+    definition: A point-in-time balance of the investment account
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/InvestmentBalance
+  - term: Currency entity
+    definition: Represents an international currency
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Currency
+  - term: Account Contact entity
+    definition: Contact information for the account
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountContact
+  - term: Debt Class
+    definition: The classification of a debt instrument
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/DebtClass
+  - term: Position Type
+    definition: The type of an investment position
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/PositionType
+  - term: Account Holder entity
+    definition: Defines the account holder's relationship with an account.
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountHolder
+  - term: Security Category
+    definition: The type of security
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/SecurityCategory
+  - term: FI Attribute entity
+    definition: Financial Institution provider-specific attribute
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/FiAttribute
+  - term: Timestamp
+    definition: ISO 8601 date-time in format 'YYYY-MM-DDThh:mm:ss.nnn[Z|[+|-]hh:mm]' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Timestamp
+  - term: Holding entity
+    definition: A holding in an investment account
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Holding
+  - term: Debt Type
+    definition: The type of a debt instrument
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/DebtType
+  - term: ISO 4217 Code
+    definition: Currency, fund and precious metal codes effective from May 12, 2025 and ISO 4217 amendment 179 per [ISO 4217 Currency Code Maintenance](https://www.six-group.com/en/products-services/financial-information/data-standards.html)
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Iso4217Code
+  - term: Payment Frequency
+    definition: The frequency of payments.
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/PaymentFrequency
+  - term: Investment Balance Type
+    definition: The type of an investment balance
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/InvestmentBalanceType
+  - term: Account Holder Relationship
+    definition: Types of relationships between accounts and holders
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountHolderRelationship
+  - term: Identifier
+    definition: Value for a unique identifier
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Identifier
+  - term: Account With Details entity
+    definition: This provides an instance of an account with full details
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountWithDetails
+  - term: Line-Of-Credit Account entity
+    definition: A line-of-credit account
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/LocAccount
+  - term: Account entity
+    definition: An abstract account entity that concrete account entities extend
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Account
+  - term: Result Type
+    definition: Flag to indicate if you want a lightweight array of metadata (AccountDescriptor or Tax or Operations) or full item details (Account
+      or a Tax subclass or Availability details). If set to 'lightweight', should only return the fields associated with the metadata entity.
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/ResultType
+  - term: Debt Security entity
+    definition: An investment in a debt security
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/DebtSecurity
+  - term: Deposit Account entity
+    definition: Information for a deposit account type
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/DepositAccount
+  - term: FAPI Interaction ID
+    definition: Universally unique identifier for this interaction, used across all FDX API requests and responses
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/FapiInteractionId
+  - term: Account Status
+    definition: The status of an account
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountStatus
+  - term: Account Descriptor entity
+    definition: This descriptor provides minimal information about the account for use in lightweight arrays
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountDescriptor
+  - term: Date String
+    definition: ISO 8601 full-date in format 'YYYY-MM-DD' according to [IETF RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339.html#section-5.6)
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/DateString
+  - term: Account Type
+    definition: The type of an account. | Value | Description | |-----|-----| | BROKERAGEPRODUCT | Investment management offered by a licensed
+      brokerage firm that places trades on behalf of the customer, utilizing any number of investment options | | CD | A certificate of deposit
+      (CD) is a product offered by banks and credit unions that provides an interest rate premium in exchange for the customer agreeing to le
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountType
+  - term: Compounding Period
+    definition: Interest compounding Period
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/CompoundingPeriod
+  - term: Account Bill Pay Status
+    definition: 'Indicates bill pay capabilities for an account. * `ACTIVE`: Can be used for bill payment * `AVAILABLE`: Account can be requested
+      for bill payment * `NOT_AVAILABLE`: Account cannot participate in bill payment * `PENDING`: Account requested for bill payment, but not
+      available yet'
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/AccountBillPayStatus
+  - term: Investment Account entity
+    definition: An investment account type and information such as balances, transactions, holdings and privileges
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/InvestmentAccount
+  - term: Security entity
+    definition: A base Security entity which defines the type of this security
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Security
+  - term: Loan Account entity
+    definition: A loan account type
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/LoanAccount
+  - term: FDX API Actor Type
+    definition: Indicates whether a customer is present and has requested the operation (USER), or if a batch job has requested the operation
+      (BATCH)
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/ActorType
+  - term: Error
+    definition: An error entity which can be used at the API level for error responses
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/Error
+  - term: Balance Type
+    definition: 'Type of balance * ''ASSET'': Positive transaction amount increases balance * ''LIABILITY'': Positive transaction amount decreases
+      balance'
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/BalanceType
+  - term: Tax Lot entity
+    definition: Block of securities receiving the same tax treatment
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-information-api-openapi.yml#/components/schemas/TaxLot
+  - term: Investment Transaction Type
+    definition: The type of an investment transaction
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/InvestmentTransactionType
+  - term: Loan Transaction Type
+    definition: 'Defines the type of a loan transaction: * `FEE`: Fee charge. For example, a late payment fee * `INTEREST`: Interest charge *
+      `PAYMENT`: Required payment that satisfies the minimum payment (e.g. principal + interest for mortgages) * `PAYOFF`: Payment that satisfies
+      the terms of the mortgage loan and completely pays off the debt'
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/LoanTransactionType
+  - term: Loan Transaction entity
+    definition: A transaction on a loan account
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/LoanTransaction
+  - term: Transaction
+    definition: Base entity for financial transactions
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/Transaction
+  - term: Debit Credit Memo
+    definition: The posting type of a transaction
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/DebitCreditMemo
+  - term: Deposit Transaction Type
+    definition: The type of a deposit transaction
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/DepositTransactionType
+  - term: Reward Type
+    definition: 'The type of the reward balance. Example: a reward program awarding "Stars" for purchases would use the `POINTS` reward type.
+      * `CASHBACK`: Rewards balances enumerated using a monetary amount * `MILES`: Rewards balances enumerated using distance * `POINTS`: Default
+      when a reward balance is not of type CASHBACK or MILES'
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/RewardType
+  - term: Transactions entity
+    definition: Optionally paginated array of transactions
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/Transactions
+  - term: Payment Details entity
+    definition: Details of this payment
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/PaymentDetails
+  - term: Transaction Reward entity
+    definition: Rewards earned on a transaction
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/TransactionReward
+  - term: Paginated Array
+    definition: Base class for results that may be paginated
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/PaginatedArray
+  - term: Line-Of-Credit Transaction Type
+    definition: The type of a line-of-credit transaction
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/LocTransactionType
+  - term: String 255
+    definition: String of maximum length 255
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/String255
+  - term: HATEOAS Link
+    definition: REST application constraint (Hypermedia As The Engine Of Application State)
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/HateoasLink
+  - term: Line-Of-Credit Transaction entity
+    definition: A line-of-credit transaction
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/LocTransaction
+  - term: Unit Type
+    definition: The units of an investment transaction
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/UnitType
+  - term: Transaction Status
+    definition: The status of a transaction
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/TransactionStatus
+  - term: HTTP Action Type
+    definition: HTTP Methods to use for requests
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/HttpAction
+  - term: Security Id Type
+    definition: The source of the identifier for a security | Value | Description | |-----|-----| | CINS | CUSIP International Numbering System)
+      is a global securities identification numbering system that provides | | CMC | Coin Market Cap | | CME | Chicago Mercantile Exchange | |
+      CUSIP | Committee on Uniform Securities Identification Procedures | | ISIN | International Securities Identification Number | | ITSA |
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/SecurityIdType
+  - term: Deposit Transaction entity
+    definition: A transaction on a deposit account type
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/DepositTransaction
+  - term: Page Metadata
+    definition: Offset IDs for paginated result sets
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/PageMetadata
+  - term: Page Metadata Links
+    definition: Resource URLs for retrieving next or previous datasets
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/PageMetadataLinks
+  - term: Security Type
+    definition: The type of a security | Value | Description | |-----|-----| | ANNUITY | Financial product that pays out a fixed stream of payments.
+      Added by Truist per RFC 0394 with FDX v6.5 | | BOND | Debt security as a loan to a government, agency or company, repaid with interest |
+      | CD | Certificate of Deposit, a savings account with a fixed rate and term. Added by Truist per RFC 0394 with FDX v6.5 | | DEBT |
+    tags:
+    - Enumeration
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/SecurityType
+  - term: Investment Transaction entity
+    definition: An investment transaction
+    tags:
+    - Object
+    source: openapi/bbandt-corp-account-transactions-api-openapi.yml#/components/schemas/InvestmentTransaction
