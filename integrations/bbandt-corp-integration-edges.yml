@@ -1,5 +1,5 @@
 generated: '2026-10-12'
-method: none
+method: searched
 source:
 - https://zapier.com/apps/bbandt-corp/integrations
 - https://zapier.com/apps/bb-t-corp-truist/integrations
@@ -18,9 +18,44 @@ checked:
 - https://zapier.com/apps/bb-t-corp-truist/integrations
 - https://zapier.com/apps/bbandt-corp/integrations
 - https://zapier.com/apps/truist/integrations
+- https://api.fdic.gov/banks/history
+- https://api.fdic.gov/banks/institutions?filters=ACTIVE:1&fields=NAME,WEBADDR,CERT,ASSET,STALP
+- https://www.ncua.gov/files/publications/analysis/call-report-data-2025-06.zip
+- https://www.ncua.gov/files/publications/analysis/federally-insured-credit-union-list-june-2025.zip
 summary: null
 marketplace_apps: []
-edges: []
+edges:
+- partner_name: FDIC BankFind insured institutions
+  partner: null
+  partner_match: register
+  type: register
+  channel: regulator-register
+  relationship: standard-participant
+  direction: partner-built
+  evidence: https://api.fdic.gov/banks/institutions?filters=ACTIVE:1&fields=NAME,WEBADDR,CERT,ASSET,STALP
+  category: US FDIC-insured depository institution charter
+  contract_reference:
+    register: FDIC BankFind insured institutions
+    spec_file: null
+    standard: null
+    role: insured-depository-institution
+    registrations:
+    - registered_name: Truist Bank
+      register_status: active
+      register_country: US
+      register_id: '9846'
+      matched_domain: truist.com
+      matched_by: domain+local-verified
+      licences:
+      - FDIC-insured institution (CERT 9846)
+      evidence_url: https://banks.data.fdic.gov/bankfind-suite/bankfind/details/9846
+      state: NC
+    signal_note: 'participation only: a federal deposit-insurance charter on a regulator register; no API conformance
+      is published by this register'
+    detected_by: sweep-us-bank-credit-union-registers.py
+    detected: '2026-10-22'
+  detected_by: sweep-us-bank-credit-union-registers.py
+  first_seen: '2026-10-22'
 templates: []
 note: No marketplace listing or partner page found (Zapier/n8n/Workato 404, make.com 403, truist.com/partners 404,
   developer.truist.com 403 to curl). FDX open-banking aggregator connections are not published as a partner list.
