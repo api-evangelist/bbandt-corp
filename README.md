@@ -64,124 +64,228 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-BB&T Corporation was a major financial services holding company that merged with SunTrust Banks in December 2019 to form Truist Financial Corporation. The combined entity operates as Truist Bank and maintains a developer portal at developer.truist.com offering REST APIs for account information, transaction data, and banking services for personal, small business, and commercial customers. The APIs support open banking integrations and financial technology applications.
+BB&T Corporation merged with SunTrust Banks in December 2019 to form Truist Financial Corporation, the sixth-largest US commercial bank. Truist runs an open-banking API program at developer.truist.com and publishes fifteen first-party OpenAPI contracts covering 31 operations — personal and small-business accounts, transactions, client contact, account address and payment networks; commercial accounts, balances and transactions; RTP real-time credit transfers; OAuth 2.0 authentication, customer consent, RFC 7591 dynamic client registration, event subscriptions and notifications, and a branch/ATM locator. The retail surface is built to the Financial Data Exchange (FDX) API (V5.4.1, V6.4.1 and v6.5) and every API carries the FAPI x-fapi-interaction-id correlation header. Access is OAuth 2.0 authorization_code with per-customer consent; sandbox is self-serve after registration, production requires manual approval by a Truist engagement team.
 
-**Developer Portal:** https://developer.truist.com/
+**Areas:** Banking · Financial Services · Open Banking · Truist · BB&T · Fortune 500
 
-## Tags
+## BB&T Corp (Truist) on APIs.io
 
-Banking, Financial Services, Open Banking, Truist, BB&T
+Everything profiled for BB&T Corp (Truist) is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/bbandt-corp/](https://apis.io/providers/bbandt-corp/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (17)
 
-- **Created:** 2026-03-23
-- **Modified:** 2026-04-21
+- [BB&T Corp (Truist) Account Information API](https://apis.io/apis/bbandt-corp/bbandt-corp-account-information-api/) — Search and view customer accounts
+- [BB&T Corp (Truist) Account Transactions API](https://apis.io/apis/bbandt-corp/bbandt-corp-account-transactions-api/) — Search and view account transactions
+- [BB&T Corp (Truist) Commercial Account Balance API](https://apis.io/apis/bbandt-corp/bbandt-corp-commercial-account-balance-api/) — Returns account balances for a specific account
+- [BB&T Corp (Truist) Commercial Account Transactions API](https://apis.io/apis/bbandt-corp/bbandt-corp-commercial-account-transactions-api/) — Returns account transactions for a specific account
+- [BB&T Corp (Truist) Commercial Accounts API](https://apis.io/apis/bbandt-corp/bbandt-corp-commercial-accounts-api/) — Retrieves the list of accounts
+- [BB&T Corp (Truist) Credit Transfers Account List API](https://apis.io/apis/bbandt-corp/bbandt-corp-credit-transfers-account-list-api/) — Eligible accounts for Real Time Payment Credit Transfer
+- [BB&T Corp (Truist) Credit Transfers Acknowledge API](https://apis.io/apis/bbandt-corp/bbandt-corp-credit-transfers-acknowledge-api/) — Credit Transfer Acknowledge for an inbound credit transfer
+- [BB&T Corp (Truist) Credit Transfers API](https://apis.io/apis/bbandt-corp/bbandt-corp-credit-transfers-api/) — Credit Transfers for a Real Time Payment
+- [BB&T Corp (Truist) Credit Transfers Approval/Reject API](https://apis.io/apis/bbandt-corp/bbandt-corp-credit-transfers-approval-reject-api/) — Approvals for Real Time Payment Credit Transfer
+- [BB&T Corp (Truist) Event Notification Subscriptions API](https://apis.io/apis/bbandt-corp/bbandt-corp-event-notification-subscriptions-api/) — Manage Event Notification Subscriptions
+- [BB&T Corp (Truist) Event Notifications API](https://apis.io/apis/bbandt-corp/bbandt-corp-event-notifications-api/) — Manage Event Notifications
+- [BB&T Corp (Truist) Location Information API](https://apis.io/apis/bbandt-corp/bbandt-corp-location-information-api/) — Get ATM and branch location info - latitude, longitude, address, phone and fax
+- [BB&T Corp (Truist) Money Movement API](https://apis.io/apis/bbandt-corp/bbandt-corp-money-movement-api/) — View account money movement details
+- [BB&T Corp (Truist) OAuth 2.0 API](https://apis.io/apis/bbandt-corp/bbandt-corp-oauth-2-0-api/) — OAuth 2.0 authorize and token services
+- [BB&T Corp (Truist) Personal Information API](https://apis.io/apis/bbandt-corp/bbandt-corp-personal-information-api/) — Search and view customer or customers
+- [BB&T Corp (Truist) Recipients API](https://apis.io/apis/bbandt-corp/bbandt-corp-recipients-api/) — Manage recipients
+- [BB&T Corp (Truist) User Consent API](https://apis.io/apis/bbandt-corp/bbandt-corp-user-consent-api/) — Request a customer consent grant
 
-## APIs
+### Published properties
 
-### Truist Personal and Small Business Accounts API
-Provides access to personal and small business account data including account balances, account details, and account lists for authenticated customers. Supports open banking use cases for fintech applications.
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-**Human URL:** [https://developer.truist.com/api/personal-and-small-business-accounts/overview](https://developer.truist.com/api/personal-and-small-business-accounts/overview)
+#### AsyncAPI (1)
 
-#### Tags:
+Event-driven and webhook contracts.
 
- - Banking, Accounts, Personal Banking, Small Business
+- [Bbandt Corp Event Notifications Webhooks](https://apis.io/asyncapis/bbandt-corp/bbandt-corp-event-notifications-webhooks/)
 
-#### Properties
+#### MCP servers (1)
 
-- [Documentation](https://developer.truist.com/api/personal-and-small-business-accounts/overview)
+Model Context Protocol servers that expose the API to agents.
 
-### Truist Personal and Small Business Transactions API
-Provides access to transaction history and transaction details for personal and small business bank accounts. Enables fintech applications to retrieve customer transaction data with proper authorization.
+- [bbandt-corp-mcp.yml](https://apis.io/servers/bbandt-corp/bbandt-corp-mcp-yml/)
 
-**Human URL:** [https://developer.truist.com/api/personal-and-small-business-transactions/overview](https://developer.truist.com/api/personal-and-small-business-transactions/overview)
+#### Agentic access (1)
 
-#### Tags:
+Which operations an agent can call, which act, and which need a human in the loop.
 
- - Banking, Transactions, Personal Banking, Small Business
+- [Bbandt Corp Agentic Access](https://apis.io/agentic-access/bbandt-corp/bbandt-corp-agentic-access/)
 
-#### Properties
+#### JSON Schema (25)
 
-- [Documentation](https://developer.truist.com/api/personal-and-small-business-transactions/overview)
+The data models the API reads and writes.
 
-### Truist Commercial Accounts API
-Provides access to commercial banking account data including account balances, account details, and account management for business customers. Supports treasury management and commercial banking integrations.
+- [Commercial account eligible account list](https://apis.io/schemas/bbandt-corp/bbandt-corp-account-detail/)
+- [Commercial Account List](https://apis.io/schemas/bbandt-corp/bbandt-corp-account-list/)
+- [Account With Details entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-account-with-details/)
+- [Accounts entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-accounts/)
+- [Payment acknowledgement request](https://apis.io/schemas/bbandt-corp/bbandt-corp-acknowledge-payment-request/)
+- [Payment acknowledgement response](https://apis.io/schemas/bbandt-corp/bbandt-corp-acknowledge-payment-response/)
+- [ATMs Entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-atms/)
+- [Branches Entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-branches/)
+- [Request definition for status update](https://apis.io/schemas/bbandt-corp/bbandt-corp-cancel-payment-request/)
+- [Consent Grant entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-consent-grant/)
+- [Consent revocation request entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-consent-revocation-request/)
+- [Customer entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-customer/)
+- [All reported transactions](https://apis.io/schemas/bbandt-corp/bbandt-corp-get-approvals-payment-response/)
+- [All or ATM Locations](https://apis.io/schemas/bbandt-corp/bbandt-corp-locations/)
+- [MultipleRtpPaymentRequest.](https://apis.io/schemas/bbandt-corp/bbandt-corp-multiple-rtp-payment-request/)
+- [Notification entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-notification/)
+- [Notification Subscription entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-notification-subscription/)
+- [PostedOrPending](https://apis.io/schemas/bbandt-corp/bbandt-corp-posted-or-pending/)
+- [Recipient Request](https://apis.io/schemas/bbandt-corp/bbandt-corp-recipient-request/)
+- [Response definition for the RTP Transfer](https://apis.io/schemas/bbandt-corp/bbandt-corp-rtp-response/)
+- [TokenRequest](https://apis.io/schemas/bbandt-corp/bbandt-corp-token-request/)
+- [TokenResponse](https://apis.io/schemas/bbandt-corp/bbandt-corp-token-response/)
+- [Transactions entity](https://apis.io/schemas/bbandt-corp/bbandt-corp-transactions/)
+- [Request definition for status update](https://apis.io/schemas/bbandt-corp/bbandt-corp-update-payment-request/)
+- [Succcessful response for payment update](https://apis.io/schemas/bbandt-corp/bbandt-corp-update-payment-response/)
 
-**Human URL:** [https://developer.truist.com/api/commercial-accounts/overview](https://developer.truist.com/api/commercial-accounts/overview)
+#### JSON-LD (2)
 
-#### Tags:
+Linked-data contexts for the provider's vocabulary.
 
- - Banking, Accounts, Commercial Banking
+- [Bbandt Context](https://apis.io/jsonld/bbandt-corp/bbandt-context/)
+- [Bbandt Corp Context](https://apis.io/jsonld/bbandt-corp/bbandt-corp-context/)
 
-#### Properties
+#### Vocabulary (1)
 
-- [Documentation](https://developer.truist.com/api/commercial-accounts/overview)
+The provider's domain terms, defined.
 
-### Truist Commercial Account Transactions API
-Provides access to transaction history and transaction details for commercial bank accounts. Supports enterprise financial applications, ERP integrations, and treasury management workflows.
+- [BB&T Corp / Truist Vocabulary](https://apis.io/vocabularies/bbandt-corp/bbandt-vocabulary/)
 
-**Human URL:** [https://developer.truist.com/api/commercial-account-transactions/overview](https://developer.truist.com/api/commercial-account-transactions/overview)
+#### Examples (1)
 
-#### Tags:
+Example requests and responses.
 
- - Banking, Transactions, Commercial Banking
+- [Account List Example](https://apis.io/examples/bbandt-corp/account-list-example/)
 
-#### Properties
+#### Overlays (15)
 
-- [Documentation](https://developer.truist.com/api/commercial-account-transactions/overview)
+OpenAPI overlays, including conversational phrasing for each operation.
 
-### Truist Association Services API
-Provides banking and payment services APIs for associations, HOAs, and membership organizations. Supports dues collection, payment processing, and financial management for association management companies.
+- [Bbandt Corp Commercial Account Balance Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-commercial-account-balance-overlay/)
+- [Bbandt Corp Commercial Account Transactions Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-commercial-account-transactions-overlay/)
+- [Bbandt Corp Commercial Accounts Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-commercial-accounts-overlay/)
+- [Bbandt Corp Commercial Credit Transfers Oas V2 Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-commercial-credit-transfers-oas-v2-overlay/)
+- [Bbandt Corp Retail Accounts Contact Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-accounts-contact-overlay/)
+- [Bbandt Corp Retail Accounts Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-accounts-overlay/)
+- [Bbandt Corp Retail Accounts Transaction Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-accounts-transaction-overlay/)
+- [Bbandt Corp Retail Auth Oauth Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-auth-oauth-overlay/)
+- [Bbandt Corp Retail Consents Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-consents-overlay/)
+- [Bbandt Corp Retail Customers Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-customers-overlay/)
+- [Bbandt Corp Retail Event Notifications Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-event-notifications-overlay/)
+- [Bbandt Corp Retail Event Subscriptions Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-event-subscriptions-overlay/)
+- [Bbandt Corp Retail Locator Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-locator-overlay/)
+- [Bbandt Corp Retail Payment Networks Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-payment-networks-overlay/)
+- [Bbandt Corp Retail Register Recipient Overlay](https://apis.io/overlays/bbandt-corp/bbandt-corp-retail-register-recipient-overlay/)
 
-**Human URL:** [https://developer.truist.com/categories/association-services](https://developer.truist.com/categories/association-services)
+#### Governance rules (2)
 
-#### Tags:
+Spectral rulesets for the provider's contracts.
 
- - Banking, Association Services, Payments
+- [BB&T Corp (Truist) API Rules](https://apis.io/rules/bbandt-corp/bbandt-corp-rules/)
+- [BB&T Corp (Truist) — bbandt rules](https://apis.io/rules/bbandt-corp/bbandt-spectral-rules/)
 
-#### Properties
+#### Security (2)
 
-- [Documentation](https://developer.truist.com/categories/association-services)
+Authentication, trust centre, and vulnerability disclosure.
 
-## Common Properties
+- [Bbandt Corp Authentication](https://apis.io/security/bbandt-corp/bbandt-corp-authentication/)
+- [Bbandt Corp Domain Security](https://apis.io/security/bbandt-corp/bbandt-corp-domain-security/)
 
-- [Portal](https://developer.truist.com/)
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Bbandt Corp Scopes](https://apis.io/scopes/bbandt-corp/bbandt-corp-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Bbandt Corp Plans Pricing](https://apis.io/plans/bbandt-corp/bbandt-corp-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Bbandt Corp Rate Limits](https://apis.io/rate-limits/bbandt-corp/bbandt-corp-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Bbandt Corp Finops](https://apis.io/finops/bbandt-corp/bbandt-corp-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
 - [Website](https://www.truist.com/)
 - [Documentation](https://developer.truist.com/api/view-api)
-- [GettingStarted](https://developer.truist.com/api/working-with-truist)
-- [TermsOfService](https://www.truist.com/terms-and-conditions)
-- [PrivacyPolicy](https://www.truist.com/privacy-security)
+- [Getting started](https://developer.truist.com/api/working-with-truist)
+- [API reference](https://developer.truist.com/api/personal-and-small-business-accounts/documentation)
+- [Sign up](https://developer.truist.com/signup)
+- [Support](https://developer.truist.com/contact-us)
+- [Blog](https://media.truist.com/news-releases?pagetemplate=rss)
+- [Terms of service](https://www.truist.com/terms-and-conditions)
+- [Privacy policy](https://www.truist.com/privacy)
 
-## Features
+## API Evangelist rating
 
-| Name | Description |
-|------|-------------|
-| Open Banking APIs | REST APIs enabling fintech applications to access account and transaction data with customer consent. |
-| Personal Banking APIs | APIs for personal and small business banking account access including balances and transaction history. |
-| Commercial Banking APIs | APIs for commercial account management, treasury operations, and enterprise banking integrations. |
-| Association Services | Specialized APIs for association management companies to handle dues, payments, and financial reporting. |
-| OAuth 2.0 Authentication | Secure OAuth 2.0 based authentication for customer data access with proper consent flows. |
+**Kin Score 51.2** — developing · rubric 0.25.0 · scored 2026-10-23
 
-## Use Cases
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 78.5 |
+| Contract governance | 22.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 42.3 |
+| Access clarity | 27.6 |
 
-| Name | Description |
-|------|-------------|
-| Personal Finance Apps | Build personal finance management apps that aggregate account and transaction data for Truist customers. |
-| Accounting Software Integration | Integrate Truist commercial accounts with accounting software like QuickBooks or Xero. |
-| Treasury Management | Enable enterprise treasury teams to access real-time commercial account balances and transaction data. |
-| Association Management | Automate dues collection and financial reporting for homeowners associations and membership organizations. |
+**Agent readiness 43.4** — agent-ready (gated down from agent-native)
 
-## Integrations
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
 
-| Name | Description |
-|------|-------------|
-| Plaid | Third-party data aggregator providing alternative connectivity to Truist account data. |
-| Tink | Open banking platform providing access to Truist banking data via aggregation. |
-| QuickBooks | Accounting software integration for Truist commercial banking customers. |
+**Regulatory alignment 50.4** — Banking & Open Finance
 
-## Maintainers
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/bbandt-corp/](https://apis.io/providers/bbandt-corp/).
 
-**FN:** Kin Lane
+## How this profile is made
 
-**Email:** kin@apievangelist.com
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for BB&T Corp (Truist): the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/bbandt-corp/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
