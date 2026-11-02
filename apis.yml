@@ -29,18 +29,20 @@ deliveryModel:
   method: derived
 
 accessModel:
-  pricing: free
+  pricing: unknown
   onboarding: unknown
   trial: false
   try_now: false
   public: false
-  label: Free
-  confidence: medium
+  label: Unknown
+  confidence: low
   source:
-  - plans
-  generated: '2026-07-22'
+  - authentication
+  - rate-limits
+  - security
+  - sandbox
+  generated: '2026-11-02'
   method: derived
-
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/bbandt-corp.png
 
 tags:
