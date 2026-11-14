@@ -41,7 +41,7 @@ accessModel:
   - rate-limits
   - security
   - sandbox
-  generated: '2026-11-06'
+  generated: '2026-11-13'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/bbandt-corp.png
 
@@ -215,6 +215,12 @@ common:
   url: plans/bbandt-corp-plans-pricing.yml
 - type: RateLimits
   url: rate-limits/bbandt-corp-rate-limits.yml
+- type: UsageTerms
+  url: terms/bbandt-corp-terms-of-service.yml
+- type: DataProcessing
+  url: privacy/bbandt-corp-privacy-policy.yml
+- type: DataLicense
+  url: data-license/bbandt-corp-data-license.yml
 
 apis:
 - aid: bbandt-corp:bbandt-corp-account-information-api
